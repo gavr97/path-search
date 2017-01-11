@@ -9,12 +9,16 @@
 #include "myHeap.h"
 #include "astar.h"
 
-inline double manhattan(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
+
+typedef long long TypeValue;
+
+inline TypeValue manhattan(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
 {
-    return abs((int)ux - vx) + abs((int)uy - vy);
+    TypeValue ret = abs((int)ux - (int)vx) + abs((int)uy - (int)vy);
+    return ret;
 }
 
-inline double euclid(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
+inline TypeValue euclid(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
 {
     return sqrt(pow(((int)ux - (int)vx), 2) + pow(((int)uy - (int)vy), 2));
 }
@@ -92,10 +96,7 @@ bool AStar::computeGValues()
 
         unsigned ux = coordinateFirst(keyNow), uy = coordinateSecond(keyNow);
         //std::cout << "\n" << keyNow << ' ' << ux << ' ' << uy << std::endl;
-        if (ux == 327 && uy == 191) {
-            int here = 1;
-        }
-        try {
+
         for (unsigned ind = 0; ind != dyVec.size(); ++ind) {
             unsigned vx = ux + dxVec[ind];
             unsigned vy = uy + dyVec[ind];
@@ -103,13 +104,13 @@ bool AStar::computeGValues()
             if (task.map[vx][vy] == 0) {
                 if (!visited[keyNeig]) {  // we must init gvalue of keyNeig
                     visited[keyNeig] = true;
-                    double gVal = gTable[keyNow] + weightVec[ind];
+                    TypeValue gVal = gTable[keyNow] + weightVec[ind];
                     opened.push(gVal + heuristic(vx, vy, finishX, finishY), keyNeig);
                     gTable[keyNeig] = gVal;
                     prevTable[keyNeig] = keyNow;
                 } else {  // we must update gvalue
-                    double gOld = gTable[keyNeig];
-                    double gPretendent = gTable[keyNow] + weightVec[ind];
+                    TypeValue gOld = gTable[keyNeig];
+                    TypeValue gPretendent = gTable[keyNow] + weightVec[ind];
                     if (gOld > gPretendent) {
                         opened.decreaseVal(gOld + heuristic(vx, vy, finishX, finishY),
                                            keyNeig, gPretendent + heuristic(vx, vy, finishX, finishY));
@@ -117,10 +118,6 @@ bool AStar::computeGValues()
                     }
                 }
             }
-        }
-        }
-        catch(std::exception g) {
-            std::cout << "here\nz";
         }
     }
 

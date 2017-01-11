@@ -5,7 +5,7 @@
 #include <vector>
 #include <set>
 
-typedef double TypeValue;
+typedef long long TypeValue;
 
 class Heap {
 private:

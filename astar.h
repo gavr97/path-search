@@ -29,21 +29,22 @@ using std::pair;
 
 typedef std::vector<unsigned> Path;
 typedef unsigned  Node;
+typedef long long TypeValue;
 
 
 class AStar {
 private:
     //____members that define features of algorithm(object)_____
-    double (*heuristic)(unsigned ux, unsigned uy, unsigned vx, unsigned vy);
+    TypeValue (*heuristic)(unsigned ux, unsigned uy, unsigned vx, unsigned vy);
     std::vector<short> dxVec;
     std::vector<short> dyVec;
-    std::vector<double> weightVec;
+    std::vector<TypeValue> weightVec;
     bool allowSqueeze();
 
 
     //____ commom members______
     Task task;
-    std::map<unsigned, double> gTable;
+    std::map<unsigned, TypeValue> gTable;
     std::map<unsigned, unsigned> prevTable;
     std::vector<unsigned> path;
 
