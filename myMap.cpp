@@ -137,7 +137,7 @@ int Task::readMap(XMLNode * pRoot, std::vector<std::vector<short>> &map)
     while (pRow != nullptr) {
         if (indRow == height + 1) {
             std::cout << "warning: too many rows\n";
-            return 0;
+            break;
         }
         const char *buf = pRow->GetText();
         map[indRow][0] = 1;
@@ -147,14 +147,14 @@ int Task::readMap(XMLNode * pRoot, std::vector<std::vector<short>> &map)
             if (*buf == '0') {
                 if (indCol == width + 1) {
                     std::cout << "warning: too many cells in row\n";
-                    return 0;
+                    break;
                 }
                 map[indRow][indCol] = 0;
                 ++indCol;
             } else if (*buf == '1') {
                 if (indCol == width + 1) {
                     std::cout << "warning: too many cells in row\n";
-                    return 0;
+                    break;
                 }
                 map[indRow][indCol] = 1;
                 ++indCol;
