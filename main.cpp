@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "tinyxml2.h"
-#include "myMap.h"
+#include "myTask.h"
 #include "astar.h"
 
 int main() {

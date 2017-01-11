@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <string>
 #include "tinyxml2.h"
-#include "myMap.h"
+#include "myTask.h"
 
 #ifndef XMLCheckResult
 #define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("TinyXML Error: %i\n", a_eResult); return a_eResult; }
