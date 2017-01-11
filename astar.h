@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "myMap.h"
 
 using std::cout;
 using std::cin;
@@ -142,7 +143,6 @@ public:
     }
 };
 
-template <typename H>
 class AStarBase {
 private:
     //____members that define features of algorithm(object)_____
@@ -153,10 +153,16 @@ private:
 
 
     //____ commom members______
+    Task task;
+    std::vector<std::vector<long long>> gTable;
+    std::vector<std::vector<unsigned>> prevTable;
+    std::vector<unsigned> path;
     Heap heap;
-    unsigned key(unsigned ux, unsigned uy);
-    void computeGValues
 
+    inline unsigned key(unsigned ux, unsigned uy);
+    void computeGValues();
+    void constructPath();
+    std::vector<unsigned> solve(const Task &task);
 };
 
 #endif //REPO_ASTAR_H
