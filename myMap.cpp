@@ -40,7 +40,7 @@ bool isValidSizes(Task task)
            task.finishX <= task.cntRealRows && task.finishY <= task.cntRealCols;
 }
 
-int readInt(XMLNode *pRoot, const char *tag, unsigned int &destination, unsigned int DEFAULT = 0, bool obligatory = 0)  // code of error is returned
+int Task::readInt(XMLNode *pRoot, const char *tag, unsigned int &destination, unsigned int DEFAULT = 0, bool obligatory = 0)  // code of error is returned
 {
     XMLError eResult;
     XMLElement * pElement = pRoot->FirstChildElement(tag);
@@ -64,7 +64,7 @@ int readInt(XMLNode *pRoot, const char *tag, unsigned int &destination, unsigned
     return 0;
 }
 
-int readDouble(XMLNode *pRoot, const char *tag, double &destination, double DEFAULT = 0, bool obligatory = 0)  // code of error is returned
+int Task::readDouble(XMLNode *pRoot, const char *tag, double &destination, double DEFAULT = 0, bool obligatory = 0)  // code of error is returned
 {
     XMLError eResult;
     XMLElement * pElement = pRoot->FirstChildElement(tag);
@@ -88,7 +88,7 @@ int readDouble(XMLNode *pRoot, const char *tag, double &destination, double DEFA
     return 0;
 }
 
-int readStr(XMLNode *pRoot, const char *tag, std::string &destination, const std::string DEFAULT = 0,
+int Task::readStr(XMLNode *pRoot, const char *tag, std::string &destination, const std::string DEFAULT = 0,
             bool obligatory = 0)  // code of error is returned
 {
     XMLError eResult;
@@ -112,7 +112,7 @@ int readStr(XMLNode *pRoot, const char *tag, std::string &destination, const std
     return 0;
 }
 
-int readMap(XMLNode * pRoot, std::vector<std::vector<short>> &map)
+int Task::readMap(XMLNode * pRoot, std::vector<std::vector<short>> &map)
 {
     int height = map.size() - 2;  // h = size - 2 because there is extra rows and cols for boundary
     int width = map[0].size() - 2;
@@ -177,7 +177,8 @@ int readMap(XMLNode * pRoot, std::vector<std::vector<short>> &map)
     return 0;
 }
 
-int myLoad(const char *path, Task &task) {
+int Task::myLoad(const char *path)
+{
     // ____load xml tree____
     XMLError eResult;
     int myeResult;
@@ -203,34 +204,52 @@ int myLoad(const char *path, Task &task) {
         std::cout << "error: incorrect structure of xml file: trere is no tag algorithm\n";
         exit(1);
     }
-    myeResult = readInt(pRoot->FirstChildElement("map"), "height", task.cntRealRows, 0, 1);  // 0 is incidential; 1 means obligatory
-    myeResult = readInt(pRoot->FirstChildElement("map"), "width", task.cntRealCols, 0, 1);
-    myeResult = readInt(pRoot->FirstChildElement("map"), "startx", task.startX, STARTX_DEFAULT);
-    myeResult = readInt(pRoot->FirstChildElement("map"), "starty", task.startY, STARTY_DEFAULT);
-    myeResult = readInt(pRoot->FirstChildElement("map"), "finishx", task.finishX, FINISHX_DEFAULT);
-    myeResult = readInt(pRoot->FirstChildElement("map"), "finishy", task.finishY, FINISHY_DEFAULT);
-    if (!isValidSizes(task)) {
+    myeResult = readInt(pRoot->FirstChildElement("map"), "height", this->cntRealRows, 0, 1);  // 0 is incidential; 1 means obligatory
+    myeResult = readInt(pRoot->FirstChildElement("map"), "width", this->cntRealCols, 0, 1);
+    myeResult = readInt(pRoot->FirstChildElement("map"), "startx", this->startX, STARTX_DEFAULT);
+    myeResult = readInt(pRoot->FirstChildElement("map"), "starty", this->startY, STARTY_DEFAULT);
+    myeResult = readInt(pRoot->FirstChildElement("map"), "finishx", this->finishX, FINISHX_DEFAULT);
+    myeResult = readInt(pRoot->FirstChildElement("map"), "finishy", this->finishY, FINISHY_DEFAULT);
+    if (!isValidSizes(*this)) {
         std::cout << "error: start or finish are inappropriate for these sizes\n";
         exit(1);
     }
-    myeResult = readDouble(pRoot->FirstChildElement("algorithm"), "linecost", task.lineCost, LINE_COST_DEFAULT);
-    myeResult = readDouble(pRoot->FirstChildElement("algorithm"), "diagonalcost", task.diagCost, DIAG_COST_DEFAULT);
-    myeResult = readStr(pRoot->FirstChildElement("algorithm"), "searchtype", task.searchType, SEARCH_TYPE_DEFAULT);
-    myeResult = readStr(pRoot->FirstChildElement("algorithm"), "metrictype", task.metricType, METRIC_TYPE_DEFAULT);
+    myeResult = readDouble(pRoot->FirstChildElement("algorithm"), "linecost", lineCost, LINE_COST_DEFAULT);
+    myeResult = readDouble(pRoot->FirstChildElement("algorithm"), "diagonalcost", this->diagCost, DIAG_COST_DEFAULT);
+    myeResult = readStr(pRoot->FirstChildElement("algorithm"), "searchtype", this->searchType, SEARCH_TYPE_DEFAULT);
+    myeResult = readStr(pRoot->FirstChildElement("algorithm"), "metrictype", this->metricType, METRIC_TYPE_DEFAULT);
 
-    myeResult = readInt(pRoot->FirstChildElement("algorithm"), "allowdiagonal", task.allowDiag, ALLOW_DIAG_DEFAULT);
-    myeResult = readInt(pRoot->FirstChildElement("algorithm"), "allowsqueeze", task.allowSqueeze, ALLOW_SQUEEZE_DEFAULT);
-    myeResult = readInt(pRoot->FirstChildElement("algorithm"), "cutcorners", task.cutCorners, CUT_CORNERS_DEFAULT);
+    myeResult = readInt(pRoot->FirstChildElement("algorithm"), "allowdiagonal", this->allowDiag, ALLOW_DIAG_DEFAULT);
+    myeResult = readInt(pRoot->FirstChildElement("algorithm"), "allowsqueeze", this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT);
+    myeResult = readInt(pRoot->FirstChildElement("algorithm"), "cutcorners", this->cutCorners, CUT_CORNERS_DEFAULT);
 
     std::cout << "task has been read succesfully\n";
 
     // _______read map___________
-    unsigned int height = task.cntRealRows;
-    unsigned int width = task.cntRealCols;
+    unsigned int height = this->cntRealRows;
+    unsigned int width = this->cntRealCols;
     std::vector<std::vector<short>> map(height + 2, std::vector<short>(width + 2));
     myeResult = readMap(pRoot->FirstChildElement("map"), map);
-    task.map = map;
+    this->map = map;
     std::cout << "map has been read successfully\n";
     return 0;
+}
+
+void Task::print() const
+{
+    std::cout << "\nTask:\n";
+    std::cout << "size: " << this->cntRealRows << ' ' << this->cntRealCols << std::endl;
+    std::cout << "map\n";
+    //for (const auto &row : this->map) {
+    //    for (const auto &elem : row) {
+    //        std::cout << elem << ' ';
+    //    }
+    //    std::cout << std::endl;
+    //}
+    std::cout << '\n';
+    std::cout << "costs of movements: " << this->lineCost << " and " << this->diagCost << std::endl;
+    printf("start and end: %u %u and %u %u\n", this->startX, this->startY, this->finishX, this->finishY);
+    std::cout << "search type and metric type: " << this->searchType << " and " << this->metricType << std::endl;
+    std::cout << "about movements: " << this->allowDiag << ' ' << this->allowSqueeze << ' ' << this->cutCorners << std::endl;
 }
 
