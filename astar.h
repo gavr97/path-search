@@ -5,4 +5,9 @@
 #ifndef REPO_ASTAR_H
 #define REPO_ASTAR_H
 
+class AStarBase {
+
+
+};
+
 #endif //REPO_ASTAR_H
