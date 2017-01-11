@@ -29,7 +29,7 @@ using std::pair;
 
 typedef std::vector<unsigned> Path;
 typedef unsigned  Node;
-typedef long long TypeValue;
+typedef double TypeValue;
 
 
 class AStar {
@@ -46,7 +46,6 @@ private:
     Task task;
     std::map<unsigned, TypeValue> gTable;
     std::map<unsigned, unsigned> prevTable;
-    std::vector<unsigned> path;
 
     inline unsigned key(unsigned ux, unsigned uy);
     inline unsigned coordinateFirst(unsigned key);
@@ -56,7 +55,9 @@ private:
     std::vector<unsigned> constructPath();
 
 public:
-    std::vector<unsigned> solve(const Task &task);
+    int solve(const Task &task);
+    void printPath();
+    Path path;
 };
 
 #endif //REPO_ASTAR_H

@@ -7,11 +7,13 @@
 int main() {
     int myeResult = 0;
     Task task;
-    myeResult = task.myLoad("input/3622198.xml");  // char* ! not std::string
+    myeResult = task.myLoad("input/3664933.xml");  // char* ! not std::string
     task.print();
 
     AStar astar;
-    vector<unsigned> path = astar.solve(task);
-    std::cout << "size of found best path is " << path.size();
+    myeResult = astar.solve(task);  // myeResult == 1 if no path found; else 0;
+    if (!myeResult) {
+        astar.printPath();
+    }
     return 0;
 }

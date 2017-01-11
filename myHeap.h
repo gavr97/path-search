@@ -5,7 +5,7 @@
 #include <vector>
 #include <set>
 
-typedef long long TypeValue;
+typedef double TypeValue;
 
 class Heap {
 private:
@@ -24,14 +24,14 @@ public:
         return key;
     }
 
-    void decreaseVal(TypeValue oldVal, unsigned key, TypeValue newVal)
+    bool decreaseVal(TypeValue oldVal, unsigned key, TypeValue newVal)
     {
         auto ptr = set.find({oldVal, key});
-        if (ptr != set.end())
-            set.erase(ptr);
-        else
-            std::cout << "!!\n";
+        if (ptr == set.end())
+            return true;
+        set.erase(ptr);
         set.insert({newVal, key});
+        return false;
     }
 
     bool empty()

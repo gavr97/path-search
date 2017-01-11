@@ -10,7 +10,26 @@
 #include "astar.h"
 
 
-typedef long long TypeValue;
+typedef double TypeValue;
+
+inline int my_Max(int a, int b)
+{
+    if (a > b)
+        return a;
+    else
+        return b;
+}
+
+inline TypeValue straight(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
+{
+    TypeValue ret = my_Max(abs((int)ux - (int)vx), abs((int)uy - (int)vy));
+    return ret;
+}
+
+inline TypeValue euclid(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
+{
+    return sqrt(pow(((int)ux - (int)vx), 2) + pow(((int)uy - (int)vy), 2));
+}
 
 inline TypeValue manhattan(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
 {
@@ -18,9 +37,9 @@ inline TypeValue manhattan(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
     return ret;
 }
 
-inline TypeValue euclid(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
+inline TypeValue zero(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
 {
-    return sqrt(pow(((int)ux - (int)vx), 2) + pow(((int)uy - (int)vy), 2));
+    return 0;
 }
 
 inline unsigned AStar::key(unsigned ux, unsigned uy)
@@ -39,7 +58,7 @@ inline unsigned AStar::coordinateSecond(unsigned key)
 }
 
 
-std::vector<unsigned> AStar::solve(const Task &task)
+int AStar::solve(const Task &task)
 {
     this->task = task;
     //_____define heuristic_____
@@ -47,6 +66,9 @@ std::vector<unsigned> AStar::solve(const Task &task)
         heuristic = &manhattan;
     else if (task.metricType == "euclid")
         heuristic = &euclid;
+    else
+        heuristic = &straight;
+
 
     //_____define dx and dy weights______
     if (task.allowDiag == 1) {
@@ -66,10 +88,10 @@ std::vector<unsigned> AStar::solve(const Task &task)
     std::vector<unsigned> path;
     if (computeGValues()) {
         path = constructPath();
-        return path;
+        return 0;
     } else {
-        std::cout << "\nThere is no any path\n";
-        return { };
+        std::cout << "\nThere is no any path to goal\n";
+        return 1;
     }
 
 }
@@ -84,6 +106,7 @@ bool AStar::computeGValues()
     unsigned finishX = task.finishX;
     unsigned finishY = task.finishY;
     unsigned keyNow = key(startX, startY);
+
     opened.push(0 + heuristic(startX, startY, finishX, finishY), keyNow);
     prevTable[keyNow] = keyNow;
     gTable[keyNow] = 0;
@@ -95,11 +118,16 @@ bool AStar::computeGValues()
             return true;
 
         unsigned ux = coordinateFirst(keyNow), uy = coordinateSecond(keyNow);
-        //std::cout << "\n" << keyNow << ' ' << ux << ' ' << uy << std::endl;
+        if (ux == 146 && uy == 33) {
+            int a = 6;
+        }
 
         for (unsigned ind = 0; ind != dyVec.size(); ++ind) {
             unsigned vx = ux + dxVec[ind];
             unsigned vy = uy + dyVec[ind];
+            if (vx == 146 && vy == 33) {
+                int a = 6;
+            }
             unsigned keyNeig = key(vx, vy);
             if (task.map[vx][vy] == 0) {
                 if (!visited[keyNeig]) {  // we must init gvalue of keyNeig
@@ -108,13 +136,18 @@ bool AStar::computeGValues()
                     opened.push(gVal + heuristic(vx, vy, finishX, finishY), keyNeig);
                     gTable[keyNeig] = gVal;
                     prevTable[keyNeig] = keyNow;
-                } else {  // we must update gvalue
+                } else if (!closed[keyNeig]) {  // we must update gvalue
                     TypeValue gOld = gTable[keyNeig];
                     TypeValue gPretendent = gTable[keyNow] + weightVec[ind];
                     if (gOld > gPretendent) {
-                        opened.decreaseVal(gOld + heuristic(vx, vy, finishX, finishY),
-                                           keyNeig, gPretendent + heuristic(vx, vy, finishX, finishY));
-                        prevTable[keyNeig] = keyNow;
+                        if (!opened.decreaseVal(gOld + heuristic(vx, vy, finishX, finishY),
+                                                keyNeig, gPretendent + heuristic(vx, vy, finishX, finishY))) {
+                            prevTable[keyNeig] = keyNow;
+                            gTable[keyNeig] = gPretendent;
+                        } else {
+                            int a = 6;
+                            std::cout << vx << ' ' << vy << '\n';
+                        }
                     }
                 }
             }
@@ -122,7 +155,6 @@ bool AStar::computeGValues()
     }
 
     return false;
-
 }
 
 std::vector<unsigned> AStar::constructPath()
@@ -133,4 +165,17 @@ std::vector<unsigned> AStar::constructPath()
         now = prevTable[now];
     }
     return path;
+}
+
+void AStar::printPath()
+{
+    if (path.size() == 0) {
+        std::cout << "error: there is no inited path\n";
+        return;
+    } else {
+        for (int ind = path.size() - 1; ind != -1; --ind) {
+            std::cout << "number " << path.size() - ind << ": "
+                      << coordinateFirst(path[ind]) << ' ' << coordinateSecond(path[ind]) << '\n';
+        }
+    }
 }
