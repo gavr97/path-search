@@ -82,10 +82,7 @@ int AStar::solve(const Task &task)
         weightVec = {task.lineCost, task.lineCost, task.lineCost, task.lineCost};
     }
 
-    //_____init prevTable gTable
-
     //_____algorithm AStar______
-    std::vector<unsigned> path;
     if (computeGValues()) {
         path = constructPath();
         return 0;
@@ -118,16 +115,9 @@ bool AStar::computeGValues()
             return true;
 
         unsigned ux = coordinateFirst(keyNow), uy = coordinateSecond(keyNow);
-        if (ux == 146 && uy == 33) {
-            int a = 6;
-        }
-
         for (unsigned ind = 0; ind != dyVec.size(); ++ind) {
             unsigned vx = ux + dxVec[ind];
             unsigned vy = uy + dyVec[ind];
-            if (vx == 146 && vy == 33) {
-                int a = 6;
-            }
             unsigned keyNeig = key(vx, vy);
             if (task.map[vx][vy] == 0) {
                 if (!visited[keyNeig]) {  // we must init gvalue of keyNeig
@@ -145,15 +135,13 @@ bool AStar::computeGValues()
                             prevTable[keyNeig] = keyNow;
                             gTable[keyNeig] = gPretendent;
                         } else {
-                            int a = 6;
-                            std::cout << vx << ' ' << vy << '\n';
+                            std::cout << "error: failure during computation g-values\n";
                         }
                     }
                 }
             }
         }
     }
-
     return false;
 }
 
