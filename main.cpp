@@ -22,7 +22,7 @@ int main() {
         AStar astar;
         myeResult = astar.solve(task);  // myeResult == 1 if no path found; else 0;
         if (!myeResult) {
-            //astar.printPath();
+            astar.printPath();
         }
     }
     unsigned int end_time = clock();

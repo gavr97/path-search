@@ -261,12 +261,12 @@ void Task::print() const
     std::cout << "\nTask:\n";
     std::cout << "size: " << this->cntRealRows << ' ' << this->cntRealCols << std::endl;
     std::cout << "map\n";
-    for (const auto &row : this->map) {
-        for (const auto &elem : row) {
-            std::cout << elem << ' ';
-        }
-        std::cout << std::endl;
-    }
+    //for (const auto &row : this->map) {
+    //    for (const auto &elem : row) {
+    //        std::cout << elem << ' ';
+    //    }
+    //    std::cout << std::endl;
+    //}
     std::cout << "allow diag " << this->allowDiag << "\n";
     std::cout << "costs of movements: " << this->lineCost << " and " << this->diagCost << std::endl;
     printf("start and end: %u %u and %u %u\n", this->startX, this->startY, this->finishX, this->finishY);
