@@ -43,7 +43,12 @@ private:
 
 
     //____ commom members______
-    Task task;
+    unsigned cntRealCols;
+    unsigned cntRealRows;
+    unsigned startX;
+    unsigned startY;
+    unsigned finishX;
+    unsigned finishY;
     std::map<unsigned, TypeValue> gTable;
     std::map<unsigned, unsigned> prevTable;
 
@@ -51,7 +56,7 @@ private:
     inline unsigned coordinateFirst(unsigned key);
     inline unsigned coordinateSecond(unsigned key);
 
-    bool computeGValues();
+    bool computeGValues(const Task &task);
     std::vector<unsigned> constructPath();
 
 public:

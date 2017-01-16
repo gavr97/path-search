@@ -44,23 +44,22 @@ inline TypeValue zero(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
 
 inline unsigned AStar::key(unsigned ux, unsigned uy)
 {
-    return ux * (task.cntRealCols + 2) + uy;
+    return ux * (cntRealCols + 2) + uy;
 }
 
 inline unsigned AStar::coordinateFirst(unsigned key)
 {
-    return key / (task.cntRealCols + 2);
+    return key / (cntRealCols + 2);
 }
 
 inline unsigned AStar::coordinateSecond(unsigned key)
 {
-    return key % (task.cntRealCols + 2);
+    return key % (cntRealCols + 2);
 }
 
 
 int AStar::solve(const Task &task)
 {
-    this->task = task;
     //_____define heuristic_____
     if (task.metricType == "manhattan")
         heuristic = &manhattan;
@@ -69,6 +68,13 @@ int AStar::solve(const Task &task)
     else
         heuristic = &straight;
 
+    //_____define sizes of map (astar needs it)
+    cntRealCols = task.cntRealCols;
+    cntRealRows = task.cntRealRows;
+    startX = task.startX;
+    startY = task.startY;
+    finishX = task.finishX;
+    finishY = task.finishY;
 
     //_____define dx and dy weights______
     if (task.allowDiag == 1) {
@@ -83,7 +89,7 @@ int AStar::solve(const Task &task)
     }
 
     //_____algorithm AStar______
-    if (computeGValues()) {
+    if (computeGValues(task)) {
         path = constructPath();
         return 0;
     } else {
@@ -93,7 +99,7 @@ int AStar::solve(const Task &task)
 
 }
 
-bool AStar::computeGValues()
+bool AStar::computeGValues(const Task &task)
 {
     Heap opened;  // conceptually Heap is a set of pairs (f-value, key)
     std::map<unsigned, bool> visited;
@@ -147,8 +153,8 @@ bool AStar::computeGValues()
 
 std::vector<unsigned> AStar::constructPath()
 {
-    unsigned now = key(task.finishX, task.finishY);
-    while (now != key(task.startX, task.startY)) {
+    unsigned now = key(finishX, finishY);
+    while (now != key(startX, startY)) {
         path.push_back(now);
         now = prevTable[now];
     }
@@ -168,3 +174,4 @@ void AStar::printPath()
         }
     }
 }
+
