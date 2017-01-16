@@ -112,7 +112,7 @@ int Task::readStr(XMLNode *pRoot, const char *tag, std::string &destination, con
     return 0;
 }
 
-int Task::readMap(XMLNode * pRoot, std::vector<std::vector<short>> &map)
+int Task::readMap(XMLNode * pRoot, std::vector<std::vector<bool>> &map)
 {
     int height = map.size() - 2;  // h = size - 2 because there is extra rows and cols for boundary
     int width = map[0].size() - 2;
@@ -133,44 +133,44 @@ int Task::readMap(XMLNode * pRoot, std::vector<std::vector<short>> &map)
     }
     XMLElement *pRow = pGrid->FirstChildElement();
 
-    indRow = 1;
+    indCol = 1;
     while (pRow != nullptr) {
-        if (indRow == height + 1) {
-            std::cout << "warning: too many rows\n";
+        if (indCol == width + 1) {
+            std::cout << "warning: too many rows in physical XML\n";
             break;
         }
         const char *buf = pRow->GetText();
-        map[indRow][0] = 1;
-        map[indRow][width + 1] = 1;
-        indCol = 1;
+        map[0][indCol] = 1;
+        map[height + 1][indCol] = 1;
+        indRow = 1;
         while (*buf) {
             if (*buf == '0') {
-                if (indCol == width + 1) {
-                    std::cout << "warning: too many cells in row\n";
+                if (indRow == height + 1) {
+                    std::cout << "warning: too many cells in row in physical XML\n";
                     break;
                 }
                 map[indRow][indCol] = 0;
-                ++indCol;
+                ++indRow;
             } else if (*buf == '1') {
-                if (indCol == width + 1) {
-                    std::cout << "warning: too many cells in row\n";
+                if (indRow == height + 1) {
+                    std::cout << "warning: too many cells in row in physical XML\n";
                     break;
                 }
                 map[indRow][indCol] = 1;
-                ++indCol;
+                ++indRow;
             }
             ++buf;
         }
-        if (indCol < width + 1) {
-            std::cout << "error: too few cells in row " << indRow << "\n";
+        if (indRow < height + 1) {
+            std::cout << "error: too few cells in row in physical XML" << indCol << "\n";
             exit(1);
             //return 1;
         }
         pRow = pRow->NextSiblingElement("row");
-        ++indRow;
+        ++indCol;
     }
-    if (indRow < height + 1) {
-        std::cout << "error: too few rows\n";
+    if (indCol < width + 1) {
+        std::cout << "error: too few rows in physical XML\n";
         exit(1);
         //return 1;
     }
@@ -210,6 +210,14 @@ int Task::myLoad(const char *path)
     myeResult = readInt(pRoot->FirstChildElement("map"), "starty", this->startY, STARTY_DEFAULT);
     myeResult = readInt(pRoot->FirstChildElement("map"), "finishx", this->finishX, FINISHX_DEFAULT);
     myeResult = readInt(pRoot->FirstChildElement("map"), "finishy", this->finishY, FINISHY_DEFAULT);
+    ++startX;  // because it is comfortable for numerating real rows and cols from 1 (0 for abstract bound)
+    ++startY;
+    ++finishX;
+    ++finishY;
+    unsigned tmp = this->cntRealCols;  // because we store transposed matrix
+    this->cntRealCols = cntRealRows;
+    this->cntRealRows = tmp;
+
     if (!isValidSizes(*this)) {
         std::cout << "error: start or finish are inappropriate for these sizes\n";
         exit(1);
@@ -222,15 +230,14 @@ int Task::myLoad(const char *path)
     myeResult = readInt(pRoot->FirstChildElement("algorithm"), "allowdiagonal", this->allowDiag, ALLOW_DIAG_DEFAULT);
     myeResult = readInt(pRoot->FirstChildElement("algorithm"), "allowsqueeze", this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT);
     myeResult = readInt(pRoot->FirstChildElement("algorithm"), "cutcorners", this->cutCorners, CUT_CORNERS_DEFAULT);
-
     std::cout << "task has been read succesfully\n";
 
     // _______read map___________
     unsigned int height = this->cntRealRows;
     unsigned int width = this->cntRealCols;
-    std::vector<std::vector<short>> map(height + 2, std::vector<short>(width + 2));
-    myeResult = readMap(pRoot->FirstChildElement("map"), map);
+    std::vector<std::vector<bool>> map(height + 2, std::vector<bool>(width + 2));
     this->map = map;
+    myeResult = readMap(pRoot->FirstChildElement("map"), this->map);
     std::cout << "map has been read successfully\n";
     return 0;
 }

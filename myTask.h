@@ -16,7 +16,7 @@ class Task{
 public:
     unsigned int cntRealRows;
     unsigned int cntRealCols;
-    std::vector<std::vector<short>> map;
+    std::vector<std::vector<bool>> map;
     double lineCost;
     double diagCost;
     unsigned int allowDiag;
@@ -41,7 +41,7 @@ private:
 
     int readStr(XMLNode *pRoot, const char *tag, std::string &destination, const std::string DEFAULT, bool obligatory);
 
-    int readMap(XMLNode *pRoot, std::vector<std::vector<short>> &map);
+    int readMap(XMLNode *pRoot, std::vector<std::vector<bool>> &map);
 };
 
 
