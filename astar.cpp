@@ -65,8 +65,13 @@ int AStar::solve(const Task &task)
         heuristic = &manhattan;
     else if (task.metricType == "euclid")
         heuristic = &euclid;
-    else
+    else {
         heuristic = &straight;
+        if (task.allowDiag == 1) {
+            std::cout << "error: straight is inadmissible heiristic when allowdiag = 1\n";
+            exit(0);
+        }
+    }
 
     //_____define sizes of map (astar needs it)
     cntRealCols = task.cntRealCols;
