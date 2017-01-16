@@ -124,6 +124,11 @@ int Task::readMap(XMLNode * pRoot, std::vector<std::vector<bool>> &map)
         for (indCol = 0; indCol <= width + 1; ++indCol)
             map[indRow][indCol] = 1;
     std::cout << "boundaries are inited\n";
+    for (indCol : std::vector<int> {0, width + 1})
+        for (indRow = 0; indRow <= height + 1; ++indRow)
+            map[indRow][indCol] = 1;
+    std::cout << "boundaries are inited\n";
+
 
     //_____init grid____________
     XMLElement *pGrid = pRoot->FirstChildElement("grid");
@@ -140,8 +145,8 @@ int Task::readMap(XMLNode * pRoot, std::vector<std::vector<bool>> &map)
             break;
         }
         const char *buf = pRow->GetText();
-        map[0][indCol] = 1;
-        map[height + 1][indCol] = 1;
+        //map[0][indCol] = 1;
+        //map[height + 1][indCol] = 1;
         indRow = 1;
         while (*buf) {
             if (*buf == '0') {
@@ -218,6 +223,15 @@ int Task::myLoad(const char *path)
     this->cntRealCols = cntRealRows;
     this->cntRealRows = tmp;
 
+    tmp = this->startX;  // because we store transposed matrix
+    this->startX = startY;
+    this->startY = tmp;
+
+    tmp = this->finishX;  // because we store transposed matrix
+    this->finishX = finishY;
+    this->finishY = tmp;
+
+
     if (!isValidSizes(*this)) {
         std::cout << "error: start or finish are inappropriate for these sizes\n";
         exit(1);
@@ -246,13 +260,13 @@ void Task::print() const
 {
     std::cout << "\nTask:\n";
     std::cout << "size: " << this->cntRealRows << ' ' << this->cntRealCols << std::endl;
-    //std::cout << "map\n";
-    //for (const auto &row : this->map) {
-    //    for (const auto &elem : row) {
-    //        std::cout << elem << ' ';
-    //    }
-    //    std::cout << std::endl;
-    //}
+    std::cout << "map\n";
+    for (const auto &row : this->map) {
+        for (const auto &elem : row) {
+            std::cout << elem << ' ';
+        }
+        std::cout << std::endl;
+    }
     std::cout << "allow diag " << this->allowDiag << "\n";
     std::cout << "costs of movements: " << this->lineCost << " and " << this->diagCost << std::endl;
     printf("start and end: %u %u and %u %u\n", this->startX, this->startY, this->finishX, this->finishY);
