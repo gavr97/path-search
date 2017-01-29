@@ -24,7 +24,6 @@ int Log::initPath(unsigned finishX, unsigned finishY, unsigned number)
     pElement->SetAttribute("number", number);
     pLowLevel->InsertFirstChild(pElement);
 
-    ++numberOfSteps;
     rememberedX = finishX;
     rememberedY = finishY;
     return 0;
@@ -50,7 +49,6 @@ int Log::addNode(unsigned fromX, unsigned fromY, TypeValue length, unsigned numb
     pElement->SetAttribute("length", length);
     pHighLevel->InsertFirstChild(pElement);
 
-    ++numberOfSteps;
     rememberedX = fromX;
     rememberedY = fromY;
     return 0;

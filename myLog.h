@@ -25,7 +25,6 @@ public:
     // summary numberofsteps="33708" nodescreated="34731" length="382.99" time="0.13"/>
     XMLDocument xmlDoc;
     int finish();
-
     unsigned numberOfSteps;
     //nodesCreated???
     //time???
