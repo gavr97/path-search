@@ -29,12 +29,10 @@ int main() {
         } else {
             std::cout << "no path\n";
         }
-        // log.write();
+        // log.finish() уже сделан
     }
     unsigned int end_time = clock();
     unsigned int search_time = end_time - start_time;
     F << search_time << "\t";
-
-
     return 0;
 }

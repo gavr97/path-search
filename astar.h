@@ -20,17 +20,14 @@
 #include <bits/unordered_map.h>
 #include "myTask.h"
 #include "myHeap.h"
+#include "constantTypes.h"
+
 
 using std::cout;
 using std::cin;
 using std::endl;
 using std::vector;
 using std::pair;
-
-typedef std::vector<unsigned> Path;
-typedef unsigned  Node;
-typedef double TypeValue;
-
 
 class AStar {
 private:
@@ -50,14 +47,14 @@ private:
     unsigned finishX;
     unsigned finishY;
     std::map<unsigned, TypeValue> gTable;
-    std::map<unsigned, unsigned> prevTable;
+    std::map<unsigned, Tripple> prevTable;
 
     inline unsigned key(unsigned ux, unsigned uy);
     inline unsigned coordinateFirst(unsigned key);
     inline unsigned coordinateSecond(unsigned key);
 
     bool computeGValues(const Task &task);
-    std::vector<unsigned> constructPath();
+    std::vector<unsigned> constructPath(Log &log);
 
 public:
     int solve(const Task &task, Log &log);

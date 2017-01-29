@@ -4,6 +4,6 @@ project(repo)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(TINY_XML tinyxml2.h tinyxml2.cpp)
-set(SOURCE_FILES main.cpp myTask.h myTask.cpp astar.h astar.cpp myHeap.h)
+set(SOURCE_FILES main.cpp myTask.h myTask.cpp astar.h astar.cpp myHeap.h constantTypes.h myLog.h myLog.cpp)
 
 add_executable(repo ${SOURCE_FILES} ${TINY_XML})

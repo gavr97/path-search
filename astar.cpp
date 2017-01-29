@@ -10,9 +10,6 @@
 #include "myHeap.h"
 #include "astar.h"
 
-
-typedef double TypeValue;
-
 inline int my_Max(int a, int b)
 {
     if (a > b)
@@ -58,7 +55,6 @@ inline unsigned AStar::coordinateSecond(unsigned key)
     return key % (cntRealCols + 2);
 }
 
-
 int AStar::solve(const Task &task, Log &log)
 {
     //_____define heuristic_____
@@ -96,7 +92,7 @@ int AStar::solve(const Task &task, Log &log)
 
     //_____algorithm AStar______
     if (computeGValues(task)) {
-        path = constructPath();
+        path = constructPath(log);
         return 0;
     } else {
         std::cout << "\nThere is no any path to goal\n";
@@ -117,7 +113,7 @@ bool AStar::computeGValues(const Task &task)
     unsigned keyNow = key(startX, startY);
 
     opened.push(0 + heuristic(startX, startY, finishX, finishY), keyNow);
-    prevTable[keyNow] = keyNow;
+    prevTable[keyNow] = {startX, startY, 0};
     gTable[keyNow] = 0;
     visited[keyNow] = true;
     while (!opened.empty()) {
@@ -137,14 +133,14 @@ bool AStar::computeGValues(const Task &task)
                     TypeValue gVal = gTable[keyNow] + weightVec[ind];
                     opened.push(gVal + heuristic(vx, vy, finishX, finishY), keyNeig);
                     gTable[keyNeig] = gVal;
-                    prevTable[keyNeig] = keyNow;
+                    prevTable[keyNeig] = {coordinateFirst(keyNow), coordinateSecond(keyNow), weightVec[ind]};
                 } else if (!closed[keyNeig]) {  // we must update gvalue
                     TypeValue gOld = gTable[keyNeig];
                     TypeValue gPretendent = gTable[keyNow] + weightVec[ind];
                     if (gOld > gPretendent) {
                         if (!opened.decreaseVal(gOld + heuristic(vx, vy, finishX, finishY),
                                                 keyNeig, gPretendent + heuristic(vx, vy, finishX, finishY))) {
-                            prevTable[keyNeig] = keyNow;
+                            prevTable[keyNeig] = {coordinateFirst(keyNow), coordinateSecond(keyNow), weightVec[ind]};
                             gTable[keyNeig] = gPretendent;
                         } else {
                             std::cout << "error: failure during computation g-values\n";
@@ -157,26 +153,31 @@ bool AStar::computeGValues(const Task &task)
     return false;
 }
 
-/*
-std::vector<unsigned> AStar::constructPath()
+std::vector<unsigned> AStar::constructPath(Log &log)
 {
-    unsigned now = key(finishX, finishY);  // here I want modify logXMLDocument!
-    while (now != key(startX, startY)) {
-        path.push_back(now);
-        now = prevTable[now];
+    // Firstly, we must count steps in path
+    unsigned nowKey = key(finishX, finishY);
+    log.numberOfSteps = 0;
+    log.length = 0;
+    while (nowKey != key(startX, startY)) {
+        Tripple nowTripple = prevTable[nowKey];
+        nowKey = key(nowTripple.ux, nowTripple.uy);
+        log.length += nowTripple.length;
+        ++log.numberOfSteps;
     }
-    return path;
-}
- */
+    unsigned number = log.numberOfSteps;
+    log.initPath(finishX, finishY, number);
+    --number;
 
-std::vector<unsigned> AStar::constructPath()
-{
-    unsigned now = key(finishX, finishY);  // here I want modify logXMLDocument!
-
-    while (now != key(startX, startY)) {
-        path.push_back(now);
-        now = prevTable[now];
+    nowKey = key(finishX, finishY);
+    while (nowKey != key(startX, startY)) {
+        path.push_back(nowKey);
+        Tripple nowTripple = prevTable[nowKey];
+        log.addNode(nowTripple.ux, nowTripple.uy, nowTripple.length, number);
+        nowKey = key(nowTripple.ux, nowTripple.uy);
+        --number;
     }
+    log.finish();
     return path;
 }
 
