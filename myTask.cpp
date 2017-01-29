@@ -32,7 +32,7 @@ static unsigned int ALLOW_DIAG_DEFAULT = 0;
 static unsigned int ALLOW_SQUEEZE_DEFAULT = 0;
 static unsigned int CUT_CORNERS_DEFAULT = 0;
 
-bool isValidSizes(Task task)
+bool isValidSizes(const Task &task)
 {
     bool positive1 = (task.cntRealCols > 0 && task.cntRealRows > 0);
     bool positive2 = (task.finishY > 0 && task.finishX > 0 && task.startX > 0 && task.startY > 0);

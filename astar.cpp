@@ -98,7 +98,6 @@ int AStar::solve(const Task &task, Log &log)
         std::cout << "\nThere is no any path to goal\n";
         return 1;
     }
-
 }
 
 bool AStar::computeGValues(const Task &task)
