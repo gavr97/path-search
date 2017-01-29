@@ -6,6 +6,7 @@
 #include <cmath>
 #include <string>
 #include "myTask.h"
+#include "myLog.h"
 #include "myHeap.h"
 #include "astar.h"
 
@@ -58,7 +59,7 @@ inline unsigned AStar::coordinateSecond(unsigned key)
 }
 
 
-int AStar::solve(const Task &task)
+int AStar::solve(const Task &task, Log &log)
 {
     //_____define heuristic_____
     if (task.metricType == "manhattan")
@@ -156,9 +157,22 @@ bool AStar::computeGValues(const Task &task)
     return false;
 }
 
+/*
 std::vector<unsigned> AStar::constructPath()
 {
-    unsigned now = key(finishX, finishY);
+    unsigned now = key(finishX, finishY);  // here I want modify logXMLDocument!
+    while (now != key(startX, startY)) {
+        path.push_back(now);
+        now = prevTable[now];
+    }
+    return path;
+}
+ */
+
+std::vector<unsigned> AStar::constructPath()
+{
+    unsigned now = key(finishX, finishY);  // here I want modify logXMLDocument!
+
     while (now != key(startX, startY)) {
         path.push_back(now);
         now = prevTable[now];

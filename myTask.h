@@ -7,6 +7,7 @@
 
 #include <vector>
 #include "tinyxml2.h"
+#include "myLog.h"
 #include <string>
 
 using namespace tinyxml2;
@@ -30,7 +31,7 @@ public:
     unsigned int finishY;
     std::string metricType;
 
-    int myLoad(const char *path);
+    int myLoad(const char *path, Log &log);
 
     void print() const;
 

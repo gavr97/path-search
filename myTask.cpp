@@ -7,6 +7,7 @@
 #include <string>
 #include "tinyxml2.h"
 #include "myTask.h"
+#include "myLog.h" // for storing XMLDoc which is out for a user
 
 #ifndef XMLCheckResult
 #define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("TinyXML Error: %i\n", a_eResult); return a_eResult; }
@@ -182,18 +183,17 @@ int Task::readMap(XMLNode * pRoot, std::vector<std::vector<bool>> &map)
     return 0;
 }
 
-int Task::myLoad(const char *path)
+int Task::myLoad(const char *path, Log &log)
 {
     // ____load xml tree____
     XMLError eResult;
     int myeResult;
-    XMLDocument xmlDoc;
-    eResult = xmlDoc.LoadFile(path);
+    eResult = log.xmlDoc.LoadFile(path);
     if (eResult != XML_SUCCESS) {
         std::cout << "error: incorrect xml file\n";
         exit(1);
     }
-    XMLNode *pRoot = xmlDoc.FirstChild();
+    XMLNode *pRoot = log.xmlDoc.FirstChild();
     if (pRoot == nullptr){
         std::cout << "error: empty xml file\n";
         exit(1);

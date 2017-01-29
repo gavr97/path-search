@@ -60,7 +60,7 @@ private:
     std::vector<unsigned> constructPath();
 
 public:
-    int solve(const Task &task);
+    int solve(const Task &task, Log &log);
     void printPath();
     Path path;
 };

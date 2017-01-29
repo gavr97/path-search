@@ -2,6 +2,7 @@
 #include <vector>
 #include "tinyxml2.h"
 #include "myTask.h"
+#include "myLog.h"
 #include "astar.h"
 
 #include <fstream>
@@ -16,17 +17,24 @@ int main() {
     for (const char *name : list) {
         int myeResult = 0;
         Task task;
-        myeResult = task.myLoad(name);  // char* ! not std::string
+        Log log;
+        myeResult = task.myLoad(name, log);  // char* ! not std::string;  log is sent as an argument
+                                            // for storing XMLDoc for future out to a user
         task.print();
 
         AStar astar;
-        myeResult = astar.solve(task);  // myeResult == 1 if no path found; else 0;
+        myeResult = astar.solve(task, log);  // myeResult == 1 if no path found; else 0;
         if (!myeResult) {
             astar.printPath();
+        } else {
+            std::cout << "no path\n";
         }
+        // log.write();
     }
     unsigned int end_time = clock();
     unsigned int search_time = end_time - start_time;
     F << search_time << "\t";
+
+
     return 0;
 }
