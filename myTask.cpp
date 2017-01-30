@@ -210,6 +210,18 @@ int Task::myLoad(const char *path, Log &log)
     myeResult = readInt(pRoot->FirstChildElement("map"), "starty", this->startY, STARTY_DEFAULT);
     myeResult = readInt(pRoot->FirstChildElement("map"), "finishx", this->finishX, FINISHX_DEFAULT);
     myeResult = readInt(pRoot->FirstChildElement("map"), "finishy", this->finishY, FINISHY_DEFAULT);
+    ++startX;  // because it is comfortable for numerating real rows and cols from 1 (0 for abstract bound)
+    ++startY;
+    ++finishX;
+    ++finishY;
+
+    unsigned temp = startX;  // cause in programm it is easier to consider x as the first coordinate of node(ind of row)
+    startX = startY;  // and y as the second. But input has graphical sytem coordinates
+    startY = temp;
+    temp = finishX;
+    finishX = finishY;
+    finishY = temp;
+
     if (!isValidSizes(*this)) {
         std::cout << "error: start or finish are inappropriate for these sizes\n";
         exit(1);
