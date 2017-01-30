@@ -18,16 +18,19 @@ int main() {
         int myeResult = 0;
         Task task;
         Log log;
-        myeResult = task.myLoad(name, log);  // char* ! not std::string;  log is sent as an argument
-                                            // for storing XMLDoc for future out to a user
+        myeResult = task.myLoad(name, log);  // char* ! not std::string;
+                                            // log is sent as an argument for storing XMLDoc for future out to a user
+        if (myeResult) {
+            std::cout << "task: " << name << " is skipped\n\n";
+            continue;
+        }
         task.print();
-
         AStar astar;
         myeResult = astar.solve(task, log);  // myeResult == 1 if no path found; else 0;
-        if (!myeResult) {
-            astar.printPath();
+        if (myeResult) {
+            std::cout << "no path\n\n";
         } else {
-            std::cout << "no path\n";
+            astar.printPath();
         }
         // log.finish() уже сделан
     }

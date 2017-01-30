@@ -48,7 +48,7 @@ int Task::readInt(XMLNode *pRoot, const char *tag, unsigned int &destination, un
     if (pElement == nullptr) {
         if (obligatory) {
             std::cout << "error: obligatory tag " << tag << " is not found\n";
-            exit(1);
+            return 1;  // exit(1);
         } else {
             destination = DEFAULT;
             std::cout << tag << " is assigned by default " << DEFAULT << "\n";
@@ -58,7 +58,7 @@ int Task::readInt(XMLNode *pRoot, const char *tag, unsigned int &destination, un
         eResult = pElement->QueryUnsignedText(&destination);
         if (eResult != XML_SUCCESS) {
             std::cout << "error: format of " << tag << " is incorrect\n";
-            exit(1);
+            return 1;  // exit(1);
         }
         //std::cout << tag << " is saved correctly\n";
     }
@@ -72,7 +72,7 @@ int Task::readDouble(XMLNode *pRoot, const char *tag, double &destination, doubl
     if (pElement == nullptr) {
         if (obligatory) {
             std::cout << "error: obligatory tag " << tag << " is not found\n";
-            exit(1);
+            return 1;  // exit(1);
         } else {
             destination = DEFAULT;
             std::cout << tag << " is assigned by default " << DEFAULT << "\n";
@@ -82,22 +82,21 @@ int Task::readDouble(XMLNode *pRoot, const char *tag, double &destination, doubl
         eResult = pElement->QueryDoubleText(&destination);
         if (eResult != XML_SUCCESS) {
             std::cout << "error: format of " << tag << " is incorrect\n";
-            exit(1);
+            return 1;  // exit(1);
         }
         //std::cout << tag << " is saved correctly\n";
     }
     return 0;
 }
 
-int Task::readStr(XMLNode *pRoot, const char *tag, std::string &destination, const std::string DEFAULT = 0,
-            bool obligatory = 0)  // code of error is returned
+int Task::readStr(XMLNode *pRoot, const char *tag, std::string &destination, const std::string DEFAULT = 0, bool obligatory = 0)  // code of error is returned
 {
     XMLError eResult;
     XMLElement * pElement = pRoot->FirstChildElement(tag);
     if (pElement == nullptr) {
         if (obligatory) {
             std::cout << "error: obligatory tag " << tag << " is not found\n";
-            exit(1);
+            return 1;  // exit(1);
         } else {
             destination = DEFAULT;
             std::cout << tag << " is assigned by default " << DEFAULT << "\n";
@@ -106,7 +105,7 @@ int Task::readStr(XMLNode *pRoot, const char *tag, std::string &destination, con
     } else {
         if (pElement->GetText() == nullptr) {
             std::cout << "error: empty " << tag << std::endl;
-            exit(1);
+            return 1;  // exit(1);
         }
         destination = pElement->GetText();
     }
@@ -130,7 +129,7 @@ int Task::readMap(XMLNode * pRoot, std::vector<std::vector<bool>> &map)
     XMLElement *pGrid = pRoot->FirstChildElement("grid");
     if (pGrid == nullptr) {
         std:: cout << "error: incorrect structure of XML file: failure during finding tag grid\n";
-        exit(1);
+        return 1;  // exit(1);
     }
     XMLElement *pRow = pGrid->FirstChildElement();
 
@@ -164,7 +163,7 @@ int Task::readMap(XMLNode * pRoot, std::vector<std::vector<bool>> &map)
         }
         if (indCol < width + 1) {
             std::cout << "error: too few cells in row " << indRow << "\n";
-            exit(1);
+            return 1;  // exit(1);
             //return 1;
         }
         pRow = pRow->NextSiblingElement("row");
@@ -172,7 +171,7 @@ int Task::readMap(XMLNode * pRoot, std::vector<std::vector<bool>> &map)
     }
     if (indRow < height + 1) {
         std::cout << "error: too few rows\n";
-        exit(1);
+        return 1;  // exit(1);
         //return 1;
     }
     return 0;
@@ -186,30 +185,35 @@ int Task::myLoad(const char *path, Log &log)
     eResult = log.xmlDoc.LoadFile(path);
     if (eResult != XML_SUCCESS) {
         std::cout << "error: incorrect xml file\n";
-        exit(1);
+        return 1;
+        //exit(1);
     }
     XMLNode *pRoot = log.xmlDoc.FirstChild();
     if (pRoot == nullptr){
         std::cout << "error: empty xml file\n";
-        exit(1);
+        return 1;
+        //exit(1);
     }
     std::cout << "XML has been read\n";
 
     // _______init dimensions of map and other information________
     if (pRoot->FirstChildElement("map") == nullptr) {
         std::cout << "error: incorrect structure of xml file: trere is no tag map\n";
-        exit(1);
+        return 1;
+        // exit(1);
     }
     if (pRoot->FirstChildElement("algorithm") == nullptr) {
         std::cout << "error: incorrect structure of xml file: trere is no tag algorithm\n";
-        exit(1);
+        return 1;
+        // exit(1);
     }
-    myeResult = readInt(pRoot->FirstChildElement("map"), "height", this->cntRealRows, 0, 1);  // 0 is incidential; 1 means obligatory
-    myeResult = readInt(pRoot->FirstChildElement("map"), "width", this->cntRealCols, 0, 1);
-    myeResult = readInt(pRoot->FirstChildElement("map"), "startx", this->startX, STARTX_DEFAULT);
-    myeResult = readInt(pRoot->FirstChildElement("map"), "starty", this->startY, STARTY_DEFAULT);
-    myeResult = readInt(pRoot->FirstChildElement("map"), "finishx", this->finishX, FINISHX_DEFAULT);
-    myeResult = readInt(pRoot->FirstChildElement("map"), "finishy", this->finishY, FINISHY_DEFAULT);
+    // default_value(pred latter arg); obligatory: 1 means yes
+    if(readInt(pRoot->FirstChildElement("map"), TAG_HEIGHT, this->cntRealRows, 0, 1)) return 1;
+    if(readInt(pRoot->FirstChildElement("map"), TAG_WIDTH, this->cntRealCols, 0, 1)) return 1;
+    if(readInt(pRoot->FirstChildElement("map"), TAG_STARTX, this->startX, STARTX_DEFAULT)) return 1;
+    if(readInt(pRoot->FirstChildElement("map"), TAG_STARTY, this->startY, STARTY_DEFAULT)) return 1;
+    if(readInt(pRoot->FirstChildElement("map"), TAG__FINISHX, this->finishX, FINISHX_DEFAULT)) return 1;
+    if(readInt(pRoot->FirstChildElement("map"), TAG_FINISHY, this->finishY, FINISHY_DEFAULT)) return 1;
     ++startX;  // because it is comfortable for numerating real rows and cols from 1 (0 for abstract bound)
     ++startY;
     ++finishX;
@@ -224,16 +228,17 @@ int Task::myLoad(const char *path, Log &log)
 
     if (!isValidSizes(*this)) {
         std::cout << "error: start or finish are inappropriate for these sizes\n";
-        exit(1);
+        return 1;
+        // exit(1);
     }
-    myeResult = readDouble(pRoot->FirstChildElement("algorithm"), "linecost", lineCost, LINE_COST_DEFAULT);
-    myeResult = readDouble(pRoot->FirstChildElement("algorithm"), "diagonalcost", this->diagCost, DIAG_COST_DEFAULT);
-    myeResult = readStr(pRoot->FirstChildElement("algorithm"), "searchtype", this->searchType, SEARCH_TYPE_DEFAULT);
-    myeResult = readStr(pRoot->FirstChildElement("algorithm"), "metrictype", this->metricType, METRIC_TYPE_DEFAULT);
+    if(readDouble(pRoot->FirstChildElement("algorithm"), TAG_LINECOST, lineCost, LINE_COST_DEFAULT)) return 1;
+    if(readDouble(pRoot->FirstChildElement("algorithm"), TAG_DIAGONALCONST, this->diagCost, DIAG_COST_DEFAULT)) return 1;
+    if(readStr(pRoot->FirstChildElement("algorithm"), TAG_SEARCHTYPE, this->searchType, SEARCH_TYPE_DEFAULT)) return 1;
+    if(readStr(pRoot->FirstChildElement("algorithm"), TAG_METRICTYPE, this->metricType, METRIC_TYPE_DEFAULT)) return 1;
 
-    myeResult = readInt(pRoot->FirstChildElement("algorithm"), "allowdiagonal", this->allowDiag, ALLOW_DIAG_DEFAULT);
-    myeResult = readInt(pRoot->FirstChildElement("algorithm"), "allowsqueeze", this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT);
-    myeResult = readInt(pRoot->FirstChildElement("algorithm"), "cutcorners", this->cutCorners, CUT_CORNERS_DEFAULT);
+    if(readInt(pRoot->FirstChildElement("algorithm"), TAG_ALLOWDIAGONAL, this->allowDiag, ALLOW_DIAG_DEFAULT)) return 1;
+    if(readInt(pRoot->FirstChildElement("algorithm"), TAG_ALLOWSQUEEZE, this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT)) return 1;
+    if(readInt(pRoot->FirstChildElement("algorithm"), TAG_CUTCORNERS, this->cutCorners, CUT_CORNERS_DEFAULT)) return 1;
     std::cout << "task has been read succesfully\n";
 
     // _______read map___________
@@ -241,7 +246,7 @@ int Task::myLoad(const char *path, Log &log)
     unsigned int width = this->cntRealCols;
     std::vector<std::vector<bool>> map(height + 2, std::vector<bool>(width + 2));
     this->map = map;
-    myeResult = readMap(pRoot->FirstChildElement("map"), this->map);
+    if(readMap(pRoot->FirstChildElement("map"), this->map)) return 1;
     std::cout << "map has been read successfully\n";
     return 0;
 }
