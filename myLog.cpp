@@ -11,7 +11,7 @@
 
 int Log::initPath(unsigned finishX, unsigned finishY, unsigned number)
 {
-    // REMEMBER about transposing map and shift +1; so inversed shift -1 is required
+    // REMEMBER about transposing map and shift +1; so inversed transposing and shift -1 is required
     std::swap(finishX, finishY);
     --finishX, --finishY;
 
@@ -31,7 +31,7 @@ int Log::initPath(unsigned finishX, unsigned finishY, unsigned number)
 
 int Log::addNode(unsigned fromX, unsigned fromY, TypeValue length, unsigned number)
 {
-    // REMEMBER about transposing map and shift +1; so inversed shift -1 is required
+    // REMEMBER about transposing map and shift +1; so inversed transposing and shift -1 is required
     std::swap(fromX, fromY);
     --fromX, --fromY;
     XMLElement *pElement = xmlDoc.NewElement("node");
