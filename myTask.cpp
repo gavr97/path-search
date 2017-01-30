@@ -113,7 +113,7 @@ int Task::readStr(XMLNode *pRoot, const char *tag, std::string &destination, con
     return 0;
 }
 
-int Task::readMap(XMLNode * pRoot, std::vector<std::vector<short>> &map)
+int Task::readMap(XMLNode * pRoot, std::vector<std::vector<bool>> &map)
 {
     int height = map.size() - 2;  // h = size - 2 because there is extra rows and cols for boundary
     int width = map[0].size() - 2;
@@ -240,7 +240,7 @@ int Task::myLoad(const char *path, Log &log)
     // _______read map___________
     unsigned int height = this->cntRealRows;
     unsigned int width = this->cntRealCols;
-    std::vector<std::vector<short>> map(height + 2, std::vector<short>(width + 2));
+    std::vector<std::vector<bool>> map(height + 2, std::vector<bool>(width + 2));
     myeResult = readMap(pRoot->FirstChildElement("map"), map);
     this->map = map;
     std::cout << "map has been read successfully\n";
