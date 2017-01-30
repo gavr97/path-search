@@ -7,27 +7,20 @@
 
 #include <string>
 
-
-extern int XAXA;
-#ifdef MAIN_PART
-int XAXA = 7;
-#endif
-
-
-extern const char* (group[1]); #ifdef
-const char *TAG_WIDTH = "width";
-const char *TAG_STARTX = "startx";
-const char *TAG_STARTY = "starty";
-const char *TAG__FINISHX = "finishx";
-const char *TAG_FINISHY = "finishy";
-const char *TAG_LINECOST = "linecost";
-const char *TAG_DIAGONALCONST = "diagonalcost";
-const char *TAG_SEARCHTYPE = "searchtype";
-const char *TAG_METRICTYPE = "metrictype";
-const char *TAG_ALLOWDIAGONAL = "allowdiagonal";
-const char *TAG_ALLOWSQUEEZE = "allowsqueeze";
-const char *TAG_CUTCORNERS = "cutcorners";
-const char *TAG_CELLSIZE = "cellsize";
+extern char *TAG_HEIGHT;
+extern const char *TAG_WIDTH;
+extern const char *TAG_STARTX;
+extern const char *TAG_STARTY;
+extern const char *TAG__FINISHX;
+extern const char *TAG_FINISHY;
+extern const char *TAG_LINECOST;
+extern const char *TAG_DIAGONALCONST;
+extern const char *TAG_SEARCHTYPE;
+extern const char *TAG_METRICTYPE;
+extern const char *TAG_ALLOWDIAGONAL;
+extern const char *TAG_ALLOWSQUEEZE;
+extern const char *TAG_CUTCORNERS;
+extern const char *TAG_CELLSIZE;
 
 
 #endif //REPO_TAGNAMES_H

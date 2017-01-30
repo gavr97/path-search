@@ -10,7 +10,7 @@
 #include "myLog.h"
 #include <string>
 #include "constantTypes.h"
-#include "tagNames.h"
+//#include "tagNames.h"
 
 using namespace tinyxml2;
 
