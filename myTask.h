@@ -9,6 +9,8 @@
 #include "tinyxml2.h"
 #include "myLog.h"
 #include <string>
+#include "constantTypes.h"
+#include "tagNames.h"
 
 using namespace tinyxml2;
 
