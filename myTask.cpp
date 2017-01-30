@@ -125,11 +125,6 @@ int Task::readMap(XMLNode * pRoot, std::vector<std::vector<bool>> &map)
         for (indCol = 0; indCol <= width + 1; ++indCol)
             map[indRow][indCol] = 1;
     std::cout << "boundaries are inited\n";
-    for (indCol : std::vector<int> {0, width + 1})
-        for (indRow = 0; indRow <= height + 1; ++indRow)
-            map[indRow][indCol] = 1;
-    std::cout << "boundaries are inited\n";
-
 
     //_____init grid____________
     XMLElement *pGrid = pRoot->FirstChildElement("grid");
@@ -139,44 +134,44 @@ int Task::readMap(XMLNode * pRoot, std::vector<std::vector<bool>> &map)
     }
     XMLElement *pRow = pGrid->FirstChildElement();
 
-    indCol = 1;
+    indRow = 1;
     while (pRow != nullptr) {
-        if (indCol == width + 1) {
-            std::cout << "warning: too many rows in physical XML\n";
+        if (indRow == height + 1) {
+            std::cout << "warning: too many rows\n";
             break;
         }
         const char *buf = pRow->GetText();
-        //map[0][indCol] = 1;
-        //map[height + 1][indCol] = 1;
-        indRow = 1;
+        map[indRow][0] = 1;
+        map[indRow][width + 1] = 1;
+        indCol = 1;
         while (*buf) {
             if (*buf == '0') {
-                if (indRow == height + 1) {
-                    std::cout << "warning: too many cells in row in physical XML\n";
+                if (indCol == width + 1) {
+                    std::cout << "warning: too many cells in row\n";
                     break;
                 }
                 map[indRow][indCol] = 0;
-                ++indRow;
+                ++indCol;
             } else if (*buf == '1') {
-                if (indRow == height + 1) {
-                    std::cout << "warning: too many cells in row in physical XML\n";
+                if (indCol == width + 1) {
+                    std::cout << "warning: too many cells in row\n";
                     break;
                 }
                 map[indRow][indCol] = 1;
-                ++indRow;
+                ++indCol;
             }
             ++buf;
         }
-        if (indRow < height + 1) {
-            std::cout << "error: too few cells in row in physical XML" << indCol << "\n";
+        if (indCol < width + 1) {
+            std::cout << "error: too few cells in row " << indRow << "\n";
             exit(1);
             //return 1;
         }
         pRow = pRow->NextSiblingElement("row");
-        ++indCol;
+        ++indRow;
     }
-    if (indCol < width + 1) {
-        std::cout << "error: too few rows in physical XML\n";
+    if (indRow < height + 1) {
+        std::cout << "error: too few rows\n";
         exit(1);
         //return 1;
     }
@@ -219,18 +214,13 @@ int Task::myLoad(const char *path, Log &log)
     ++startY;
     ++finishX;
     ++finishY;
-    unsigned tmp = this->cntRealCols;  // because we store transposed matrix
-    this->cntRealCols = cntRealRows;
-    this->cntRealRows = tmp;
 
-    tmp = this->startX;  // because we store transposed matrix
-    this->startX = startY;
-    this->startY = tmp;
-
-    tmp = this->finishX;  // because we store transposed matrix
-    this->finishX = finishY;
-    this->finishY = tmp;
-
+    unsigned temp = startX;  // cause in programm it is easier to consider x as the first coordinate of node(ind of row)
+    startX = startY;  // and y as the second. But input has graphical sytem coordinates
+    startY = temp;
+    temp = finishX;
+    finishX = finishY;
+    finishY = temp;
 
     if (!isValidSizes(*this)) {
         std::cout << "error: start or finish are inappropriate for these sizes\n";
@@ -244,14 +234,15 @@ int Task::myLoad(const char *path, Log &log)
     myeResult = readInt(pRoot->FirstChildElement("algorithm"), "allowdiagonal", this->allowDiag, ALLOW_DIAG_DEFAULT);
     myeResult = readInt(pRoot->FirstChildElement("algorithm"), "allowsqueeze", this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT);
     myeResult = readInt(pRoot->FirstChildElement("algorithm"), "cutcorners", this->cutCorners, CUT_CORNERS_DEFAULT);
+
     std::cout << "task has been read succesfully\n";
 
     // _______read map___________
     unsigned int height = this->cntRealRows;
     unsigned int width = this->cntRealCols;
     std::vector<std::vector<bool>> map(height + 2, std::vector<bool>(width + 2));
+    myeResult = readMap(pRoot->FirstChildElement("map"), map);
     this->map = map;
-    myeResult = readMap(pRoot->FirstChildElement("map"), this->map);
     std::cout << "map has been read successfully\n";
     return 0;
 }
@@ -260,7 +251,7 @@ void Task::print() const
 {
     std::cout << "\nTask:\n";
     std::cout << "size: " << this->cntRealRows << ' ' << this->cntRealCols << std::endl;
-    std::cout << "map\n";
+    //std::cout << "map\n";
     //for (const auto &row : this->map) {
     //    for (const auto &elem : row) {
     //        std::cout << elem << ' ';
