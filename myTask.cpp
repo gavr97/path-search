@@ -216,7 +216,7 @@ int Task::myLoad(const char *path, Log &log)
     ++finishY;
 
     unsigned temp = startX;  // cause in programm it is easier to consider x as the first coordinate of node(ind of row)
-    startX = startY;  // and y as the second. But input has graphical sytem coordinates
+    startX = startY;  // and y as the second. But input has graphical system coordinates
     startY = temp;
     temp = finishX;
     finishX = finishY;
@@ -234,15 +234,14 @@ int Task::myLoad(const char *path, Log &log)
     myeResult = readInt(pRoot->FirstChildElement("algorithm"), "allowdiagonal", this->allowDiag, ALLOW_DIAG_DEFAULT);
     myeResult = readInt(pRoot->FirstChildElement("algorithm"), "allowsqueeze", this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT);
     myeResult = readInt(pRoot->FirstChildElement("algorithm"), "cutcorners", this->cutCorners, CUT_CORNERS_DEFAULT);
-
     std::cout << "task has been read succesfully\n";
 
     // _______read map___________
     unsigned int height = this->cntRealRows;
     unsigned int width = this->cntRealCols;
     std::vector<std::vector<bool>> map(height + 2, std::vector<bool>(width + 2));
-    myeResult = readMap(pRoot->FirstChildElement("map"), map);
     this->map = map;
+    myeResult = readMap(pRoot->FirstChildElement("map"), this->map);
     std::cout << "map has been read successfully\n";
     return 0;
 }

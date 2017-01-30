@@ -188,7 +188,7 @@ void AStar::printPath()
     } else {
         for (int ind = path.size() - 1; ind != -1; --ind) {
             std::cout << "number " << path.size() - ind << ": "
-                      << coordinateSecond(path[ind]) - 1 << ' ' << coordinateFirst(path[ind]) - 1 << '\n';  // agsin transposing and --
+                      << coordinateSecond(path[ind]) - 1 << ' ' << coordinateFirst(path[ind]) - 1 << '\n\n\n';  // agsin transposing and --
                                                                                                     // for user
         }
     }
