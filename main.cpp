@@ -2,6 +2,7 @@
 #include <vector>
 #include "myTask.h"
 #include "myLog.h"
+#include "myOutput.h"
 #include "astar.h"
 
 #include <fstream>
@@ -16,6 +17,7 @@ int main() {
     for (const char *name : list) {
         int myeResult = 0;
         Task task;
+        Output output;
         Log log;
         myeResult = task.myLoad(name, log);  // char* ! not std::string;
                                             // log is sent as an argument for storing XMLDoc for future out to a user
@@ -25,13 +27,10 @@ int main() {
         }
         task.print();
         AStar astar;
-        myeResult = astar.solve(task, log);  // myeResult == 1 if no path found; else 0;
-        if (myeResult) {
-            std::cout << "no path\n\n";
-        } else {
-            astar.printPath();
+        myeResult = astar.solve(task, output);  // myeResult == 1 if no path found; else 0;
+        if (!myeResult) {
+            output.printPath(output.path);
         }
-        // log.finish() уже сделан
     }
     unsigned int end_time = clock();
     unsigned int search_time = end_time - start_time;

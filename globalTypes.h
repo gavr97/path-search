@@ -6,16 +6,9 @@
 #define REPO_CONSTANTTYPES_H
 
 #include <vector>
+#include "myNode.h"
 
-typedef std::vector<unsigned> Path;
-typedef unsigned  Node;
+typedef std::vector<Node> Path;
 typedef double TypeValue;
-
-struct Tripple{  // for storing data about nodes in prevTable
-    unsigned ux;
-    unsigned uy;
-    TypeValue length;
-};
-
 
 #endif //REPO_CONSTANTTYPES_H

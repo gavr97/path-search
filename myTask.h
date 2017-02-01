@@ -46,7 +46,4 @@ private:
     int readMap(XMLNode *pRoot, std::vector<std::vector<bool>> &map);
 };
 
-
-
-
 #endif //REPO_MYMAP_H

@@ -21,6 +21,7 @@
 #include "myTask.h"
 #include "myHeap.h"
 #include "globalTypes.h"
+#include "myOutput.h"
 
 using std::cout;
 using std::cin;
@@ -31,7 +32,8 @@ using std::pair;
 class AStar {
 private:
     //____members that define features of algorithm(object)_____
-    TypeValue (*heuristic)(unsigned ux, unsigned uy, unsigned vx, unsigned vy);
+    TypeValue (*heuristicHide)(unsigned ux, unsigned uy, unsigned vx, unsigned vy);
+    TypeValue heuristic(Node node1, Node node2);
     std::vector<short> dxVec;
     std::vector<short> dyVec;
     std::vector<TypeValue> weightVec;
@@ -44,20 +46,21 @@ private:
     unsigned startY;
     unsigned finishX;
     unsigned finishY;
-    std::map<unsigned, TypeValue> gTable;
-    std::map<unsigned, Tripple> prevTable;
+
+    //std::map<unsigned, TypeValue> gTable;
+    //std::map<unsigned, Tripple> prevTable;
+    std::map<Node, TypeValue> close;
+    Heap open;  // a set of pairs(f-value, Node)
 
     inline unsigned key(unsigned ux, unsigned uy);
     inline unsigned coordinateFirst(unsigned key);
     inline unsigned coordinateSecond(unsigned key);
 
-    bool computeGValues(const Task &task);
-    std::vector<unsigned> constructPath(Log &log);
+    bool computeGValues(const Task &task, Output &output);
+    int constructPath(const Task &task, Output &output);
 
 public:
-    int solve(const Task &task, Log &log);
-    void printPath();
-    Path path;
+    int solve(const Task &task, Output &output);
 };
 
 #endif //REPO_ASTAR_H

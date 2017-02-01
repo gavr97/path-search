@@ -4,33 +4,34 @@
 #include <iostream>
 #include <vector>
 #include <set>
+#include "globalTypes.h"
 
 typedef double TypeValue;
 
 class Heap {
 private:
-    std::set<std::pair<TypeValue, unsigned>> set;
+    std::set<std::pair<TypeValue, Node>> set;
 
 public:
-    void push(TypeValue val, unsigned key)
+    void push(TypeValue val, Node node)
     {
-        set.insert({val, key});
+        set.insert({val, node});
     }
 
-    unsigned pop()
+    Node pop()
     {
-        unsigned key = set.begin()->second;
+        Node node = set.begin()->second;
         set.erase(set.begin());
-        return key;
+        return node;
     }
 
-    bool decreaseVal(TypeValue oldVal, unsigned key, TypeValue newVal)
+    bool decreaseVal(TypeValue oldVal, Node node, TypeValue newVal)
     {
-        auto ptr = set.find({oldVal, key});
+        auto ptr = set.find({oldVal, node});
         if (ptr == set.end())
-            return true;
+            return true;  // an error occured
         set.erase(ptr);
-        set.insert({newVal, key});
+        set.insert({newVal, node});
         return false;
     }
 
