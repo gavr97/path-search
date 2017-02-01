@@ -11,6 +11,7 @@
 #include "astar.h"
 #include "myOutput.h"
 
+// for debug
 void AStar::printClose()
 {
     for (unsigned indRow = 1; indRow != cntRealRows + 1; ++indRow) {
@@ -114,7 +115,6 @@ int AStar::solve(const Task &task, Output &output)
 
     //_____algorithm AStar______
     if (!computeGValues(task, output)) {
-        printClose();
         if (!constructPath(task, output)) {
             std::cout << "path is succesfully found\n" << std::endl;
             return 0;
@@ -155,12 +155,9 @@ bool AStar::computeGValues(const Task &task, Output &output)
     // output.nodesCreated.push_back(nodeNow);
     while (!open.empty()) {
         ++output.numberOfSteps;
-        if (output.numberOfSteps % 5  == 0) {
-            std::cout << output.numberOfSteps << std::endl;
-        }
         nodeNow = open.pop();
         close[nodeNow] = gTable[nodeNow];
-        gTable.erase(nodeNow);  // its g-val is not neccessary anymore
+        //gTable.erase(nodeNow); its g-val is not neccessary anymore(in the end of iteration!)
         if (nodeNow.key == nodeFinish.key)
             return false;  // returned value is whether situation is bad or not
 
@@ -171,7 +168,6 @@ bool AStar::computeGValues(const Task &task, Output &output)
             unsigned keyNeig = key(vx, vy);
             Node nodeNeig{vx, vy, keyNeig};
 
-            // nodeNeig is not in close
             if (task.map[vx][vy] == 0  && close.find(nodeNeig) == close.end()) {
                 if (gTable.find(nodeNeig) == gTable.end()) {
                     ++output.numberOfNodesCreated;
@@ -195,6 +191,7 @@ bool AStar::computeGValues(const Task &task, Output &output)
                 }
             }
         }
+        gTable.erase(nodeNow);  // its g-val is not neccessary anymore(in the end of iteration!)
     }
     return true;  // goal is not reached, thus situation is bad and true is returned
 }
@@ -206,9 +203,6 @@ int AStar::constructPath(const Task &task, Output &output)
     Node nodeNow{finishX, finishY, keyNow};
     output.numberOfMovements = 0;
     while (nodeNow.key != nodeStart.key) {
-        if (output.numberOfMovements % 10 == 0) {
-            std::cout << output.numberOfMovements << std::endl;
-        }
         output.path.push_back(nodeNow);
         ++output.numberOfMovements;
         Node nodeNext;
