@@ -5,10 +5,10 @@
 #include <vector>
 #include <cstdlib>
 #include <string>
-#include "tinyxml2.h"
+#include "../tinyxml/tinyxml2.h"
 #include "myTask.h"
-#include "myLog.h" // for storing XMLDoc which is out for a user
-#include "globalVars.h"
+#include "../logger/myLog.h"
+#include "../global/globalVars.h"
 
 #ifndef XMLCheckResult
 #define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("TinyXML Error: %i\n", a_eResult); return a_eResult; }

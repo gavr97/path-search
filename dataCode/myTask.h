@@ -6,11 +6,11 @@
 #define REPO_MYMAP_H
 
 #include <vector>
-#include "tinyxml2.h"
-#include "myLog.h"
+#include "../tinyxml/tinyxml2.h"
+#include "../logger/myLog.h"
 #include <string>
-#include "globalTypes.h"
-#include "globalVars.h"
+#include "../global/globalTypes.h"
+#include "../global/globalVars.h"
 
 using namespace tinyxml2;
 

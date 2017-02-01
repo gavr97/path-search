@@ -7,10 +7,10 @@
 
 #include <vector>
 #include <string>
-#include "myTask.h"
-#include "tinyxml2.h"
-#include "globalTypes.h"
-#include "globalVars.h"
+#include "../dataCode/myTask.h"
+#include "../tinyxml/tinyxml2.h"
+#include "../global/globalTypes.h"
+#include "../global/globalVars.h"
 
 using namespace tinyxml2;
 

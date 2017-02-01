@@ -5,9 +5,9 @@
 #ifndef REPO_MYRESULT_H
 #define REPO_MYRESULT_H
 
-#include "globalTypes.h"
+#include "../global/globalTypes.h"
 
-// contains neccessary data for output for one task
+// contains neccessary dataCode for output for one task
 class Output {
 public:
     double time;

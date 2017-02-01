@@ -18,10 +18,10 @@
 #include <map>
 #include <set>
 #include <bits/unordered_map.h>
-#include "myTask.h"
+#include "../dataCode/myTask.h"
 #include "myHeap.h"
-#include "globalTypes.h"
-#include "myOutput.h"
+#include "../global/globalTypes.h"
+#include "../dataCode/myOutput.h"
 
 using std::cout;
 using std::cin;

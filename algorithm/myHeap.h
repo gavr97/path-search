@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <set>
-#include "globalTypes.h"
+#include "../global/globalTypes.h"
 
 typedef double TypeValue;
 

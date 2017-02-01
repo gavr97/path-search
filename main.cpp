@@ -1,9 +1,9 @@
 #include <iostream>
 #include <vector>
-#include "myTask.h"
-#include "myLog.h"
-#include "myOutput.h"
-#include "astar.h"
+#include "dataCode/myTask.h"
+#include "logger/myLog.h"
+#include "dataCode/myOutput.h"
+#include "algorithm/astar.h"
 
 #include <fstream>
 #include <ctime>
@@ -32,6 +32,7 @@ int main() {
         if (!myeResult) {
             output.printPath(output.path);
         }
+        //log.write(output);  // TODO
     }
     unsigned int end_time = clock();
     unsigned int search_time = end_time - start_time;

@@ -5,11 +5,11 @@
 #include <vector>
 #include <cmath>
 #include <string>
-#include "myTask.h"
-#include "myLog.h"
-#include "myHeap.h"
-#include "astar.h"
-#include "myOutput.h"
+#include "../dataCode/myTask.h"
+#include "../logger/myLog.h"
+#include "../algorithm/myHeap.h"
+#include "../algorithm/astar.h"
+#include "../dataCode/myOutput.h"
 
 // for debug
 void AStar::printClose()

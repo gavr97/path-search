@@ -6,7 +6,7 @@
 #define REPO_CONSTANTTYPES_H
 
 #include <vector>
-#include "myNode.h"
+#include "../algorithm/myNode.h"
 
 typedef std::vector<Node> Path;
 typedef double TypeValue;

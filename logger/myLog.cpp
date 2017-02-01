@@ -2,7 +2,7 @@
 // Created by alexgavr on 11.01.17.
 //
 
-#include "myTask.h"
+#include "../dataCode/myTask.h"
 #include "myLog.h"
 
 #ifndef XMLCheckResult
