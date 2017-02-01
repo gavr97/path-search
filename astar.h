@@ -22,7 +22,6 @@
 #include "myHeap.h"
 #include "globalTypes.h"
 
-
 using std::cout;
 using std::cin;
 using std::endl;
@@ -37,7 +36,6 @@ private:
     std::vector<short> dyVec;
     std::vector<TypeValue> weightVec;
     bool allowSqueeze();
-
 
     //____ commom members______
     unsigned cntRealCols;
