@@ -3,7 +3,7 @@
 //
 
 #include "../dataCode/myTask.h"
-#include "myLog.h"
+#include "../logger/myLog.h"
 
 #ifndef XMLCheckResult
 #define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("TinyXML Error: %i\n", a_eResult); return a_eResult; }

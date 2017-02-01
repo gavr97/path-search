@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <string>
 #include "../tinyxml/tinyxml2.h"
-#include "myTask.h"
+#include "../dataCode/myTask.h"
 #include "../logger/myLog.h"
 #include "../global/globalVars.h"
 

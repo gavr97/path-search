@@ -19,7 +19,7 @@
 #include <set>
 #include <bits/unordered_map.h>
 #include "../dataCode/myTask.h"
-#include "myHeap.h"
+#include "../algorithm/myHeap.h"
 #include "../global/globalTypes.h"
 #include "../dataCode/myOutput.h"
 
