@@ -11,6 +11,22 @@
 #include "astar.h"
 #include "myOutput.h"
 
+void AStar::printClose()
+{
+    for (unsigned indRow = 1; indRow != cntRealRows + 1; ++indRow) {
+        for (unsigned indCol = 1; indCol != cntRealCols + 1; ++indCol) {
+            Node node{indRow, indCol, key(indRow, indCol)};
+            if (close.find(node) == close.end()) {
+                printf("%*.2f", 6, -1);
+            } else {
+                printf("%*.2f", 6, close[node]);
+            }
+        }
+        printf("\n");
+    }
+
+}
+
 inline int my_Max(int a, int b)
 {
     if (a > b)
@@ -98,6 +114,7 @@ int AStar::solve(const Task &task, Output &output)
 
     //_____algorithm AStar______
     if (!computeGValues(task, output)) {
+        printClose();
         if (!constructPath(task, output)) {
             std::cout << "path is succesfully found\n" << std::endl;
             return 0;
@@ -138,6 +155,9 @@ bool AStar::computeGValues(const Task &task, Output &output)
     // output.nodesCreated.push_back(nodeNow);
     while (!open.empty()) {
         ++output.numberOfSteps;
+        if (output.numberOfSteps % 5  == 0) {
+            std::cout << output.numberOfSteps << std::endl;
+        }
         nodeNow = open.pop();
         close[nodeNow] = gTable[nodeNow];
         gTable.erase(nodeNow);  // its g-val is not neccessary anymore
@@ -186,11 +206,14 @@ int AStar::constructPath(const Task &task, Output &output)
     Node nodeNow{finishX, finishY, keyNow};
     output.numberOfMovements = 0;
     while (nodeNow.key != nodeStart.key) {
+        if (output.numberOfMovements % 10 == 0) {
+            std::cout << output.numberOfMovements << std::endl;
+        }
         output.path.push_back(nodeNow);
         ++output.numberOfMovements;
         Node nodeNext;
         TypeValue minVal;
-        bool isInited;
+        bool isInited = false;
         unsigned bestIndMovement;
         for (unsigned ind = 0; ind != weightVec.size(); ++ind) {
             Node nodeNeig;

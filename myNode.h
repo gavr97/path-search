@@ -10,7 +10,8 @@ struct Node{
     unsigned y;
     unsigned key;
 
-    bool operator <(const Node &right);
+    bool operator <(const Node &right) const;
+    bool operator <(Node &right);
 };
 
 #endif //REPO_MYNODE_H

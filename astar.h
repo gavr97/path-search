@@ -61,6 +61,7 @@ private:
 
 public:
     int solve(const Task &task, Output &output);
+    void printClose();
 };
 
 #endif //REPO_ASTAR_H
