@@ -8,6 +8,7 @@
 #include "tinyxml2.h"
 #include "myTask.h"
 #include "myLog.h" // for storing XMLDoc which is out for a user
+#include "globalVars.h"
 
 #ifndef XMLCheckResult
 #define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("TinyXML Error: %i\n", a_eResult); return a_eResult; }
@@ -17,20 +18,6 @@
 #endif
 
 using namespace tinyxml2;
-
-
-static double CELLSIZE_DEFAULT = 1;
-static double LINE_COST_DEFAULT = 1;
-static double DIAG_COST_DEFAULT = 1.414;
-static unsigned int STARTX_DEFAULT = 0;
-static unsigned int STARTY_DEFAULT = 0;
-static unsigned int FINISHX_DEFAULT = 0;
-static unsigned int FINISHY_DEFAULT = 0;
-static const std::string SEARCH_TYPE_DEFAULT = "astar";
-static const std::string METRIC_TYPE_DEFAULT = "euclid";
-static unsigned int ALLOW_DIAG_DEFAULT = 0;
-static unsigned int ALLOW_SQUEEZE_DEFAULT = 0;
-static unsigned int CUT_CORNERS_DEFAULT = 0;
 
 bool isValidSizes(const Task &task)
 {
@@ -179,6 +166,7 @@ int Task::readMap(XMLNode * pRoot, std::vector<std::vector<bool>> &map)
 
 int Task::myLoad(const char *path, Log &log)
 {
+    initGlobalVars();
     // ____load xml tree____
     XMLError eResult;
     int myeResult;

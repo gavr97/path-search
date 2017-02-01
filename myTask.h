@@ -9,11 +9,10 @@
 #include "tinyxml2.h"
 #include "myLog.h"
 #include <string>
-#include "constantTypes.h"
-//#include "tagNames.h"
+#include "globalTypes.h"
+#include "globalVars.h"
 
 using namespace tinyxml2;
-
 
 class Task{
 public:

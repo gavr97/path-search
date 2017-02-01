@@ -9,8 +9,8 @@
 #include <string>
 #include "myTask.h"
 #include "tinyxml2.h"
-#include "constantTypes.h"
-#include "tagNames.h"
+#include "globalTypes.h"
+#include "globalVars.h"
 
 using namespace tinyxml2;
 
