@@ -20,7 +20,7 @@
 #include <bits/unordered_map.h>
 #include "myTask.h"
 #include "myHeap.h"
-#include "constantTypes.h"
+#include "globalTypes.h"
 
 
 using std::cout;
