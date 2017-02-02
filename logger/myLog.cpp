@@ -71,10 +71,12 @@ int Log::savePath(const std::vector<Node> &path, const std::vector<double> &weig
 
 int Log::saveMap(const std::vector<Node> &path, const Map &map)
 {
-    std::map<Node, bool> isInPath;
+    Map mapRes = map;
     for (const auto &node : path) {
         unsigned x = node.x;
-        unsigned  y = node.y;
+        unsigned y = node.y;
+        // at the moment coordinates are considered to be as inside representation(not graphical system)
+        mapRes[x][y] = '*';
     }
 }
 
