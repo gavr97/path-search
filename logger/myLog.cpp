@@ -2,6 +2,7 @@
 // Created by alexgavr on 11.01.17.
 //
 
+#include <iostream>
 #include <map>
 #include "../dataCode/myTask.h"
 #include "../logger/myLog.h"
@@ -10,6 +11,16 @@
 #ifndef XMLCheckResult
 #define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("TinyXML Error: %i\n", a_eResult); return a_eResult; }
 #endif
+
+void const printMap(const Map &map)
+{
+    std::cout << "\nMAP with drawn path\n";
+    for (const auto &row : map) {
+        for (const auto &elem : row)
+            std::cout << elem;
+        std::cout << std::endl;
+    }
+}
 
 int Log::initPath(unsigned startX, unsigned startY, unsigned number)
 {
@@ -78,6 +89,7 @@ int Log::saveMap(const std::vector<Node> &path, const Map &map)
         // at the moment coordinates are considered to be as inside representation(not graphical system)
         mapRes[x][y] = '*';
     }
+    printMap(mapRes);
 }
 
 int Log::saveData(const Output &output, const char *nameIn,  const Map &map) {
@@ -99,7 +111,7 @@ int Log::saveData(const Output &output, const char *nameIn,  const Map &map) {
     }
 
     // map with drawn path willbe accessable via pPath - Log's member
-    //this->saveMap(output.path, task.map);
+    this->saveMap(output.path, map);
     //pLog->InsertEndChild(pPath);
 
     XMLNode *pRoot = xmlDoc.FirstChild();
