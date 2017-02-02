@@ -34,6 +34,7 @@ int Log::addNode(unsigned toX, unsigned toY, TypeValue weightMovement, unsigned 
     // REMEMBER about transposing map and shift +1; so inversed transposing and shift -1 is required
     std::swap(toX, toY);
     --toX, --toY;
+
     XMLElement *pElement = xmlDoc.NewElement("node");
     pElement->SetAttribute("x", toX);
     pElement->SetAttribute("y", toY);
@@ -41,7 +42,7 @@ int Log::addNode(unsigned toX, unsigned toY, TypeValue weightMovement, unsigned 
     pLowLevel->InsertEndChild(pElement);
 
     pElement = xmlDoc.NewElement("section");
-    pElement->SetAttribute("number", number);
+    pElement->SetAttribute("number", number - 1);  // CHANGE. -1 because pHighLevel has less nodes by 1
     pElement->SetAttribute("start.x", rememberedX);
     pElement->SetAttribute("start.y", rememberedY);
     pElement->SetAttribute("finish.x", toX);
@@ -72,16 +73,14 @@ int Log::saveData(const Output &output, const char *nameIn) {
     pMapFileName = xmlDoc.NewElement("mapfilename");
     pMapFileName->SetText(nameIn);
     pLog->InsertFirstChild(pMapFileName);
-
     pSummary = xmlDoc.NewElement("summary");
     pSummary->SetAttribute("numberofsteps", output.numberOfSteps);
     pSummary->SetAttribute("nodescreated", output.numberOfNodesCreated);
     pSummary->SetAttribute("length", output.numberOfMovements);
     pSummary->SetAttribute("time", "?");
-
+    pLog->InsertEndChild(pSummary);
     // path will be accessable via pHighLevel and pLowLevel - Log's members
     if (this->savePath(output.path, output.weightMovements)) return 1;
-    pLog->InsertEndChild(pSummary);
 
     // insert here table with indexed rows
     //this->saveMap
