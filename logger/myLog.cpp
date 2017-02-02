@@ -79,13 +79,13 @@ int Log::saveData(const Output &output, const char *nameIn) {
     pSummary->SetAttribute("length", output.numberOfMovements);
     pSummary->SetAttribute("time", "?");
     pLog->InsertEndChild(pSummary);
-    // path will be accessable via pHighLevel and pLowLevel - Log's members
-    if (this->savePath(output.path, output.weightMovements)) return 1;
 
-    // insert here table with indexed rows
-    //this->saveMap
+    // map with drawn path willbe accessable via pPath - Log's member
+    //this->saveMap;
     //pLog->InsertEndChild(pPath);
 
+    // consequence of nodes will be accessable via pHighLevel and pLowLevel - Log's members
+    if (this->savePath(output.path, output.weightMovements)) return 1;
     pLog->InsertEndChild(pLowLevel);
     pLog->InsertEndChild(pHighLevel);
     XMLNode *pRoot = xmlDoc.FirstChild();
