@@ -10,22 +10,22 @@
 #define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("TinyXML Error: %i\n", a_eResult); return a_eResult; }
 #endif
 
-int Log::initPath(unsigned finishX, unsigned finishY, unsigned number)
+int Log::initPath(unsigned startX, unsigned startY, unsigned number)
 {
     // REMEMBER about transposing map and shift +1; so inversed transposing and shift -1 is required
-    std::swap(finishX, finishY);
-    --finishX, --finishY;
+    std::swap(startX, startY);
+    --startX, --startY;
 
     pLowLevel = xmlDoc.NewElement("lplevel");
     pHighLevel = xmlDoc.NewElement("hplevel");
     XMLElement *pElement = xmlDoc.NewElement("node");
-    pElement->SetAttribute("x", finishX);
-    pElement->SetAttribute("y", finishY);
+    pElement->SetAttribute("x", startX);
+    pElement->SetAttribute("y", startY);
     pElement->SetAttribute("number", number);
-    pLowLevel->InsertFirstChild(pElement);
+    pLowLevel->InsertEndChild(pElement);
 
-    rememberedX = finishX;
-    rememberedY = finishY;
+    rememberedX = startX;
+    rememberedY = startY;
     return 0;
 }
 
@@ -47,7 +47,7 @@ int Log::addNode(unsigned toX, unsigned toY, TypeValue weightMovement, unsigned 
     pElement->SetAttribute("finish.x", toX);
     pElement->SetAttribute("finish.y", toY);
     pElement->SetAttribute("length", weightMovement);
-    pHighLevel->InsertFirstChild(pElement);
+    pHighLevel->InsertEndChild(pElement);
 
     rememberedX = toX;
     rememberedY = toY;
@@ -61,48 +61,47 @@ int Log::savePath(const std::vector<Node> &path, const std::vector<double> &weig
     int ind = path.size() - 1;
     this->initPath(path[ind].x, path[ind].y, 0);
     for (ind = path.size() - 2; ind >= 0; --ind) {
-        unsigned number = path.size() - ind + 1;
+        unsigned number = path.size() - ind - 1;
         this->addNode(path[ind].x, path[ind].y, weightMovements[ind], number);
     }
     return 0;
 }
 
-int Log::saveData(const Output &output) {
+int Log::saveData(const Output &output, const char *nameIn) {
+    pLog = xmlDoc.NewElement("log");
+    pMapFileName = xmlDoc.NewElement("mapfilename");
+    pMapFileName->SetText(nameIn);
+    pLog->InsertFirstChild(pMapFileName);
+
     pSummary = xmlDoc.NewElement("summary");
     pSummary->SetAttribute("numberofsteps", output.numberOfSteps);
     pSummary->SetAttribute("nodescreated", output.numberOfNodesCreated);
     pSummary->SetAttribute("length", output.numberOfMovements);
     pSummary->SetAttribute("time", "?");
+
     // path will be accessable via pHighLevel and pLowLevel - Log's members
     if (this->savePath(output.path, output.weightMovements)) return 1;
-    return 0;
-}
-
-int Log::finishSaving()
-{
-    XMLNode *pRoot = xmlDoc.FirstChild();
-    XMLElement *pLog = xmlDoc.NewElement("log");
-    //pMapFileName = xmlDoc.NewElement("mapfilename");
-    //pMapFileName->SetText("./Log.xml");
-    pLog->InsertEndChild(pMapFileName);
     pLog->InsertEndChild(pSummary);
 
-    XMLElement *pPath = xmlDoc.NewElement("path");
     // insert here table with indexed rows
-    pLog->InsertEndChild(pPath);
+    //this->saveMap
+    //pLog->InsertEndChild(pPath);
+
     pLog->InsertEndChild(pLowLevel);
     pLog->InsertEndChild(pHighLevel);
+    XMLNode *pRoot = xmlDoc.FirstChild();
     pRoot->InsertEndChild(pLog);
-    XMLError eResult = xmlDoc.SaveFile("Log.xml");
-    if (eResult == XML_SUCCESS)
-        printf("Success during saving XML\n");
-    else
-        printf("not! success during saving XML\n");
     return 0;
 }
 
-int Log::write(const char *fileName)
+int Log::write(const char *nameOut)
 {
-
-    return 0;
+    XMLError eResult = xmlDoc.SaveFile(nameOut);
+    if (eResult == XML_SUCCESS) {
+        printf("Success during saving XML\n");
+        return 0;
+    } else {
+        printf("not! success during saving XML\n");
+        return 1;
+    }
 }

@@ -32,7 +32,7 @@ public:
     unsigned int finishY;
     std::string metricType;
 
-    int myLoad(const char *path, Log &log);
+    int myLoad(const char *nameIn, Log &log);
 
     void print() const;
 

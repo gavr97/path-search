@@ -164,13 +164,13 @@ int Task::readMap(XMLNode * pRoot, std::vector<std::vector<bool>> &map)
     return 0;
 }
 
-int Task::myLoad(const char *path, Log &log)
+int Task::myLoad(const char *nameIn, Log &log)
 {
     initGlobalVars();
     // ____load xml tree____
     XMLError eResult;
     int myeResult;
-    eResult = log.xmlDoc.LoadFile(path);
+    eResult = log.xmlDoc.LoadFile(nameIn);
     if (eResult != XML_SUCCESS) {
         std::cout << "error: incorrect xml file\n";
         return 1;

@@ -22,17 +22,18 @@ class Log {
 private:
     unsigned rememberedX;
     unsigned rememberedY;
-    XMLNode *pLowLevel;
-    XMLNode *pHighLevel;
+    XMLElement *pLog;
     XMLElement *pMapFileName;
     XMLElement *pSummary;
+    XMLNode *pPath;
+    XMLNode *pLowLevel;
+    XMLNode *pHighLevel;
 public:
     XMLDocument xmlDoc;
-    int saveData(const Output &output);
-    int write(const char *fileName);
+    int saveData(const Output &output, const char *nameIn);
+    int write(const char *nameOut);
 private:
     int savePath(const std::vector<Node> &path, const std::vector<double> &weightMovements);
-    int finishSaving();
     int initPath(unsigned ux, unsigned uy, unsigned number);
     int addNode(unsigned toX, unsigned toY, TypeValue length, unsigned number);
 };
