@@ -2,6 +2,7 @@
 // Created by alexgavr on 11.01.17.
 //
 
+#include <map>
 #include "../dataCode/myTask.h"
 #include "../logger/myLog.h"
 #include "../dataCode/myOutput.h"
@@ -68,7 +69,16 @@ int Log::savePath(const std::vector<Node> &path, const std::vector<double> &weig
     return 0;
 }
 
-int Log::saveData(const Output &output, const char *nameIn) {
+int Log::saveMap(const std::vector<Node> &path, const std::vector<std::vector<bool>> &map)
+{
+    std::map<Node, bool> isInPath;
+    for (const auto &node : path) {
+        unsigned x = node.x;
+        unsigned  y = node.y;
+    }
+}
+
+int Log::saveData(const Output &output, const char *nameIn,  const std::vector<std::vector<bool>> &map) {
     pLog = xmlDoc.NewElement("log");
     pMapFileName = xmlDoc.NewElement("mapfilename");
     pMapFileName->SetText(nameIn);
@@ -79,17 +89,17 @@ int Log::saveData(const Output &output, const char *nameIn) {
     pSummary->SetAttribute("length", output.lengtnPath);
     pSummary->SetAttribute("time", "?");
     pLog->InsertEndChild(pSummary);
-
-    // map with drawn path willbe accessable via pPath - Log's member
-    //this->saveMap;
-    //pLog->InsertEndChild(pPath);
-
     // consequence of nodes will be accessable via pHighLevel and pLowLevel - Log's members
     if (output.path.size() != 0) {  // if there is found path
         if (this->savePath(output.path, output.weightMovements)) return 1;
         pLog->InsertEndChild(pLowLevel);
         pLog->InsertEndChild(pHighLevel);
     }
+
+    // map with drawn path willbe accessable via pPath - Log's member
+    //this->saveMap(output.path, task.map);
+    //pLog->InsertEndChild(pPath);
+
     XMLNode *pRoot = xmlDoc.FirstChild();
     pRoot->InsertEndChild(pLog);
     return 0;

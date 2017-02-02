@@ -10,13 +10,10 @@
 #include "../tinyxml/tinyxml2.h"
 #include "../global/globalTypes.h"
 #include "../global/globalVars.h"
-#include "../dataCode/myTask.h"
 #include "../dataCode/myOutput.h"
-
-
+#include "../dataCode/myTask.h"
 
 using namespace tinyxml2;
-
 
 class Log {
 private:
@@ -25,18 +22,18 @@ private:
     XMLElement *pLog;
     XMLElement *pMapFileName;
     XMLElement *pSummary;
-    XMLNode *pPath;
+    XMLNode *pPath;  // here map with drawn path;
     XMLNode *pLowLevel;
     XMLNode *pHighLevel;
 public:
     XMLDocument xmlDoc;
-    int saveData(const Output &output, const char *nameIn);
+    int saveData(const Output &output, const char *nameIn, const std::vector<std::vector<bool>> &task);
     int write(const char *nameOut);
 private:
     int savePath(const std::vector<Node> &path, const std::vector<double> &weightMovements);
     int initPath(unsigned ux, unsigned uy, unsigned number);
     int addNode(unsigned toX, unsigned toY, TypeValue length, unsigned number);
-    int saveMap(const std::vector<Node> &path);
+    int saveMap(const std::vector<Node> &path, const std::vector<std::vector<bool>> &map);
 };
 
 #endif //REPO_MYLOG_H

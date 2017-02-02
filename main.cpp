@@ -41,7 +41,7 @@ int main() {
         }
 
         //_____Save results and write____
-        myeResult = log.saveData(output, nameIn);
+        myeResult = log.saveData(output, nameIn, task.map);  // arg-task.map is neccessary because of space-map
         char nameOut[strlen(name) + 12] = "./myLogs/";
         strcat(nameOut, name);
         log.write(nameOut);
