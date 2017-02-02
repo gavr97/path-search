@@ -10,10 +10,10 @@
 #include <cstring>
 
 int main() {
-    std::vector<const char*> list = {"smallWithoutPath.xml", "withoutPath.xml"};
-            //{"my1.xml", "example.xml", "3622198.xml","3664933.xml", "withoutPath.xml"};
-    //std::fstream F;
-    //F.open("time.txt");
+    std::vector<const char*> list = //{"smallWithoutPath.xml", "withoutPath.xml"};
+            {"my1.xml", "example.xml", "3622198.xml","3664933.xml", "withoutPath.xml"};
+    // main берет считывает вход с файла input/<name>
+    // записывает ответ myLogs/<name>
     unsigned int start_time = clock();
     for (const char *name : list) {
         std::cout << std::endl << "\n" << "NEXT TASK\n";
@@ -50,6 +50,5 @@ int main() {
     }
     unsigned int end_time = clock();
     unsigned int search_time = end_time - start_time;
-    //F << search_time << "\t";
     return 0;
 }

@@ -89,7 +89,24 @@ int Log::saveMap(const std::vector<Node> &path, const Map &map)
         // at the moment coordinates are considered to be as inside representation(not graphical system)
         mapRes[x][y] = '*';
     }
-    printMap(mapRes);
+    //printMap(mapRes);
+
+    unsigned bufSize = map[0].size() * 3 + 1;
+    pPath = xmlDoc.NewElement("path");
+    for (unsigned indRow = 1; indRow != mapRes.size() - 2; ++indRow) {
+        XMLElement *cell = xmlDoc.NewElement("row");
+        cell->SetAttribute("number", indRow - 1);
+        char str[bufSize];
+        unsigned indStr = 0;
+        for (const auto elem : mapRes[indRow]) {
+            str[indStr] = elem;
+            str[indStr + 1] = ' ';
+            indStr += 2;
+        }
+        cell->SetText(str);
+        pPath->InsertEndChild(cell);
+    }
+    return 0;
 }
 
 int Log::saveData(const Output &output, const char *nameIn,  const Map &map) {
@@ -103,16 +120,15 @@ int Log::saveData(const Output &output, const char *nameIn,  const Map &map) {
     pSummary->SetAttribute("length", output.lengtnPath);
     pSummary->SetAttribute("time", "?");
     pLog->InsertEndChild(pSummary);
+    // map with drawn path willbe accessable via pPath - Log's member
+    this->saveMap(output.path, map);
+    pLog->InsertEndChild(pPath);
     // consequence of nodes will be accessable via pHighLevel and pLowLevel - Log's members
     if (output.path.size() != 0) {  // if there is found path
         if (this->savePath(output.path, output.weightMovements)) return 1;
         pLog->InsertEndChild(pLowLevel);
         pLog->InsertEndChild(pHighLevel);
     }
-
-    // map with drawn path willbe accessable via pPath - Log's member
-    this->saveMap(output.path, map);
-    //pLog->InsertEndChild(pPath);
 
     XMLNode *pRoot = xmlDoc.FirstChild();
     pRoot->InsertEndChild(pLog);
