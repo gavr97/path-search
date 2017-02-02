@@ -10,7 +10,7 @@
 #include <cstring>
 
 int main() {
-    std::vector<const char*> list = {"my1.xml", "example.xml", "3622198.xml","3664933.xml"};//,"input/3839748.xml", "input/4123378.xml",
+    std::vector<const char*> list = {"smallWithoutPath.xml", "withoutPath.xml"}; //{"my1.xml", "example.xml", "3622198.xml","3664933.xml", "withoutPath.xml"};//,"input/3839748.xml", "input/4123378.xml",
                                  //"input/4226598.xml", "input/4320060.xml"};
     //std::fstream F;
     //F.open("time.txt");
@@ -20,7 +20,7 @@ int main() {
         int myeResult = 0;
         Task task; Output output; Log log;
         //_____Load Task_____
-        char nameIn[strlen(name) + 10] = "input/";
+        char nameIn[strlen(name) + 12] = "input/";
         strcat(nameIn, name);
         myeResult = task.myLoad(nameIn, log);  // char* ! not std::string;
                                             // log is sent as an argument for storing XMLDoc for future out to a user
@@ -41,7 +41,7 @@ int main() {
 
         //_____Save results and write____
         myeResult = log.saveData(output, nameIn);
-        char nameOut[strlen(name) + 10] = "./myLogs/";
+        char nameOut[strlen(name) + 12] = "./myLogs/";
         strcat(nameOut, name);
         log.write(nameOut);
         // на данный момент логгер уже ПРИВЯЗАН к текущей задаче(имеет поле xmlDoc, соответствующее этой задаче)
