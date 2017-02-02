@@ -109,7 +109,7 @@ int Task::readMap(XMLNode * pRoot, Map &map)
     //_____init boundaries______
     for (indRow : std::vector<int> {0, height + 1})
         for (indCol = 0; indCol <= width + 1; ++indCol)
-            map[indRow][indCol] = 1;
+            map[indRow][indCol] = '1';
     std::cout << "boundaries are inited\n";
 
     //_____init grid____________
@@ -127,8 +127,8 @@ int Task::readMap(XMLNode * pRoot, Map &map)
             break;
         }
         const char *buf = pRow->GetText();
-        map[indRow][0] = 1;
-        map[indRow][width + 1] = 1;
+        map[indRow][0] = '1';
+        map[indRow][width + 1] = '1';
         indCol = 1;
         while (*buf) {
             if (*buf == '0') {
@@ -136,14 +136,14 @@ int Task::readMap(XMLNode * pRoot, Map &map)
                     std::cout << "warning: too many cells in row\n";
                     break;
                 }
-                map[indRow][indCol] = 0;
+                map[indRow][indCol] = '0';
                 ++indCol;
             } else if (*buf == '1') {
                 if (indCol == width + 1) {
                     std::cout << "warning: too many cells in row\n";
                     break;
                 }
-                map[indRow][indCol] = 1;
+                map[indRow][indCol] = '1';
                 ++indCol;
             }
             ++buf;

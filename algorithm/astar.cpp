@@ -168,7 +168,7 @@ bool AStar::computeGValues(const Task &task, Output &output)
             unsigned keyNeig = key(vx, vy);
             Node nodeNeig{vx, vy, keyNeig};
 
-            if (task.map[vx][vy] == 0  && close.find(nodeNeig) == close.end()) {
+            if (task.map[vx][vy] == '0'  && close.find(nodeNeig) == close.end()) {
                 if (gTable.find(nodeNeig) == gTable.end()) {
                     ++output.numberOfNodesCreated;
                     //output.nodesCreated.push_back(nodeNeig);
