@@ -34,7 +34,8 @@ int main() {
         AStar astar;
         myeResult = astar.solve(task, output);  // myeResult == 1 if no path found; else 0;
         if (myeResult) {
-            std::cout << "no path found in task\n";
+            std::cout << "no path found in task\n"
+                      << "this task is skipped. Naturally, Path is not saved in output\n";
         } else {
             output.printPath(output.path);
         }

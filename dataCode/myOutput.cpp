@@ -10,6 +10,7 @@ Output::Output()
     time = 0;
     numberOfNodesCreated = 0;
     numberOfSteps = 0;
+    numberOfMovements = 0;
 }
 
 void Output::printPath(const std::vector<Node> &path)

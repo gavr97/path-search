@@ -85,9 +85,11 @@ int Log::saveData(const Output &output, const char *nameIn) {
     //pLog->InsertEndChild(pPath);
 
     // consequence of nodes will be accessable via pHighLevel and pLowLevel - Log's members
-    if (this->savePath(output.path, output.weightMovements)) return 1;
-    pLog->InsertEndChild(pLowLevel);
-    pLog->InsertEndChild(pHighLevel);
+    if (output.path.size() != 0) {  // if there is found path
+        if (this->savePath(output.path, output.weightMovements)) return 1;
+        pLog->InsertEndChild(pLowLevel);
+        pLog->InsertEndChild(pHighLevel);
+    }
     XMLNode *pRoot = xmlDoc.FirstChild();
     pRoot->InsertEndChild(pLog);
     return 0;
