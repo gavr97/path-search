@@ -27,13 +27,13 @@ private:
     XMLNode *pHighLevel;
 public:
     XMLDocument xmlDoc;
-    int saveData(const Output &output, const char *nameIn, const std::vector<std::vector<bool>> &task);
+    int saveData(const Output &output, const char *nameIn, const Map &task);
     int write(const char *nameOut);
 private:
     int savePath(const std::vector<Node> &path, const std::vector<double> &weightMovements);
     int initPath(unsigned ux, unsigned uy, unsigned number);
     int addNode(unsigned toX, unsigned toY, TypeValue length, unsigned number);
-    int saveMap(const std::vector<Node> &path, const std::vector<std::vector<bool>> &map);
+    int saveMap(const std::vector<Node> &path, const Map &map);
 };
 
 #endif //REPO_MYLOG_H

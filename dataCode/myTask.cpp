@@ -99,7 +99,7 @@ int Task::readStr(XMLNode *pRoot, const char *tag, std::string &destination, con
     return 0;
 }
 
-int Task::readMap(XMLNode * pRoot, std::vector<std::vector<bool>> &map)
+int Task::readMap(XMLNode * pRoot, Map &map)
 {
     int height = map.size() - 2;  // h = size - 2 because there is extra rows and cols for boundary
     int width = map[0].size() - 2;
@@ -232,7 +232,7 @@ int Task::myLoad(const char *nameIn, Log &log)
     // _______read map___________
     unsigned int height = this->cntRealRows;
     unsigned int width = this->cntRealCols;
-    std::vector<std::vector<bool>> map(height + 2, std::vector<bool>(width + 2));
+    Map map(height + 2, MapRow(width + 2));
     this->map = map;
     if(readMap(pRoot->FirstChildElement("map"), this->map)) return 1;
     std::cout << "map has been read successfully\n";
@@ -244,12 +244,12 @@ void Task::print() const
     std::cout << "\nTask:\n";
     std::cout << "size: " << this->cntRealRows << ' ' << this->cntRealCols << std::endl;
     std::cout << "map\n";
-    for (const auto &row : this->map) {
-        for (const auto &elem : row) {
-            std::cout << elem << ' ';
-        }
-        std::cout << std::endl;
-    }
+    //for (const auto &row : this->map) {
+        //for (const auto &elem : row) {
+            //std::cout << elem << ' ';
+        //}
+        //std::cout << std::endl;
+    //}
     std::cout << "allow diag " << this->allowDiag << "\n";
     std::cout << "costs of movements: " << this->lineCost << " and " << this->diagCost << std::endl;
     printf("start and end: %u %u and %u %u\n", this->startX, this->startY, this->finishX, this->finishY);

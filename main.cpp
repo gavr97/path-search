@@ -10,8 +10,8 @@
 #include <cstring>
 
 int main() {
-    std::vector<const char*> list = {"smallWithoutPath.xml", "withoutPath.xml"}; //{"my1.xml", "example.xml", "3622198.xml","3664933.xml", "withoutPath.xml"};//,"input/3839748.xml", "input/4123378.xml",
-                                 //"input/4226598.xml", "input/4320060.xml"};
+    std::vector<const char*> list = {"smallWithoutPath.xml", "withoutPath.xml"};
+            //{"my1.xml", "example.xml", "3622198.xml","3664933.xml", "withoutPath.xml"};
     //std::fstream F;
     //F.open("time.txt");
     unsigned int start_time = clock();

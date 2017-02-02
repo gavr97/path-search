@@ -69,7 +69,7 @@ int Log::savePath(const std::vector<Node> &path, const std::vector<double> &weig
     return 0;
 }
 
-int Log::saveMap(const std::vector<Node> &path, const std::vector<std::vector<bool>> &map)
+int Log::saveMap(const std::vector<Node> &path, const Map &map)
 {
     std::map<Node, bool> isInPath;
     for (const auto &node : path) {
@@ -78,7 +78,7 @@ int Log::saveMap(const std::vector<Node> &path, const std::vector<std::vector<bo
     }
 }
 
-int Log::saveData(const Output &output, const char *nameIn,  const std::vector<std::vector<bool>> &map) {
+int Log::saveData(const Output &output, const char *nameIn,  const Map &map) {
     pLog = xmlDoc.NewElement("log");
     pMapFileName = xmlDoc.NewElement("mapfilename");
     pMapFileName->SetText(nameIn);
