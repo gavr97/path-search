@@ -20,9 +20,9 @@ void Output::printPath(const std::vector<Node> &path)
     } else {
         for (int ind = path.size() - 1; ind != -1; --ind) {
             std::cout << "number " << path.size() - ind - 1 << ": "
-                      << path[ind].y - 1 << ' ' << path[ind].x - 1 << '\n';
-            // again transposing and --
-            // for user
+                      << path[ind].x << ' ' << path[ind].y << '\n';
+            // here writing to console is for me
+            // thus there is no transposing and shift again
         }
     }
 }
