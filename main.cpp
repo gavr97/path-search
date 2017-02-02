@@ -7,9 +7,10 @@
 
 #include <fstream>
 #include <ctime>
+#include <cstring>
 
 int main() {
-    std::vector<const char*> list = {"input/my1.xml", "example.xml", "input/3622198.xml","input/3664933.xml"};//,"input/3839748.xml", "input/4123378.xml",
+    std::vector<const char*> list = {"my1.xml", "example.xml", "3622198.xml","3664933.xml"};//,"input/3839748.xml", "input/4123378.xml",
                                  //"input/4226598.xml", "input/4320060.xml"};
     //std::fstream F;
     //F.open("time.txt");
@@ -17,22 +18,34 @@ int main() {
     for (const char *name : list) {
         std::cout << std::endl << "\n" << "NEXT TASK\n";
         int myeResult = 0;
-        Task task;
-        Output output;
-        Log log;
-        myeResult = task.myLoad(name, log);  // char* ! not std::string;
+        Task task; Output output; Log log;
+        //_____Load Task_____
+        char nameIn[strlen(name) + 10] = "input/";
+        strcat(nameIn, name);
+        myeResult = task.myLoad(nameIn, log);  // char* ! not std::string;
                                             // log is sent as an argument for storing XMLDoc for future out to a user
         if (myeResult) {
             std::cout << "task: " << name << " is skipped\n\n";
             continue;
         }
         task.print();
+
+        //____Solve Task______
         AStar astar;
         myeResult = astar.solve(task, output);  // myeResult == 1 if no path found; else 0;
-        if (!myeResult) {
+        if (myeResult) {
+            std::cout << "no path found in task\n";
+        } else {
             output.printPath(output.path);
         }
-        //log.write(output);  // на данный момент логгер уже ПРИВЯЗАН к текущей задаче(имеет поле xmlDoc, соответствующее этой задаче
+
+        //_____Save results and write____
+        myeResult = log.saveData(output, nameIn);
+        char nameOut[strlen(name) + 10] = "./myLogs/";
+        strcat(nameOut, name);
+        log.write(nameOut);
+        // на данный момент логгер уже ПРИВЯЗАН к текущей задаче(имеет поле xmlDoc, соответствующее этой задаче)
+        // log.clean()???
     }
     unsigned int end_time = clock();
     unsigned int search_time = end_time - start_time;
