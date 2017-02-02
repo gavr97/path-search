@@ -202,6 +202,7 @@ int AStar::constructPath(const Task &task, Output &output)
     unsigned keyNow = key(finishX, finishY);
     Node nodeNow{finishX, finishY, keyNow};
     output.numberOfMovements = 0;
+    output.lengtnPath = 0;
     while (nodeNow.key != nodeStart.key) {
         output.path.push_back(nodeNow);
         ++output.numberOfMovements;
@@ -225,6 +226,7 @@ int AStar::constructPath(const Task &task, Output &output)
             return 1;
         }
         output.weightMovements.push_back(weightVec[bestIndMovement]);
+        output.lengtnPath += weightVec[bestIndMovement];
         nodeNow = nodeNext;
     }
     return 0;

@@ -14,6 +14,7 @@ public:
     unsigned numberOfNodesCreated;
     unsigned numberOfSteps;
     unsigned numberOfMovements;
+    double lengtnPath;
     std::vector<Node> nodesCreated;
     std::vector<Node> path;  // reversed;
     std::vector<double> weightMovements;  // if we consider vec reversed, i.e. index == vec.size()-1 is 0, then

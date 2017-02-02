@@ -76,7 +76,7 @@ int Log::saveData(const Output &output, const char *nameIn) {
     pSummary = xmlDoc.NewElement("summary");
     pSummary->SetAttribute("numberofsteps", output.numberOfSteps);
     pSummary->SetAttribute("nodescreated", output.numberOfNodesCreated);
-    pSummary->SetAttribute("length", output.numberOfMovements);
+    pSummary->SetAttribute("length", output.lengtnPath);
     pSummary->SetAttribute("time", "?");
     pLog->InsertEndChild(pSummary);
 
