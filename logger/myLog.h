@@ -7,10 +7,13 @@
 
 #include <vector>
 #include <string>
-#include "../dataCode/myTask.h"
 #include "../tinyxml/tinyxml2.h"
 #include "../global/globalTypes.h"
 #include "../global/globalVars.h"
+#include "../dataCode/myTask.h"
+#include "../dataCode/myOutput.h"
+
+
 
 using namespace tinyxml2;
 
@@ -21,17 +24,17 @@ private:
     unsigned rememberedY;
     XMLNode *pLowLevel;
     XMLNode *pHighLevel;
-
+    XMLElement *pMapFileName;
+    XMLElement *pSummary;
 public:
-    // summary numberofsteps="33708" nodescreated="34731" length="382.99" time="0.13"/>
     XMLDocument xmlDoc;
-    int finish();
-    unsigned numberOfSteps;
-    //nodesCreated???
-    //time???
-    unsigned length;
+    int saveData(const Output &output);
+    int write(const char *fileName);
+private:
+    int savePath(const std::vector<Node> &path, const std::vector<double> &weightMovements);
+    int finishSaving();
     int initPath(unsigned ux, unsigned uy, unsigned number);
-    int addNode(unsigned ux, unsigned uy, TypeValue length, unsigned number);
+    int addNode(unsigned toX, unsigned toY, TypeValue length, unsigned number);
 };
 
 #endif //REPO_MYLOG_H

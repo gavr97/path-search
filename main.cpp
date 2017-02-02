@@ -32,7 +32,7 @@ int main() {
         if (!myeResult) {
             output.printPath(output.path);
         }
-        //log.write(output);  // TODO
+        //log.write(output);  // на данный момент логгер уже ПРИВЯЗАН к текущей задаче(имеет поле xmlDoc, соответствующее этой задаче
     }
     unsigned int end_time = clock();
     unsigned int search_time = end_time - start_time;
