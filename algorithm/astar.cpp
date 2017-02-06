@@ -25,7 +25,6 @@ void AStar::printClose()
         }
         printf("\n");
     }
-
 }
 
 inline int my_Max(int a, int b)
@@ -115,8 +114,7 @@ int AStar::solve(const Task &task, Output &output)
 
     //_____algorithm AStar______
     if (!computeGValues(task, output)) {
-        if (!constructPath(task, output)) {
-            std::cout << "path is succesfully found\n" << std::endl;
+        if (!constructPath(task, output)) { std::cout << "path is succesfully found\n" << std::endl;
             return 0;
         } else {
             std::cout << "error: failure during constructing path\n" << std::endl;
