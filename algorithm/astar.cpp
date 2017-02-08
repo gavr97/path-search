@@ -77,7 +77,7 @@ inline unsigned AStar::coordinateSecond(unsigned key)
     return key % (cntRealCols + 2);
 }
 
-int AStar::solve(const Task &task, Output &output)
+int AStar::init(const Task &task)
 {
     //_____define heuristic_____
     if (task.metricType == "manhattan")
@@ -88,7 +88,7 @@ int AStar::solve(const Task &task, Output &output)
         heuristicHide = &straight;
         if (task.allowDiag == 1) {
             std::cout << "error: straight is inadmissible heiristic when allowdiag = 1\n";
-            exit(0);
+            return 1;
         }
     }
 
@@ -105,16 +105,19 @@ int AStar::solve(const Task &task, Output &output)
         dxVec = {0, 0, 1, -1, 1, -1, -1, 1};
         dyVec = {1, -1, 0, 0, 1, -1, 1, -1 };
         weightVec = {task.lineCost, task.lineCost, task.lineCost, task.lineCost,
-                        task.diagCost, task.diagCost, task.diagCost, task.diagCost};
+                     task.diagCost, task.diagCost, task.diagCost, task.diagCost};
     } else {
         dxVec = {0, 0, 1, -1};
         dyVec = {1, -1, 0, 0};
         weightVec = {task.lineCost, task.lineCost, task.lineCost, task.lineCost};
     }
+    return 0;
+}
 
-    //_____algorithm AStar______
-    if (!computeGValues(task, output)) {
-        if (!constructPath(task, output)) {
+int AStar::solve(const Map &map, Output &output)
+{
+    if (!computeGValues(map, output)) {
+        if (!constructPath(output)) {
             //std::cout << "path is succesfully found\n";
             return 0;
         } else {
@@ -128,7 +131,7 @@ int AStar::solve(const Task &task, Output &output)
     return 0;
 }
 
-bool AStar::computeGValues(const Task &task, Output &output)
+bool AStar::computeGValues(const Map &map, Output &output)
 {
     // open, close are inside AStar astar
     // open is a set of (f-val, Node)
@@ -140,10 +143,6 @@ bool AStar::computeGValues(const Task &task, Output &output)
     // gTable: node -> g-val
     // open: (f-val, node)
     std::map<Node, TypeValue> gTable;
-    unsigned startX = task.startX;
-    unsigned startY = task.startY;
-    unsigned finishX = task.finishX;
-    unsigned finishY = task.finishY;
     unsigned keyNow = key(startX, startY);
     Node nodeNow{startX, startY, keyNow};
     Node nodeFinish{finishX, finishY, key(finishX, finishY)};
@@ -167,7 +166,7 @@ bool AStar::computeGValues(const Task &task, Output &output)
             unsigned keyNeig = key(vx, vy);
             Node nodeNeig{vx, vy, keyNeig};
 
-            if (task.map[vx][vy] == '0'  && close.find(nodeNeig) == close.end()) {
+            if (map[vx][vy] == '0'  && close.find(nodeNeig) == close.end()) {
                 if (gTable.find(nodeNeig) == gTable.end()) {
                     ++output.numberOfNodesCreated;
                     //output.nodesCreated.push_back(nodeNeig);
@@ -195,7 +194,7 @@ bool AStar::computeGValues(const Task &task, Output &output)
     return true;  // goal is not reached, thus situation is bad and true is returned
 }
 
-int AStar::constructPath(const Task &task, Output &output)
+int AStar::constructPath(Output &output)
 {
     Node nodeStart{startX, startY, key(startX, startY)};
     unsigned keyNow = key(finishX, finishY);

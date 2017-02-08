@@ -47,20 +47,19 @@ private:
     unsigned finishX;
     unsigned finishY;
 
-    //std::map<unsigned, TypeValue> gTable;
-    //std::map<unsigned, Tripple> prevTable;
-    std::map<Node, TypeValue> close;
+    std::map<Node, TypeValue> close;  // node->g-value
     Heap open;  // a set of pairs(f-value, Node)
 
     inline unsigned key(unsigned ux, unsigned uy);
     inline unsigned coordinateFirst(unsigned key);
     inline unsigned coordinateSecond(unsigned key);
 
-    bool computeGValues(const Task &task, Output &output);
-    int constructPath(const Task &task, Output &output);
+    bool computeGValues(const Map &map, Output &output);
+    int constructPath(Output &output);
 
 public:
-    int solve(const Task &task, Output &output);
+    int init (const Task &task);
+    int solve(const Map &map, Output &output);
     void printClose();
 };
 
