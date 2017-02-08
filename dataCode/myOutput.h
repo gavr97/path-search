@@ -20,7 +20,6 @@ public:
     std::vector<double> weightMovements;  // if we consider vec reversed, i.e. index == vec.size()-1 is 0, then
                                         // vec[index] contains weight from node == path[index] to node == path[index-1]
                                         // and thus conceptually indexing of vec begins from 1!
-
     Output();
     void printPath(const std::vector<Node> &path);
 };

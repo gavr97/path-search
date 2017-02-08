@@ -107,11 +107,14 @@ int Task::readMap(XMLNode * pGrid, Map &map)
     int indCol = 0;
 
     //_____init boundaries______
-    for (indRow : std::vector<int> {0, height + 1})
-        for (indCol = 0; indCol <= width + 1; ++indCol)
-            map[indRow][indCol] = '1';
+    for (indCol = 0; indCol <= width + 1; ++indCol)
+        map[0][indCol] = '1';
+    indRow = height + 1;
+    for (indCol = 0; indCol <= width + 1; ++indCol)
+        map[height + 1][indCol] = '1';
     std::cout << "boundaries are inited\n";
 
+    //______read map_______
     XMLElement *pRow = pGrid->FirstChildElement();
     indRow = 1;
     while (pRow != nullptr) {
