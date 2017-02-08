@@ -142,7 +142,8 @@ int Log::write(const char *nameOut)
         printf("Success during saving XML\n");
         return 0;
     } else {
-        printf("not! success during saving XML\n");
+        printf("failure during saving XML\n");
+        printf("possibly incorrecnt path to file\n");
         return 1;
     }
 }

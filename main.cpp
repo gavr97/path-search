@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
         nameOut = "out.xml";
     }
     std:: cout << "name of input = " << name << std::endl;
-    std:: cout << "name of output = " << nameOut << std::endl;
+    std:: cout << "name of output = " << nameOut << std::endl << std::endl;
     
     int myeResult = 0;
     Task task; Output output; Log log;

@@ -114,14 +114,15 @@ int AStar::solve(const Task &task, Output &output)
 
     //_____algorithm AStar______
     if (!computeGValues(task, output)) {
-        if (!constructPath(task, output)) { std::cout << "path is succesfully found\n" << std::endl;
+        if (!constructPath(task, output)) {
+            //std::cout << "path is succesfully found\n";
             return 0;
         } else {
-            std::cout << "error: failure during constructing path\n" << std::endl;
+            std::cout << "error: failure during constructing path\n";
             return 1;
         }
     } else {
-        std::cout << "goal is not reached during computation of g-values\n" << std::endl;
+        std::cout << "goal is not reached during computation of g-values\n";
         return 1;
     }
     return 0;

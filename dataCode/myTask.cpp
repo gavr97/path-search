@@ -235,15 +235,15 @@ int Task::myLoad(const char *nameIn, Log &log)
     Map map(height + 2, MapRow(width + 2));
     this->map = map;
     if(readMap(pRoot->FirstChildElement("map"), this->map)) return 1;
-    std::cout << "map has been read successfully\n";
+    std::cout << "map has been read successfully\n" << std::endl;
     return 0;
 }
 
 void Task::print() const
 {
-    std::cout << "\nTask:\n";
+    std::cout << "Task:\n";
     std::cout << "size: " << this->cntRealRows << ' ' << this->cntRealCols << std::endl;
-    std::cout << "map\n";
+    //std::cout << "map\n";
     //for (const auto &row : this->map) {
         //for (const auto &elem : row) {
             //std::cout << elem << ' ';
@@ -254,6 +254,8 @@ void Task::print() const
     std::cout << "costs of movements: " << this->lineCost << " and " << this->diagCost << std::endl;
     printf("start and end: %u %u and %u %u\n", this->startX, this->startY, this->finishX, this->finishY);
     std::cout << "search type and metric type: " << this->searchType << " and " << this->metricType << std::endl;
-    std::cout << "about movements: " << this->allowDiag << ' ' << this->allowSqueeze << ' ' << this->cutCorners << std::endl;
+    std::cout << "about movements: " << "allow diagonal, allow squeeze, cut corners: "
+              << this->allowDiag << " " << this->allowSqueeze << ' ' << this->cutCorners << std::endl;
+    std::cout << std::endl;
 }
 
