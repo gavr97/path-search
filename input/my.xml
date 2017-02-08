@@ -1,0 +1,34 @@
+<root>
+    <desc>This file contains task for plaining system (Pathfinding)</desc>
+    <map>
+        <title>blastedlands</title>
+        <width>4</width>
+        <height>4</height>
+        <cellsize>5</cellsize>
+        <startx>1</startx>
+        <starty>1</starty>
+        <finishx>4</finishx>
+        <finishy>4</finishy>
+        <grid>
+            <row>0001</row>
+            <row>0101</row>
+            <row>0100 </row>
+            <row>0000</row>
+        </grid>
+    </map>
+    <algorithm>
+        <metrictype>euclid</metrictype>
+        <searchtype>jp_search</searchtype>
+        <hweight>1</hweight>
+        <breakingties>g-max</breakingties>
+        <linecost>1</linecost>
+        <diagonalcost>1.5</diagonalcost>
+        <allowdiagonal>1</allowdiagonal>
+        <allowsqueeze>0</allowsqueeze>
+    </algorithm>
+    <options>
+        <loglevel>1</loglevel>
+        <logpath/>
+        <logfilename/>
+    </options>
+</root>
