@@ -155,19 +155,20 @@ int Task::readMap(XMLNode * pGrid, Map &map)
     return 0;
 }
 
-int Task::myLoad(const char *nameIn, Log &log)
+int Task::myLoad(const char *nameIn)
 {
     initGlobalVars();
     // ____load xml tree____
+    XMLDocument xmlDoc;
     XMLError eResult;
     int myeResult;
-    eResult = log.xmlDoc.LoadFile(nameIn);
+    eResult = xmlDoc.LoadFile(nameIn);
     if (eResult != XML_SUCCESS) {
         std::cout << "error: incorrect xml file\n";
         return 1;
         //exit(1);
     }
-    XMLNode *pRoot = log.xmlDoc.FirstChild();
+    XMLNode *pRoot = xmlDoc.FirstChild();
     if (pRoot == nullptr){
         std::cout << "error: empty xml file\n";
         return 1;
