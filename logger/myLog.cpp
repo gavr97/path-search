@@ -109,7 +109,8 @@ int Log::saveMap(const std::vector<Node> &path, const Map &map)
     return 0;
 }
 
-int Log::saveData(const Output &output, const char *nameIn,  const Map &map) {
+int Log::saveData(const char *nameIn, const Output &output, const Map &map) {
+    xmlDoc.LoadFile(nameIn);
     pLog = xmlDoc.NewElement("log");
     pMapFileName = xmlDoc.NewElement("mapfilename");
     pMapFileName->SetText(nameIn);
@@ -142,7 +143,8 @@ int Log::write(const char *nameOut)
         printf("Success during saving XML\n");
         return 0;
     } else {
-        printf("not! success during saving XML\n");
+        printf("failure during saving XML\n");
+        printf("possibly incorrecnt path to file\n");
         return 1;
     }
 }

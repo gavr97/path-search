@@ -17,6 +17,7 @@ using namespace tinyxml2;
 
 class Log {
 private:
+    XMLDocument xmlDoc;
     unsigned rememberedX;
     unsigned rememberedY;
     XMLElement *pLog;
@@ -26,8 +27,7 @@ private:
     XMLNode *pLowLevel;
     XMLNode *pHighLevel;
 public:
-    XMLDocument xmlDoc;
-    int saveData(const Output &output, const char *nameIn, const Map &task);
+    int saveData(const char *nameIn, const Output &output, const Map &task);
     int write(const char *nameOut);
 private:
     int savePath(const std::vector<Node> &path, const std::vector<double> &weightMovements);
