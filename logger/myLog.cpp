@@ -103,6 +103,7 @@ int Log::saveMap(const std::vector<Node> &path, const Map &map)
             str[indStr + 1] = ' ';
             indStr += 2;
         }
+        str[indStr] = '\0';
         cell->SetText(str);
         pPath->InsertEndChild(cell);
     }
