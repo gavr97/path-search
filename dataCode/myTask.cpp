@@ -229,7 +229,7 @@ int Task::myLoad(const char *nameIn)
     if(readInt(pAlgorithm, TAG_ALLOWDIAGONAL, this->allowDiag, ALLOW_DIAG_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_CUTCORNERS, this->cutCorners, CUT_CORNERS_DEFAULT)) return 1;
-    std::cout << "task has been read succesfully\n";
+    std::cout << "specific information about task has been read succesfully\n";
 
     // _______read map___________
     Map map(this->cntRealRows + 2, MapRow(this->cntRealCols + 2));
@@ -252,7 +252,8 @@ void Task::print() const
     //}
     std::cout << "allow diag " << this->allowDiag << "\n";
     std::cout << "costs of movements: " << this->lineCost << " and " << this->diagCost << std::endl;
-    printf("start and end: %u %u and %u %u\n", this->startX, this->startY, this->finishX, this->finishY);
+    // do not forget about transposing and shift
+    printf("start and end: %u %u and %u %u\n", this->startY - 1, this->startX - 1, this->finishY - 1, this->finishX - 1);
     std::cout << "search type and metric type: " << this->searchType << " and " << this->metricType << std::endl;
     std::cout << "about movements: " << "allow diagonal, allow squeeze, cut corners: "
               << this->allowDiag << " " << this->allowSqueeze << ' ' << this->cutCorners << std::endl;

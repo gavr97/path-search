@@ -20,11 +20,10 @@ void Output::printPath(const std::vector<Node> &path)
         std::cout << "error: there is no inited path\n";
         return;
     } else {
+        // do not forget about transposing and shift
         for (int ind = path.size() - 1; ind != -1; --ind) {
             std::cout << "number " << path.size() - ind - 1 << ": "
-                      << path[ind].x << ' ' << path[ind].y << '\n';
-            // here writing to console is for me
-            // thus there is no transposing and shift again
+                      << path[ind].y - 1 << ' ' << path[ind].x - 1 << '\n';
         }
     }
 }
