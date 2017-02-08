@@ -10,6 +10,10 @@
 #include <cstring>
 
 int main(int argc, char *argv[]) {
+    if (argc == 1) {
+        std::cout << "error: input XML is not specified\n";
+        return 0;
+    }
     const char *name = argv[1];
     const char *nameOut;
     if (argc > 2) {
@@ -26,7 +30,7 @@ int main(int argc, char *argv[]) {
     myeResult = task.myLoad(name, log);  // char* ! not std::string;
                                         // log is sent as an argument for storing XMLDoc for future out to a user
     if (myeResult) {
-        std::cout << "task: " << name << " is skipped\n\n";
+        std::cout << "task: " << name << " is skipped\n";
         return 0;
     }
     task.print();

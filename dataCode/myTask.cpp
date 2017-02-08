@@ -99,7 +99,7 @@ int Task::readStr(XMLNode *pRoot, const char *tag, std::string &destination, con
     return 0;
 }
 
-int Task::readMap(XMLNode * pRoot, Map &map)
+int Task::readMap(XMLNode * pGrid, Map &map)
 {
     int height = map.size() - 2;  // h = size - 2 because there is extra rows and cols for boundary
     int width = map[0].size() - 2;
@@ -112,14 +112,7 @@ int Task::readMap(XMLNode * pRoot, Map &map)
             map[indRow][indCol] = '1';
     std::cout << "boundaries are inited\n";
 
-    //_____init grid____________
-    XMLElement *pGrid = pRoot->FirstChildElement("grid");
-    if (pGrid == nullptr) {
-        std:: cout << "error: incorrect structure of XML file: failure during finding tag grid\n";
-        return 1;  // exit(1);
-    }
     XMLElement *pRow = pGrid->FirstChildElement();
-
     indRow = 1;
     while (pRow != nullptr) {
         if (indRow == height + 1) {
@@ -150,16 +143,14 @@ int Task::readMap(XMLNode * pRoot, Map &map)
         }
         if (indCol < width + 1) {
             std::cout << "error: too few cells in row " << indRow << "\n";
-            return 1;  // exit(1);
-            //return 1;
+            return 1;
         }
         pRow = pRow->NextSiblingElement("row");
         ++indRow;
     }
     if (indRow < height + 1) {
         std::cout << "error: too few rows\n";
-        return 1;  // exit(1);
-        //return 1;
+        return 1;
     }
     return 0;
 }
@@ -184,24 +175,31 @@ int Task::myLoad(const char *nameIn, Log &log)
     }
     std::cout << "XML has been read\n";
 
-    // _______init dimensions of map and other information________
-    if (pRoot->FirstChildElement("map") == nullptr) {
+    // _______check obligatory tags________
+    XMLNode *pMap = pRoot->FirstChildElement("map");
+    if (pMap == nullptr) {
         std::cout << "error: incorrect structure of xml file: trere is no tag map\n";
         return 1;
         // exit(1);
     }
-    if (pRoot->FirstChildElement("algorithm") == nullptr) {
+    XMLNode *pGrid = pMap->FirstChildElement("grid");
+    if (pGrid == nullptr) {
+        std::cout << "error: incorrect structure of xml file: trere is no tag grid in subtree map\n";
+        return 1;
+    }
+    XMLNode *pAlgorithm = pRoot->FirstChildElement("algorithm");
+    if (pAlgorithm == nullptr) {
         std::cout << "error: incorrect structure of xml file: trere is no tag algorithm\n";
         return 1;
         // exit(1);
     }
-    // default_value(pred latter arg); obligatory: 1 means yes
-    if(readInt(pRoot->FirstChildElement("map"), TAG_HEIGHT, this->cntRealRows, 0, 1)) return 1;
-    if(readInt(pRoot->FirstChildElement("map"), TAG_WIDTH, this->cntRealCols, 0, 1)) return 1;
-    if(readInt(pRoot->FirstChildElement("map"), TAG_STARTX, this->startX, STARTX_DEFAULT)) return 1;
-    if(readInt(pRoot->FirstChildElement("map"), TAG_STARTY, this->startY, STARTY_DEFAULT)) return 1;
-    if(readInt(pRoot->FirstChildElement("map"), TAG__FINISHX, this->finishX, FINISHX_DEFAULT)) return 1;
-    if(readInt(pRoot->FirstChildElement("map"), TAG_FINISHY, this->finishY, FINISHY_DEFAULT)) return 1;
+    // two last arguments: default_value AND whether obligatory or not
+    if(readInt(pMap, TAG_HEIGHT, this->cntRealRows, 0, 1)) return 1;
+    if(readInt(pMap, TAG_WIDTH, this->cntRealCols, 0, 1)) return 1;
+    if(readInt(pMap, TAG_STARTX, this->startX, STARTX_DEFAULT)) return 1;
+    if(readInt(pMap, TAG_STARTY, this->startY, STARTY_DEFAULT)) return 1;
+    if(readInt(pMap, TAG__FINISHX, this->finishX, FINISHX_DEFAULT)) return 1;
+    if(readInt(pMap, TAG_FINISHY, this->finishY, FINISHY_DEFAULT)) return 1;
     ++startX;  // because it is comfortable for numerating real rows and cols from 1 (0 for abstract bound)
     ++startY;
     ++finishX;
@@ -219,22 +217,20 @@ int Task::myLoad(const char *nameIn, Log &log)
         return 1;
         // exit(1);
     }
-    if(readDouble(pRoot->FirstChildElement("algorithm"), TAG_LINECOST, lineCost, LINE_COST_DEFAULT)) return 1;
-    if(readDouble(pRoot->FirstChildElement("algorithm"), TAG_DIAGONALCONST, this->diagCost, DIAG_COST_DEFAULT)) return 1;
-    if(readStr(pRoot->FirstChildElement("algorithm"), TAG_SEARCHTYPE, this->searchType, SEARCH_TYPE_DEFAULT)) return 1;
-    if(readStr(pRoot->FirstChildElement("algorithm"), TAG_METRICTYPE, this->metricType, METRIC_TYPE_DEFAULT)) return 1;
+    if(readDouble(pAlgorithm, TAG_LINECOST, lineCost, LINE_COST_DEFAULT)) return 1;
+    if(readDouble(pAlgorithm, TAG_DIAGONALCONST, this->diagCost, DIAG_COST_DEFAULT)) return 1;
+    if(readStr(pAlgorithm, TAG_SEARCHTYPE, this->searchType, SEARCH_TYPE_DEFAULT)) return 1;
+    if(readStr(pAlgorithm, TAG_METRICTYPE, this->metricType, METRIC_TYPE_DEFAULT)) return 1;
 
-    if(readInt(pRoot->FirstChildElement("algorithm"), TAG_ALLOWDIAGONAL, this->allowDiag, ALLOW_DIAG_DEFAULT)) return 1;
-    if(readInt(pRoot->FirstChildElement("algorithm"), TAG_ALLOWSQUEEZE, this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT)) return 1;
-    if(readInt(pRoot->FirstChildElement("algorithm"), TAG_CUTCORNERS, this->cutCorners, CUT_CORNERS_DEFAULT)) return 1;
+    if(readInt(pAlgorithm, TAG_ALLOWDIAGONAL, this->allowDiag, ALLOW_DIAG_DEFAULT)) return 1;
+    if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT)) return 1;
+    if(readInt(pAlgorithm, TAG_CUTCORNERS, this->cutCorners, CUT_CORNERS_DEFAULT)) return 1;
     std::cout << "task has been read succesfully\n";
 
     // _______read map___________
-    unsigned int height = this->cntRealRows;
-    unsigned int width = this->cntRealCols;
-    Map map(height + 2, MapRow(width + 2));
+    Map map(this->cntRealRows + 2, MapRow(this->cntRealCols + 2));
     this->map = map;
-    if(readMap(pRoot->FirstChildElement("map"), this->map)) return 1;
+    if(readMap(pGrid, this->map)) return 1;
     std::cout << "map has been read successfully\n" << std::endl;
     return 0;
 }
