@@ -91,15 +91,15 @@ int Log::saveMap(const std::vector<Node> &path, const Map &map)
     }
     //printMap(mapRes);
 
-    unsigned bufSize = map[0].size() * 3 + 1;
+    unsigned bufSize = mapRes[0].size() * 3 + 1;
     pPath = xmlDoc.NewElement("path");
-    for (unsigned indRow = 1; indRow != mapRes.size() - 2; ++indRow) {
+    for (unsigned indRow = 1; indRow != mapRes.size() - 1; ++indRow) {
         XMLElement *cell = xmlDoc.NewElement("row");
         cell->SetAttribute("number", indRow - 1);
         char str[bufSize];
         unsigned indStr = 0;
-        for (const auto elem : mapRes[indRow]) {
-            str[indStr] = elem;
+        for (unsigned indCol = 1; indCol != mapRes[0].size() - 1; ++indCol) {
+            str[indStr] = mapRes[indRow][indCol];
             str[indStr + 1] = ' ';
             indStr += 2;
         }
