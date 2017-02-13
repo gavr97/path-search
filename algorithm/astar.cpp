@@ -84,12 +84,15 @@ int AStar::init(const Task &task)
         heuristicHide = &manhattan;
     else if (task.metricType == "euclid")
         heuristicHide = &euclid;
-    else {
+    else if (task.metricType == "chebyshev"){
         heuristicHide = &straight;
         if (task.allowDiag == 1) {
             std::cout << "error: straight is inadmissible heiristic when allowdiag = 1\n";
             return 1;
         }
+    } else {
+        std::cout << "warning: metrictype is incorrect. By default, euclid is assigned\n";
+        heuristicHide = &euclid;
     }
 
     //_____define sizes of map (astar needs it)

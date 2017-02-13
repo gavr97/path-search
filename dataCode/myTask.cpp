@@ -229,6 +229,9 @@ int Task::myLoad(const char *nameIn)
     if(readInt(pAlgorithm, TAG_ALLOWDIAGONAL, this->allowDiag, ALLOW_DIAG_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_CUTCORNERS, this->cutCorners, CUT_CORNERS_DEFAULT)) return 1;
+    this->allowDiag = 1;  // TODO разобраться с allowdiag, allowsqueeze and cuncorners
+    this->allowSqueeze = 1;
+    this->cutCorners = 1;
     std::cout << "specific information about task has been read succesfully\n";
 
     // _______read map___________
