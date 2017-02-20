@@ -10,13 +10,6 @@
 #include "../logger/myLog.h"
 #include "../global/globalVars.h"
 
-#ifndef XMLCheckResult
-#define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("TinyXML Error: %i\n", a_eResult); return a_eResult; }
-#endif
-#ifndef MYCheckResult
-#define MYCheckResult(eResult) if (eResult != 0) {printf("MY Error: %i\n", eResult); return eResult; }
-#endif
-
 using namespace tinyxml2;
 
 bool isValidSizes(const Task &task)
@@ -111,7 +104,7 @@ int Task::readMap(XMLNode * pGrid, Map &map)
         map[0][indCol] = '1';
     indRow = height + 1;
     for (indCol = 0; indCol <= width + 1; ++indCol)
-        map[height + 1][indCol] = '1';
+        map[height + 1][indCol] = OBSTACLE;
     std::cout << "boundaries are inited\n";
 
     //______read map_______
@@ -123,23 +116,23 @@ int Task::readMap(XMLNode * pGrid, Map &map)
             break;
         }
         const char *buf = pRow->GetText();
-        map[indRow][0] = '1';
-        map[indRow][width + 1] = '1';
+        map[indRow][0] = OBSTACLE;
+        map[indRow][width + 1] = OBSTACLE;
         indCol = 1;
         while (*buf) {
-            if (*buf == '0') {
+            if (*buf == NO_OBSTACLE) {
                 if (indCol == width + 1) {
                     std::cout << "warning: too many cells in row\n";
                     break;
                 }
-                map[indRow][indCol] = '0';
+                map[indRow][indCol] = NO_OBSTACLE;
                 ++indCol;
-            } else if (*buf == '1') {
+            } else if (*buf == OBSTACLE) {
                 if (indCol == width + 1) {
                     std::cout << "warning: too many cells in row\n";
                     break;
                 }
-                map[indRow][indCol] = '1';
+                map[indRow][indCol] = OBSTACLE;
                 ++indCol;
             }
             ++buf;

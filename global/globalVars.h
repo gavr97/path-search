@@ -37,4 +37,7 @@ extern unsigned int ALLOW_DIAG_DEFAULT;
 extern unsigned int ALLOW_SQUEEZE_DEFAULT;
 extern unsigned int CUT_CORNERS_DEFAULT;
 
+extern char OBSTACLE;
+extern char NO_OBSTACLE;
+
 #endif //REPO_TAGNAMES_H

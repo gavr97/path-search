@@ -32,6 +32,9 @@ unsigned int ALLOW_DIAG_DEFAULT;
 unsigned int ALLOW_SQUEEZE_DEFAULT;
 unsigned int CUT_CORNERS_DEFAULT;
 
+char OBSTACLE;
+char NO_OBSTACLE;
+
 void initGlobalVars()
 {
     TAG_HEIGHT = "height";
@@ -61,4 +64,7 @@ void initGlobalVars()
     ALLOW_DIAG_DEFAULT = 0;
     ALLOW_SQUEEZE_DEFAULT = 0;
     CUT_CORNERS_DEFAULT = 0;
+
+    OBSTACLE = '1';
+    NO_OBSTACLE = '0';
 }
