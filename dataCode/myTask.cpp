@@ -153,7 +153,6 @@ int Task::readMap(XMLNode * pGrid, Map &map)
 
 int Task::myLoad(const char *nameIn)
 {
-    initGlobalVars();
     // ____load xml tree____
     XMLDocument xmlDoc;
     XMLError eResult;

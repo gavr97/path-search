@@ -9,7 +9,6 @@ SOURCES += main.cpp \
     algorithm/myNode.cpp \
     dataCode/myOutput.cpp \
     dataCode/myTask.cpp \
-    global/globalVars.cpp \
     logger/myLog.cpp \
     tinyxml/tinyxml2.cpp
 

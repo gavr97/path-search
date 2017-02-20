@@ -7,42 +7,40 @@
 
 #include <string>
 
-void initGlobalVars();
 
-extern const char *TAG_HEIGHT;
-extern const char *TAG_WIDTH;
-extern const char *TAG_STARTX;
-extern const char *TAG_STARTY;
-extern const char *TAG__FINISHX;
-extern const char *TAG_FINISHY;
-extern const char *TAG_LINECOST;
-extern const char *TAG_DIAGONALCONST;
-extern const char *TAG_SEARCHTYPE;
-extern const char *TAG_METRICTYPE;
-extern const char *TAG_ALLOWDIAGONAL;
-extern const char *TAG_ALLOWSQUEEZE;
-extern const char *TAG_CUTCORNERS;
-extern const char *TAG_CELLSIZE;
-extern const char *TAG_MAP;
-extern const char *TAG_ALGORITHM;
-extern const char *TAG_GRID;
+#define TAG_HEIGHT "height"
+#define TAG_WIDTH "width"
+#define TAG_STARTX "startx"
+#define TAG_STARTY "starty"
+#define TAG__FINISHX "finishx"
+#define TAG_FINISHY "finishy"
+#define TAG_LINECOST "linecost"
+#define TAG_DIAGONALCONST "diagonalcost"
+#define TAG_SEARCHTYPE "searchtype"
+#define TAG_METRICTYPE "metrictype"
+#define TAG_ALLOWDIAGONAL "allowdiagonal"
+#define TAG_ALLOWSQUEEZE "allowsqueeze"
+#define TAG_CUTCORNERS "cutcorners"
+#define TAG_CELLSIZE "cellsize"
+#define TAG_MAP "map"
+#define TAG_GRID "grid"
+#define TAG_ALGORITHM "algorithm"
 
+#define CELLSIZE_DEFAULT 1
+#define LINE_COST_DEFAULT 1
+#define DIAG_COST_DEFAULT 1.414
+#define STARTX_DEFAULT 0
+#define STARTY_DEFAULT 0
+#define FINISHX_DEFAULT 0
+#define FINISHY_DEFAULT 0
+#define SEARCH_TYPE_DEFAULT std::string("astar")
+#define METRIC_TYPE_DEFAULT "euclid"
+#define ALLOW_DIAG_DEFAULT 0
+#define ALLOW_SQUEEZE_DEFAULT 0
+#define CUT_CORNERS_DEFAULT 0
 
-extern double CELLSIZE_DEFAULT;
-extern double LINE_COST_DEFAULT;
-extern double DIAG_COST_DEFAULT;
-extern unsigned int STARTX_DEFAULT;
-extern unsigned int STARTY_DEFAULT;
-extern unsigned int FINISHX_DEFAULT;
-extern unsigned int FINISHY_DEFAULT;
-extern std::string SEARCH_TYPE_DEFAULT;
-extern std::string METRIC_TYPE_DEFAULT;
-extern std::string BREAKING_TIES_DEFAULT;
-extern unsigned int ALLOW_DIAG_DEFAULT;
-extern unsigned int ALLOW_SQUEEZE_DEFAULT;
-extern unsigned int CUT_CORNERS_DEFAULT;
+#define OBSTACLE '1'
+#define NO_OBSTACLE '0'
 
-extern char OBSTACLE;
-extern char NO_OBSTACLE;
 
 #endif //REPO_TAGNAMES_H
