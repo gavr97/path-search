@@ -6,28 +6,28 @@ QMAKE_LFLAGS += -static
 
 SOURCES += main.cpp \
     algorithm/astar.cpp \
-    algorithm/myNode.cpp \
-    dataCode/myOutput.cpp \
-    dataCode/myTask.cpp \
-    dataCode/Map.cpp \
-    logger/myLog.cpp \
+    algorithm/node.cpp \
+    dataCode/output.cpp \
+    dataCode/task.cpp \
+    dataCode/map.cpp \
+    logger/log.cpp \
     tinyxml/tinyxml2.cpp
 
 DISTFILES += \
     algorithm/astar.h.gch \
-    algorithm/myHeap.h.gch \
-    dataCode/myTask.h.gch \
-    logger/myLog.h.gch \
+    algorithm/heap.h.gch \
+    dataCode/task.h.gch \
+    logger/log.h.gch \
     tinyxml/tinyxml2.h.gch
 
 HEADERS += \
     algorithm/astar.h \
-    algorithm/myHeap.h \
-    algorithm/myNode.h \
-    dataCode/myOutput.h \
-    dataCode/myTask.h \
-    dataCode/Map.h \
+    algorithm/heap.h \
+    algorithm/node.h \
+    dataCode/output.h \
+    dataCode/task.h \
+    dataCode/map.h \
     global/globalTypes.h \
     global/globalVars.h \
-    logger/myLog.h \
+    logger/log.h \
     tinyxml/tinyxml2.h
