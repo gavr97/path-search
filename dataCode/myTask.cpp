@@ -101,7 +101,7 @@ int Task::readMap(XMLNode * pGrid, Map &map)
 
     //_____init boundaries______
     for (indCol = 0; indCol <= width + 1; ++indCol)
-        map[0][indCol] = '1';
+        map[0][indCol] = OBSTACLE;
     indRow = height + 1;
     for (indCol = 0; indCol <= width + 1; ++indCol)
         map[height + 1][indCol] = OBSTACLE;
