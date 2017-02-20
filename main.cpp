@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
     task.print();
 
     //_______Init AStar and Map_____
-    Map map = task.map;
+    Map map(task.grid);
     AStar astar;
     myeResult = astar.init(task);
     if (myeResult) {

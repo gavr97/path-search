@@ -9,6 +9,7 @@ SOURCES += main.cpp \
     algorithm/myNode.cpp \
     dataCode/myOutput.cpp \
     dataCode/myTask.cpp \
+    dataCode/Map.cpp \
     logger/myLog.cpp \
     tinyxml/tinyxml2.cpp
 
@@ -25,6 +26,7 @@ HEADERS += \
     algorithm/myNode.h \
     dataCode/myOutput.h \
     dataCode/myTask.h \
+    dataCode/Map.h \
     global/globalTypes.h \
     global/globalVars.h \
     logger/myLog.h \

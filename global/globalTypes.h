@@ -9,8 +9,8 @@
 #include "../algorithm/myNode.h"
 
 typedef std::vector<Node> Path;
-typedef std::vector<std::vector<char>> Map;
-typedef std::vector<char> MapRow;
+typedef std::vector<char> GridRow;
+typedef std::vector<GridRow> Grid;
 typedef double TypeValue;
 
 #endif //REPO_CONSTANTTYPES_H

@@ -22,6 +22,7 @@
 #include "../algorithm/myHeap.h"
 #include "../global/globalTypes.h"
 #include "../dataCode/myOutput.h"
+#include "../dataCode/Map.h"
 
 using std::cout;
 using std::cin;

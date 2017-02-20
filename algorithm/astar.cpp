@@ -169,7 +169,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
             unsigned keyNeig = key(vx, vy);
             Node nodeNeig{vx, vy, keyNeig};
 
-            if (map[vx][vy] == '0'  && close.find(nodeNeig) == close.end()) {
+            if (map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end()) {
                 if (gTable.find(nodeNeig) == gTable.end()) {
                     ++output.numberOfNodesCreated;
                     //output.nodesCreated.push_back(nodeNeig);

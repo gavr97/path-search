@@ -92,19 +92,19 @@ int Task::readStr(XMLNode *pRoot, const char *tag, std::string &destination, con
     return 0;
 }
 
-int Task::readMap(XMLNode * pGrid, Map &map)
+int Task::readGrid(XMLNode *pGrid, Grid &grid)
 {
-    int height = map.size() - 2;  // h = size - 2 because there is extra rows and cols for boundary
-    int width = map[0].size() - 2;
+    int height = grid.size() - 2;  // h = size - 2 because there is extra rows and cols for boundary
+    int width = grid[0].size() - 2;
     int indRow = 0;
     int indCol = 0;
 
     //_____init boundaries______
     for (indCol = 0; indCol <= width + 1; ++indCol)
-        map[0][indCol] = OBSTACLE;
+        grid[0][indCol] = OBSTACLE;
     indRow = height + 1;
     for (indCol = 0; indCol <= width + 1; ++indCol)
-        map[height + 1][indCol] = OBSTACLE;
+        grid[height + 1][indCol] = OBSTACLE;
     std::cout << "boundaries are inited\n";
 
     //______read map_______
@@ -116,8 +116,8 @@ int Task::readMap(XMLNode * pGrid, Map &map)
             break;
         }
         const char *buf = pRow->GetText();
-        map[indRow][0] = OBSTACLE;
-        map[indRow][width + 1] = OBSTACLE;
+        grid[indRow][0] = OBSTACLE;
+        grid[indRow][width + 1] = OBSTACLE;
         indCol = 1;
         while (*buf) {
             if (*buf == NO_OBSTACLE) {
@@ -125,14 +125,14 @@ int Task::readMap(XMLNode * pGrid, Map &map)
                     std::cout << "warning: too many cells in row\n";
                     break;
                 }
-                map[indRow][indCol] = NO_OBSTACLE;
+                grid[indRow][indCol] = NO_OBSTACLE;
                 ++indCol;
             } else if (*buf == OBSTACLE) {
                 if (indCol == width + 1) {
                     std::cout << "warning: too many cells in row\n";
                     break;
                 }
-                map[indRow][indCol] = OBSTACLE;
+                grid[indRow][indCol] = OBSTACLE;
                 ++indCol;
             } else  if (*buf != ' ') {
                 std::cout << "warning: unexpected character in the grid on the "
@@ -230,9 +230,9 @@ int Task::myLoad(const char *nameIn)
     std::cout << "specific information about task has been read succesfully\n";
 
     // _______read map___________
-    Map map(this->cntRealRows + 2, MapRow(this->cntRealCols + 2));
-    this->map = map;
-    if(readMap(pGrid, this->map)) return 1;
+    Grid grid(this->cntRealRows + 2, MapRow(this->cntRealCols + 2));
+    this->grid = grid;
+    if(readGrid(pGrid, this->grid)) return 1;
     std::cout << "map has been read successfully\n" << std::endl;
     return 0;
 }

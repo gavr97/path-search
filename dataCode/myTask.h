@@ -11,6 +11,7 @@
 #include <string>
 #include "../global/globalTypes.h"
 #include "../global/globalVars.h"
+#include "../dataCode/Map.h"
 
 using namespace tinyxml2;
 
@@ -18,7 +19,7 @@ class Task{
 public:
     unsigned int cntRealRows;
     unsigned int cntRealCols;
-    Map map;
+    Grid grid;
     double lineCost;
     double diagCost;
     unsigned int allowDiag;
@@ -43,7 +44,7 @@ private:
 
     int readStr(XMLNode *pRoot, const char *tag, std::string &destination, const std::string DEFAULT, bool obligatory);
 
-    int readMap(XMLNode *pRoot, Map &map);
+    int readGrid(XMLNode *pRoot, Grid &grid);
 };
 
 #endif //REPO_MYMAP_H

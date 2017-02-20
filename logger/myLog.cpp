@@ -12,10 +12,10 @@
 #define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("TinyXML Error: %i\n", a_eResult); return a_eResult; }
 #endif
 
-void const printMap(const Map &map)
+void const printMap(const Grid &grid)
 {
     std::cout << "\nMAP with drawn path\n";
-    for (const auto &row : map) {
+    for (const auto &row : grid) {
         for (const auto &elem : row)
             std::cout << elem;
         std::cout << std::endl;
@@ -82,24 +82,24 @@ int Log::savePath(const std::vector<Node> &path, const std::vector<double> &weig
 
 int Log::saveMap(const std::vector<Node> &path, const Map &map)
 {
-    Map mapRes = map;
+    Grid gridRes = map.grid;
     for (const auto &node : path) {
         unsigned x = node.x;
         unsigned y = node.y;
         // at the moment coordinates are considered to be as inside representation(not graphical system)
-        mapRes[x][y] = '*';
+        gridRes[x][y] = '*';
     }
-    //printMap(mapRes);
+    //printMap(gridRes);
 
-    unsigned bufSize = mapRes[0].size() * 3 + 1;
+    unsigned bufSize = gridRes[0].size() * 3 + 1;
     pPath = xmlDoc.NewElement("path");
-    for (unsigned indRow = 1; indRow != mapRes.size() - 1; ++indRow) {
+    for (unsigned indRow = 1; indRow != gridRes.size() - 1; ++indRow) {
         XMLElement *cell = xmlDoc.NewElement("row");
         cell->SetAttribute("number", indRow - 1);
         char str[bufSize];
         unsigned indStr = 0;
-        for (unsigned indCol = 1; indCol != mapRes[0].size() - 1; ++indCol) {
-            str[indStr] = mapRes[indRow][indCol];
+        for (unsigned indCol = 1; indCol != gridRes[0].size() - 1; ++indCol) {
+            str[indStr] = gridRes[indRow][indCol];
             str[indStr + 1] = ' ';
             indStr += 2;
         }
