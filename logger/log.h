@@ -10,8 +10,8 @@
 #include "../tinyxml/tinyxml2.h"
 #include "../global/globalTypes.h"
 #include "../global/globalVars.h"
-#include "../dataCode/myOutput.h"
-#include "../dataCode/Map.h"
+#include "../dataCode/output.h"
+#include "../dataCode/map.h"
 
 using namespace tinyxml2;
 

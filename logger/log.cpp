@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include "../logger/myLog.h"
+#include "log.h"
 
 void const printMap(const Grid &grid)
 {

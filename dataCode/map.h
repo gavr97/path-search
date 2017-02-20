@@ -6,7 +6,7 @@
 #define REPO_MAP_H
 
 #include <vector>
-#include "../algorithm/myNode.h"
+#include "../algorithm/node.h"
 
 class Map {
 public:

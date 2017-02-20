@@ -2,7 +2,7 @@
 // Created by alexgavr on 20.02.17.
 //
 
-#include "Map.h"
+#include "map.h"
 
 Map::Map(std::vector<MapRow> grid)
 {

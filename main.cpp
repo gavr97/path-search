@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
-#include "dataCode/myTask.h"
-#include "logger/myLog.h"
-#include "dataCode/myOutput.h"
+#include "dataCode/task.h"
+#include "logger/log.h"
+#include "dataCode/output.h"
 #include "algorithm/astar.h"
 
 #include <fstream>

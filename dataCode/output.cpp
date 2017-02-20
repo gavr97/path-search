@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include "myOutput.h"
+#include "output.h"
 
 Output::Output()
 {

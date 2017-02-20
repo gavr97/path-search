@@ -17,11 +17,11 @@
 #include <unordered_map>
 #include <map>
 #include <set>
-#include "../dataCode/myTask.h"
-#include "../algorithm/myHeap.h"
+#include "../dataCode/task.h"
+#include "heap.h"
 #include "../global/globalTypes.h"
-#include "../dataCode/myOutput.h"
-#include "../dataCode/Map.h"
+#include "../dataCode/output.h"
+#include "../dataCode/map.h"
 
 using std::cout;
 using std::cin;

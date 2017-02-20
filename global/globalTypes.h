@@ -6,7 +6,7 @@
 #define REPO_CONSTANTTYPES_H
 
 #include <vector>
-#include "../algorithm/myNode.h"
+#include "../algorithm/node.h"
 
 typedef std::vector<Node> Path;
 typedef std::vector<char> GridRow;
