@@ -56,7 +56,7 @@ private:
     inline unsigned coordinateSecond(unsigned key);
 
     bool computeGValues(const Map &map, Output &output);
-    int constructPath(Output &output);
+    bool constructPath(Output &output);
 
 public:
     int init (const Task &task);

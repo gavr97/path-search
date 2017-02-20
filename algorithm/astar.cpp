@@ -119,8 +119,8 @@ int AStar::init(const Task &task)
 
 int AStar::solve(const Map &map, Output &output)
 {
-    if (!computeGValues(map, output)) {
-        if (!constructPath(output)) {
+    if (computeGValues(map, output)) {
+        if (constructPath(output)) {
             //std::cout << "path is succesfully found\n";
             return 0;
         } else {
@@ -160,7 +160,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
         close[nodeNow] = gTable[nodeNow];
         //gTable.erase(nodeNow); its g-val is not neccessary anymore(in the end of iteration!)
         if (nodeNow.key == nodeFinish.key)
-            return false;  // returned value is whether situation is bad or not
+            return true;  // returned value;
 
         unsigned ux = nodeNow.x, uy = nodeNow.y;
         for (unsigned ind = 0; ind != dyVec.size(); ++ind) {
@@ -194,10 +194,10 @@ bool AStar::computeGValues(const Map &map, Output &output)
         }
         gTable.erase(nodeNow);  // its g-val is not neccessary anymore(in the end of iteration!)
     }
-    return true;  // goal is not reached, thus situation is bad and true is returned
+    return false;  // goal is not reached, thus situation is bad and true is returned
 }
 
-int AStar::constructPath(Output &output)
+bool AStar::constructPath(Output &output)
 {
     Node nodeStart{startX, startY, key(startX, startY)};
     unsigned keyNow = key(finishX, finishY);
@@ -224,11 +224,11 @@ int AStar::constructPath(Output &output)
             }
         }
         if (!isInited) {
-            return 1;
+            return false;
         }
         output.weightMovements.push_back(weightVec[bestIndMovement]);
         output.lengtnPath += weightVec[bestIndMovement];
         nodeNow = nodeNext;
     }
-    return 0;
+    return true;
 }
