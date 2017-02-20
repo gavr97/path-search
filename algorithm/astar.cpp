@@ -162,7 +162,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
             unsigned keyNeig = key(vx, vy);
             Node nodeNeig{vx, vy, keyNeig};
 
-            if (map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end()) {
+            if (!map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end()) {
                 if (!nodeNeig.isCreated) {
                     ++output.numberOfNodesCreated;
                     //output.nodesCreated.push_back(nodeNeig);
