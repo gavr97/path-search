@@ -18,6 +18,9 @@ const char *TAG_ALLOWDIAGONAL;
 const char *TAG_ALLOWSQUEEZE;
 const char *TAG_CUTCORNERS;
 const char *TAG_CELLSIZE;
+const char *TAG_MAP;
+const char *TAG_ALGORITHM;
+const char *TAG_GRID;
 
 double CELLSIZE_DEFAULT;
 double LINE_COST_DEFAULT;
@@ -28,6 +31,7 @@ unsigned int FINISHX_DEFAULT;
 unsigned int FINISHY_DEFAULT;
 std::string SEARCH_TYPE_DEFAULT;
 std::string METRIC_TYPE_DEFAULT;
+std::string BREAKING_TIES_DEFAULT;
 unsigned int ALLOW_DIAG_DEFAULT;
 unsigned int ALLOW_SQUEEZE_DEFAULT;
 unsigned int CUT_CORNERS_DEFAULT;
@@ -51,6 +55,9 @@ void initGlobalVars()
     TAG_ALLOWSQUEEZE = "allowsqueeze";
     TAG_CUTCORNERS = "cutcorners";
     TAG_CELLSIZE = "cellsize";
+    TAG_MAP = "map";
+    TAG_GRID = "grid";
+    TAG_ALGORITHM = "algorithm";
 
     CELLSIZE_DEFAULT = 1;
     LINE_COST_DEFAULT = 1;

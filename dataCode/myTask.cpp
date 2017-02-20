@@ -173,18 +173,18 @@ int Task::myLoad(const char *nameIn)
     std::cout << "XML has been read\n";
 
     // _______check obligatory tags________
-    XMLNode *pMap = pRoot->FirstChildElement("map");
+    XMLNode *pMap = pRoot->FirstChildElement(TAG_MAP);
     if (pMap == nullptr) {
         std::cout << "error: incorrect structure of xml file: trere is no tag map\n";
         return 1;
         // exit(1);
     }
-    XMLNode *pGrid = pMap->FirstChildElement("grid");
+    XMLNode *pGrid = pMap->FirstChildElement(TAG_GRID);
     if (pGrid == nullptr) {
         std::cout << "error: incorrect structure of xml file: trere is no tag grid in subtree map\n";
         return 1;
     }
-    XMLNode *pAlgorithm = pRoot->FirstChildElement("algorithm");
+    XMLNode *pAlgorithm = pRoot->FirstChildElement(TAG_ALGORITHM);
     if (pAlgorithm == nullptr) {
         std::cout << "error: incorrect structure of xml file: trere is no tag algorithm\n";
         return 1;
