@@ -168,14 +168,16 @@ bool AStar::computeGValues(const Map &map, Output &output)
                     //output.nodesCreated.push_back(nodeNeig);
                     TypeValue  gVal = nodeNow.gVal + weightVec[ind];
                     nodeNeig.gVal = gVal;
-                    open.push(gVal + heuristic(nodeNeig, nodeFinish), nodeNeig);
+                    nodeNeig.fVal = gVal + heuristic(nodeNeig, nodeFinish);
+                    open.push(nodeNeig.fVal, nodeNeig);
                 } else {
                     TypeValue  gVal = nodeNow.gVal + weightVec[ind];
                     TypeValue  gOldVal = nodeNeig.gVal;
                     if (gVal < gOldVal) {
                         nodeNeig.gVal = gVal;
+                        nodeNeig.fVal = gVal + heuristic(nodeNeig, nodeFinish);
                         TypeValue hVal = heuristic(nodeNeig, nodeFinish);
-                        if (open.decreaseVal(gOldVal + hVal, nodeNeig, gVal + hVal)) {
+                        if (open.decreaseVal(gOldVal + hVal, nodeNeig, nodeNeig.fVal)) {
                             std::cout << "error: failure during computation g-values\n"
                                       << "astar attempted to modify f-val in open but did not find it\n"
                                       << std::endl;
