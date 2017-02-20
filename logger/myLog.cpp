@@ -3,14 +3,7 @@
 //
 
 #include <iostream>
-#include <map>
-#include "../dataCode/myTask.h"
 #include "../logger/myLog.h"
-#include "../dataCode/myOutput.h"
-
-#ifndef XMLCheckResult
-#define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("TinyXML Error: %i\n", a_eResult); return a_eResult; }
-#endif
 
 void const printMap(const Grid &grid)
 {

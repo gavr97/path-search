@@ -11,7 +11,6 @@
 #include "../global/globalTypes.h"
 #include "../global/globalVars.h"
 #include "../dataCode/myOutput.h"
-#include "../dataCode/myTask.h"
 #include "../dataCode/Map.h"
 
 using namespace tinyxml2;

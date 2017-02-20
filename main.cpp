@@ -7,7 +7,6 @@
 
 #include <fstream>
 #include <ctime>
-#include <cstring>
 
 int main(int argc, char *argv[]) {
     //________specify input and output names________

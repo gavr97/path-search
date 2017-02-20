@@ -7,11 +7,9 @@
 
 #include <vector>
 #include "../tinyxml/tinyxml2.h"
-#include "../logger/myLog.h"
 #include <string>
 #include "../global/globalTypes.h"
 #include "../global/globalVars.h"
-#include "../dataCode/Map.h"
 
 using namespace tinyxml2;
 

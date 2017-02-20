@@ -2,14 +2,8 @@
 // Created by alexgavr on 07.01.17.
 //
 
-#include <vector>
 #include <cmath>
-#include <string>
-#include "../dataCode/myTask.h"
-#include "../logger/myLog.h"
-#include "../algorithm/myHeap.h"
 #include "../algorithm/astar.h"
-#include "../dataCode/myOutput.h"
 
 // for debug
 void AStar::printClose()

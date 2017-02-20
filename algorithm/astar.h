@@ -17,7 +17,6 @@
 #include <unordered_map>
 #include <map>
 #include <set>
-#include <bits/unordered_map.h>
 #include "../dataCode/myTask.h"
 #include "../algorithm/myHeap.h"
 #include "../global/globalTypes.h"
