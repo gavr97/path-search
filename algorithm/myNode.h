@@ -9,6 +9,9 @@ struct Node{
     unsigned x;
     unsigned y;
     unsigned key;
+    double gVal;
+    double fVal;
+    bool isCreated;
 
     bool operator <(const Node &right) const;
     bool operator <(Node &right);
