@@ -134,6 +134,9 @@ int Task::readMap(XMLNode * pGrid, Map &map)
                 }
                 map[indRow][indCol] = OBSTACLE;
                 ++indCol;
+            } else  if (*buf != ' ') {
+                std::cout << "warning: unexpected character in the grid on the "
+                          << indRow << " row, which is not taken into account\n";
             }
             ++buf;
         }
