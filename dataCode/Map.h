@@ -8,14 +8,12 @@
 #include <vector>
 #include "../algorithm/myNode.h"
 
-typedef std::vector<char> MapRow;
-
 class Map {
 public:
-    std::vector<MapRow> grid;
+    std::vector<GridRow> grid;
 
 public:
-    Map(std::vector<MapRow> grid);
+    Map(std::vector<GridRow> grid);
     bool isObstacle(Node node) const;
     bool isObstacle(unsigned x, unsigned y) const;
 };
