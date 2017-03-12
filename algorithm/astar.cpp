@@ -133,19 +133,26 @@ bool AStar::computeGValues(const Map &map, Output &output)
     // open, close are inside AStar astar
     // open is a set of (f-val, Node)
     // close is a set of (Node, g-val);
+    // gTable is a local variable
+    // gTable is a set of (Node, g-val)
+
+    // gTable and open contain the same nodes;
+    // gTable: node -> g-val
     // open: (f-val, node)
+    std::map<Node, TypeValue> gTable;
     unsigned keyNow = key(startX, startY);
     Node nodeNow{startX, startY, keyNow};
     Node nodeFinish{finishX, finishY, key(finishX, finishY)};
-    nodeNow.gVal = 0, nodeNow.fVal = 0 + heuristic(nodeNow, nodeFinish);
 
-    open.push(nodeNow.fVal, nodeNow);
+    open.push(0 + heuristic(nodeNow, nodeFinish), nodeNow);
+    gTable[nodeNow] = 0;
     ++output.numberOfNodesCreated;
     // output.nodesCreated.push_back(nodeNow);
     while (!open.empty()) {
         ++output.numberOfSteps;
         nodeNow = open.pop();
-        close[nodeNow] = nodeNow.gVal;
+        close[nodeNow] = gTable[nodeNow];
+        //gTable.erase(nodeNow); its g-val is not neccessary anymore(in the end of iteration!)
         if (nodeNow.key == nodeFinish.key)
             return true;  // returned value;
 
@@ -157,21 +164,19 @@ bool AStar::computeGValues(const Map &map, Output &output)
             Node nodeNeig{vx, vy, keyNeig};
 
             if (!map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end()) {
-                if (!nodeNeig.isCreated) {
+                if (gTable.find(nodeNeig) == gTable.end()) {
                     ++output.numberOfNodesCreated;
                     //output.nodesCreated.push_back(nodeNeig);
-                    TypeValue  gVal = nodeNow.gVal + weightVec[ind];
-                    nodeNeig.gVal = gVal;
-                    nodeNeig.fVal = gVal + heuristic(nodeNeig, nodeFinish);
-                    open.push(nodeNeig.fVal, nodeNeig);
+                    TypeValue  gVal = gTable[nodeNow] + weightVec[ind];
+                    gTable[nodeNeig] = gVal;
+                    open.push(gVal + heuristic(nodeNeig, nodeFinish), nodeNeig);
                 } else {
-                    TypeValue  gVal = nodeNow.gVal + weightVec[ind];
-                    TypeValue  gOldVal = nodeNeig.gVal;
+                    TypeValue  gVal = gTable[nodeNow] + weightVec[ind];
+                    TypeValue  gOldVal = gTable[nodeNeig];
                     if (gVal < gOldVal) {
-                        nodeNeig.gVal = gVal;
-                        nodeNeig.fVal = gVal + heuristic(nodeNeig, nodeFinish);
+                        gTable[nodeNeig] = gVal;
                         TypeValue hVal = heuristic(nodeNeig, nodeFinish);
-                        if (open.decreaseVal(gOldVal + hVal, nodeNeig, nodeNeig.fVal)) {
+                        if (open.decreaseVal(gOldVal + hVal, nodeNeig, gVal + hVal)) {
                             std::cout << "error: failure during computation g-values\n"
                                       << "astar attempted to modify f-val in open but did not find it\n"
                                       << std::endl;
@@ -181,6 +186,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
                 }
             }
         }
+        gTable.erase(nodeNow);  // its g-val is not neccessary anymore(in the end of iteration!)
     }
     return false;  // goal is not reached, thus situation is bad and true is returned
 }
