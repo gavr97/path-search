@@ -37,7 +37,6 @@ private:
     std::vector<short> dxVec;
     std::vector<short> dyVec;
     std::vector<TypeValue> weightVec;
-    bool allowSqueeze();
 
     //____ commom members______
     unsigned cntRealCols;
@@ -46,6 +45,9 @@ private:
     unsigned startY;
     unsigned finishX;
     unsigned finishY;
+    unsigned int allowDiag;
+    unsigned int allowSqueeze;
+    unsigned int cutCorners;
 
     std::map<Node, TypeValue> close;  // node->g-value
     Heap open;  // a set of pairs(f-value, Node)

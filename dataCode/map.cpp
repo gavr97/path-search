@@ -7,6 +7,7 @@
 #include "../global/globalTypes.h"
 #include "../global/globalVars.h"
 #include "map.h"
+#include <cmath>
 
 Map::Map()
 {
@@ -26,6 +27,22 @@ bool Map::isObstacle(Node node) const
 bool Map::isObstacle(unsigned x, unsigned y) const
 {
     return grid[x][y] == '1';
+}
+
+bool Map::isAllowed(unsigned ux, unsigned uy, unsigned vx, unsigned vy,
+               unsigned int allowDiag, unsigned int allowSqueeze, unsigned int cutCorners) const
+{
+    // as we here, (vx, vy) - is not obstacle
+    // also allowdiag  == 1 (otherwise we can not be here
+    int diff = abs((int)ux - (int)vx) + abs((int)uy - (int)vy);
+    if (diff == 1 || allowSqueeze == 1)
+        return 1;
+    unsigned firstx = ux, firsty = vy;
+    unsigned secondx = vx, secondy = uy;
+    if (!(this->isObstacle(firstx, firsty)) || !(this->isObstacle(secondx, secondy))) {
+        return 1;
+    }
+    return 0;
 }
 
 Map::Map(const char *nameIn)
