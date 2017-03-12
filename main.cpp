@@ -9,10 +9,11 @@
 #include <ctime>
 
 int main(int argc, char *argv[]) {
+    int RES = 0;
     //________specify input and output names________
     if (argc == 1) {
         std::cout << "error: input XML is not specified\n";
-        return 0;
+        return 1;
     }
     const char *nameIn = argv[1];
     const char *nameOut;
@@ -30,7 +31,7 @@ int main(int argc, char *argv[]) {
     myeResult = task.myLoad(nameIn);  // char* ! not std::string;
     if (myeResult) {
         std::cout << "task: " << nameIn << " is skipped\n";
-        return 0;
+        return 1;
     }
     task.print();
 
@@ -40,7 +41,7 @@ int main(int argc, char *argv[]) {
     myeResult = astar.init(task);
     if (myeResult) {
         std::cout << "error: failure during initializing astar\n";
-        return 0;
+        return 1;
     }
 
     //_______Solve Task_________
@@ -48,8 +49,10 @@ int main(int argc, char *argv[]) {
     if (myeResult) {
         std::cout << "no path found in task\n"
                   << "Naturally, Path is not saved in output\n";
+        RES = 1;
     } else {
         std::cout << "path is found\n";
+        RES = 0;
     }
 
     //_____Save results and write_____
@@ -57,5 +60,5 @@ int main(int argc, char *argv[]) {
     log.write(nameOut);
     // на данный момент логгер уже ПРИВЯЗАН к текущей задаче(имеет поле xmlDoc, соответствующее этой задаче)
     // log.clean()??
-    return 0;
+    return RES;
 }
