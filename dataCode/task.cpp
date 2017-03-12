@@ -191,6 +191,10 @@ int Task::myLoad(const char *nameIn)
     // two last arguments: default_value AND whether obligatory or not
     if(readInt(pMap, TAG_HEIGHT, this->cntRealRows, 0, 1)) return 1;
     if(readInt(pMap, TAG_WIDTH, this->cntRealCols, 0, 1)) return 1;
+    if (cntRealCols > 1000000 || cntRealRows > 1000000) {
+        std::cout << "error: height and width of map are too big\n";
+        return 1;
+    }
     if(readInt(pMap, TAG_STARTX, this->startX, STARTX_DEFAULT)) return 1;
     if(readInt(pMap, TAG_STARTY, this->startY, STARTY_DEFAULT)) return 1;
     if(readInt(pMap, TAG__FINISHX, this->finishX, FINISHX_DEFAULT)) return 1;
