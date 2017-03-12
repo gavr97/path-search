@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     std:: cout << "name of input = " << nameIn << std::endl;
     std:: cout << "name of output = " << nameOut << std::endl << std::endl;
 
-    //________Init Task________
+    //________Init Task________  reads everything except GRID. It is for Map
     int myeResult = 0;
     Task task; Output output; Log log;
     myeResult = task.myLoad(nameIn);  // char* ! not std::string;
@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
     task.print();
 
     //_______Init AStar and Map_____
-    Map map(task.grid);
+    Map map; map.readMap(nameIn);
     AStar astar;
     myeResult = astar.init(task);
     if (myeResult) {
@@ -58,7 +58,5 @@ int main(int argc, char *argv[]) {
     //_____Save results and write_____
     myeResult = log.saveData(nameIn, output, map);  // arg-map is neccessary because of drawing map with path
     log.write(nameOut);
-    // на данный момент логгер уже ПРИВЯЗАН к текущей задаче(имеет поле xmlDoc, соответствующее этой задаче)
-    // log.clean()??
     return RES;
 }

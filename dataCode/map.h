@@ -7,15 +7,28 @@
 
 #include <vector>
 #include "../algorithm/node.h"
+#include "../tinyxml/tinyxml2.h"
+#include "../global/globalTypes.h"
+
+using namespace tinyxml2;
 
 class Map {
-public:
-    std::vector<GridRow> grid;
+
+private:
+    unsigned cntRealRows;
+    unsigned cntRealCols;
+
+    int readInt(XMLNode *pRoot, const char *tag, unsigned int &destination, unsigned int DEFAULT, bool obligatory);
+    int readGrid(XMLNode *pRoot, Grid &grid);
 
 public:
+    std::vector<GridRow> grid;
+    Map();
     Map(std::vector<GridRow> grid);
+    Map(const char *nameIn);
     bool isObstacle(Node node) const;
     bool isObstacle(unsigned x, unsigned y) const;
+    int readMap(const char *nameIn);
 };
 
 

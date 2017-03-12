@@ -226,10 +226,10 @@ int Task::myLoad(const char *nameIn)
     std::cout << "specific information about task has been read succesfully\n";
 
     // _______read map___________
-    Grid grid(this->cntRealRows + 2, GridRow(this->cntRealCols + 2));
-    this->grid = grid;
-    if(readGrid(pGrid, this->grid)) return 1;
-    std::cout << "map has been read successfully\n" << std::endl;
+    //Grid grid(this->cntRealRows + 2, GridRow(this->cntRealCols + 2));
+    //this->grid = grid;
+    //if(readGrid(pGrid, this->grid)) return 1;
+    //std::cout << "map has been read successfully\n" << std::endl;
     return 0;
 }
 
