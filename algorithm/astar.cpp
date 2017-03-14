@@ -12,7 +12,7 @@ void AStar::printClose()
         for (unsigned indCol = 1; indCol != cntRealCols + 1; ++indCol) {
             Node node{indRow, indCol, key(indRow, indCol)};
             if (close.find(node) == close.end()) {
-                printf("%*.2f", 6, -1);
+                printf("%*.2f", 6, -12);
             } else {
                 printf("%*.2f", 6, close[node]);
             }
@@ -118,6 +118,7 @@ int AStar::init(const Task &task)
 int AStar::solve(const Map &map, Output &output)
 {
     if (computeGValues(map, output)) {
+        std::cout << "good computation G\n";
         if (constructPath(output)) {
             //std::cout << "path is succesfully found\n";
             return 0;
@@ -137,27 +138,18 @@ bool AStar::computeGValues(const Map &map, Output &output)
     // open, close are inside AStar astar
     // open is a set of (f-val, Node)
     // close is a set of (Node, g-val);
-    // gTable is a local variable
-    // gTable is a set of (Node, g-val)
-
-    // gTable and open contain the same nodes;
-    // gTable: node -> g-val
     // open: (f-val, node)
-    std::map<Node, TypeValue> gTable;
     unsigned keyNow = key(startX, startY);
-    Node nodeNow{startX, startY, keyNow};
     Node nodeFinish{finishX, finishY, key(finishX, finishY)};
-
-    open.push(0 + heuristic(nodeNow, nodeFinish), nodeNow);
-    gTable[nodeNow] = 0;
+    Node nodeNow{startX, startY, keyNow, 0, 0 + heuristic(nodeNow, nodeFinish)};
+    open.push(nodeNow);
     ++output.numberOfNodesCreated;
     // output.nodesCreated.push_back(nodeNow);
     while (!open.empty()) {
         ++output.numberOfSteps;
         nodeNow = open.pop();
-        close[nodeNow] = gTable[nodeNow];
-        //gTable.erase(nodeNow); its g-val is not neccessary anymore(in the end of iteration!)
-        if (nodeNow.key == nodeFinish.key)
+        close[nodeNow] = nodeNow.gVal;  // TODO here
+        if (nodeNow == nodeFinish)
             return true;  // returned value;
 
         unsigned ux = nodeNow.x, uy = nodeNow.y;
@@ -166,32 +158,33 @@ bool AStar::computeGValues(const Map &map, Output &output)
             unsigned vy = uy + dyVec[ind];
             unsigned keyNeig = key(vx, vy);
             Node nodeNeig{vx, vy, keyNeig};
-
+            if (open.find(nodeNeig) != open.end()) {  // if is already created
+                nodeNeig = open[nodeNeig];
+            }
             if (!map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end() &&
                 map.isAllowed(ux, ux, vx, vy, allowDiag, allowSqueeze, cutCorners)) {
-                if (gTable.find(nodeNeig) == gTable.end()) {
+                if (open.find(nodeNeig) == open.end()) {
                     ++output.numberOfNodesCreated;
                     //output.nodesCreated.push_back(nodeNeig);
-                    TypeValue  gVal = gTable[nodeNow] + weightVec[ind];
-                    gTable[nodeNeig] = gVal;
-                    open.push(gVal + heuristic(nodeNeig, nodeFinish), nodeNeig);
+                    TypeValue  gVal = nodeNow.gVal + weightVec[ind];
+                    nodeNeig.gVal = gVal;
+                    nodeNeig.fVal = gVal + heuristic(nodeNeig, nodeFinish);
+                    open.push(nodeNeig);
                 } else {
-                    TypeValue  gVal = gTable[nodeNow] + weightVec[ind];
-                    TypeValue  gOldVal = gTable[nodeNeig];
+                    TypeValue  gVal = nodeNow.gVal + weightVec[ind];
+                    TypeValue  gOldVal = nodeNeig.gVal;
                     if (gVal < gOldVal) {
-                        gTable[nodeNeig] = gVal;
                         TypeValue hVal = heuristic(nodeNeig, nodeFinish);
-                        if (open.decreaseVal(gOldVal + hVal, nodeNeig, gVal + hVal)) {
+                        if (open.decreaseVal(nodeNeig, gVal, gVal + hVal)) {
                             std::cout << "error: failure during computation g-values\n"
                                       << "astar attempted to modify f-val in open but did not find it\n"
                                       << std::endl;
-                            return true;
+                            return false;
                         }
                     }
                 }
             }
         }
-        gTable.erase(nodeNow);  // its g-val is not neccessary anymore(in the end of iteration!)
     }
     return false;  // goal is not reached, thus situation is bad and true is returned
 }

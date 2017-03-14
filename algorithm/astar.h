@@ -29,6 +29,14 @@ using std::endl;
 using std::vector;
 using std::pair;
 
+class cmp {
+public:
+    bool operator()(const Node &left, const Node &right)
+    {
+        return left.key < right.key;
+    }
+};
+
 class AStar {
 private:
     //____members that define features of algorithm(object)_____
@@ -49,7 +57,7 @@ private:
     unsigned int allowSqueeze;
     unsigned int cutCorners;
 
-    std::map<Node, TypeValue> close;  // node->g-value
+    std::map<Node, TypeValue, cmp> close;  // node->g-value
     Heap open;  // a set of pairs(f-value, Node)
 
     inline unsigned key(unsigned ux, unsigned uy);

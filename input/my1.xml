@@ -2,16 +2,16 @@
     <desc>This file contains task for plaining system (Pathfinding)</desc>
     <map>
         <title>blastedlands</title>
-        <width>3</width>
-        <height>3</height>
+        <width>2</width>
+        <height>2</height>
         <cellsize>5</cellsize>
         <startx>0</startx>
         <starty>0</starty>
         <finishx>1</finishx>
         <finishy>1</finishy>
         <grid>
-            <row>000</row>
-            <row>010</row>
+            <row>00</row>
+            <row>00</row>
             <row>010</row>
         </grid>
     </map>
@@ -22,7 +22,7 @@
         <breakingties>g-max</breakingties>
         <linecost>1</linecost>
         <diagonalcost>1.5</diagonalcost>
-        <allowdiagonal>1</allowdiagonal>
+        <allowdiagonal>0</allowdiagonal>
         <allowsqueeze>0</allowsqueeze>
     </algorithm>
     <options>

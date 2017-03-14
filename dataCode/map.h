@@ -6,7 +6,6 @@
 #define REPO_MAP_H
 
 #include <vector>
-#include "../algorithm/node.h"
 #include "../tinyxml/tinyxml2.h"
 #include "../global/globalTypes.h"
 

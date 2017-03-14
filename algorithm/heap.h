@@ -19,7 +19,7 @@ public:
     void push(Node node)
     {
         set.insert(node);
-        hash_table.[node.key] = node;
+        hash_table[node.key] = node;
     }
 
     Node pop()
@@ -30,18 +30,36 @@ public:
         return node;
     }
 
-    bool decreaseVal(Node node, TypeValue newVal)
+    std::unordered_map<unsigned, Node>::const_iterator find(Node node) const
+    {
+        return hash_table.find(node.key);
+    };
+
+    std::unordered_map<unsigned, Node>::const_iterator end() const
+    {
+        return hash_table.end();
+    };
+
+    bool decreaseVal(Node node, TypeValue gVal, TypeValue fVal)
     {
         auto ptr = set.find(node);
         if (ptr == set.end())
             return true;  // an error occured
         set.erase(ptr);
-        node.fVal = newVal;
+        hash_table.erase(node.key);
+        node.gVal = gVal;
+        node.fVal = fVal;
         set.insert(node);
+        hash_table[node.key] = node;
         return false;
     }
 
-    bool empty()
+    Node operator[] (Node node) const
+    {
+        return hash_table.find(node.key)->second;
+    }
+
+    bool empty() const
     {
         return set.empty();
     }
