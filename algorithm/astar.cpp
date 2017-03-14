@@ -162,7 +162,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
                 nodeNeig = open[nodeNeig];
             }
             if (!map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end() &&
-                map.isAllowed(ux, ux, vx, vy, allowDiag, allowSqueeze, cutCorners)) {  // TODO 
+                map.isAllowed(ux, ux, vx, vy, allowDiag, allowSqueeze, cutCorners)) {  // TODO
                 if (open.find(nodeNeig) == open.end()) {
                     ++output.numberOfNodesCreated;
                     //output.nodesCreated.push_back(nodeNeig);

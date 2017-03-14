@@ -8,8 +8,6 @@
 #include <unordered_set>
 #include "../global/globalTypes.h"
 
-typedef double TypeValue;
-
 class Heap {
 private:
     std::set<Node> set;

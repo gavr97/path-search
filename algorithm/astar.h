@@ -18,11 +18,11 @@
 #include <map>
 #include <set>
 #include "../dataCode/task.h"
-#include "heap.h"
 #include "../global/globalTypes.h"
 #include "../dataCode/output.h"
 #include "../dataCode/map.h"
-#include "Close.h"
+#include "open.h"
+#include "close.h"
 
 using std::cout;
 using std::cin;
@@ -60,7 +60,7 @@ private:
 
     //std::unordered_map<unsigned, Node> close;  // node->g-value
     Close close;
-    Heap open;  // a set of pairs(f-value, Node)
+    Open open;  // a set of pairs(f-value, Node)
 
     inline unsigned key(unsigned ux, unsigned uy);
     inline unsigned coordinateFirst(unsigned key);

@@ -2,7 +2,7 @@
 // Created by alexgavr on 14.03.17.
 //
 
-#include "Close.h"
+#include "close.h"
 
 
 void Close::push(Node node)
