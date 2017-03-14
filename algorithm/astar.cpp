@@ -14,7 +14,7 @@ void AStar::printClose()
             if (close.find(node) == close.end()) {
                 printf("%*.2f", 6, -12);
             } else {
-                printf("%*.2f", 6, close[node]);
+                printf("%*.2f", 6, (close.find(node)->second).gVal);
             }
         }
         printf("\n");
@@ -162,7 +162,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
                 nodeNeig = open[nodeNeig];
             }
             if (!map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end() &&
-                map.isAllowed(ux, ux, vx, vy, allowDiag, allowSqueeze, cutCorners)) {
+                map.isAllowed(ux, ux, vx, vy, allowDiag, allowSqueeze, cutCorners)) {  // TODO 
                 if (open.find(nodeNeig) == open.end()) {
                     ++output.numberOfNodesCreated;
                     //output.nodesCreated.push_back(nodeNeig);

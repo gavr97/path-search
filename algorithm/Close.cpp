@@ -4,10 +4,6 @@
 
 #include "Close.h"
 
-Node& Close::operator[] (Node node)
-{
-    return hash_table.find(node.key)->second;
-}
 
 void Close::push(Node node)
 {

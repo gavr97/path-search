@@ -12,11 +12,9 @@ private:
     std::unordered_map<unsigned, Node> hash_table;
 
 public:
-    Node& operator[] (Node node);
     void push(Node node);
     std::unordered_map<unsigned, Node>::const_iterator find(Node node);
     std::unordered_map<unsigned, Node>::const_iterator end();
-
 };
 
 
