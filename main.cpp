@@ -36,7 +36,12 @@ int main(int argc, char *argv[]) {
     task.print();
 
     //_______Init AStar and Map_____
-    Map map; map.readMap(nameIn);
+    Map map;
+    myeResult = map.readMap(nameIn);
+    if (myeResult) {
+        std::cout << "task: " << nameIn << " is skipped\n";
+        return 1;
+    }
     AStar astar;
     myeResult = astar.init(task);
     if (myeResult) {

@@ -9,17 +9,7 @@
 
 typedef double TypeValue;
 
-struct Node{
-    unsigned x;
-    unsigned y;
-    unsigned key;
-    TypeValue gVal;
-    TypeValue fVal;
-
-    bool operator == (const Node &right) const;
-    bool operator <(const Node &right) const;
-    bool operator != (const Node &right) const;
-};
+#include "../algorithm/node.h"
 
 typedef std::vector<Node> Path;
 typedef std::vector<char> GridRow;
