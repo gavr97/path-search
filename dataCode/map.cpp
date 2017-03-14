@@ -29,8 +29,7 @@ bool Map::isObstacle(unsigned x, unsigned y) const
     return grid[x][y] == '1';
 }
 
-bool Map::isAllowed(unsigned ux, unsigned uy, unsigned vx, unsigned vy,
-               unsigned int allowDiag, unsigned int allowSqueeze, unsigned int cutCorners) const
+bool Map::isAllowed(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const
 {
     // as we here, (vx, vy) - is not obstacle
     // also allowdiag  == 1 (otherwise we can not be here
@@ -106,9 +105,32 @@ int Map::readMap(const char *nameIn)
         std::cout << "error: incorrect structure of xml file: trere is no tag grid in subtree map\n";
         return 1;
     }
+    XMLNode *pAlgorithm = pRoot->FirstChildElement(TAG_ALGORITHM);
+    if (pAlgorithm == nullptr) {
+        std::cout << "error: incorrect structure of xml file: trere is no tag algorithm\n";
+        return 1;
+        // exit(1);
+    }
 
     if(readInt(pMap, TAG_HEIGHT, this->cntRealRows, 0, 1)) return 1;
     if(readInt(pMap, TAG_WIDTH, this->cntRealCols, 0, 1)) return 1;
+    if(readInt(pAlgorithm, TAG_ALLOWDIAGONAL, this->allowDiag, ALLOW_DIAG_DEFAULT)) return 1;
+    if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT)) return 1;
+    if(readInt(pAlgorithm, TAG_CUTCORNERS, this->cutCorners, CUT_CORNERS_DEFAULT)) return 1;
+    if ((allowDiag != 0 && allowDiag != 1) || (allowSqueeze != 0 && allowSqueeze != 1) ||
+        (cutCorners != 0 && cutCorners != 1)) {
+        std::cout << "error: allowdiag, allowsqueeze, cutcorners are incorrect\n";
+        return 1;
+    }
+    if (allowDiag == 0 && (allowSqueeze == 1 || cutCorners == 1)) {
+        std::cout << "error: allowdiag, allowsqueeze, cutcorners are not consistent\n";
+        return 1;
+    }
+    if (allowSqueeze == 1 && cutCorners == 0) {
+        std::cout << "error: allowsqueeze, cutcorners are not consistent\n";
+        return 1;
+    }
+    std::cout << "specific information about task has been read succesfully\n";
 
     // _______read map___________
     Grid grid(this->cntRealRows + 2, GridRow(this->cntRealCols + 2));
