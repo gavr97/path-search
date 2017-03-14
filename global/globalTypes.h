@@ -18,7 +18,7 @@ struct Node{
 
     bool operator == (const Node &right) const;
     bool operator <(const Node &right) const;
-    bool operator <(Node &right);
+    bool operator != (const Node &right) const;
 };
 
 typedef std::vector<Node> Path;

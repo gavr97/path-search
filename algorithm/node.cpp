@@ -23,3 +23,8 @@ bool Node::operator == (const Node &right) const
 {
     return this->key == right.key;
 }
+
+bool Node::operator !=(const Node &right) const
+{
+    return this->key != this->key;
+}
