@@ -4,34 +4,40 @@
 #include <iostream>
 #include <vector>
 #include <set>
+#include <unordered_map>
+#include <unordered_set>
 #include "../global/globalTypes.h"
 
 typedef double TypeValue;
 
 class Heap {
 private:
-    std::set<std::pair<TypeValue, Node>> set;
+    std::set<Node> set;
+    std::unordered_map<unsigned, Node> hash_table;
 
 public:
-    void push(TypeValue val, Node node)
+    void push(Node node)
     {
-        set.insert({val, node});
+        set.insert(node);
+        hash_table.[node.key] = node;
     }
 
     Node pop()
     {
-        Node node = set.begin()->second;
+        Node node = *(set.begin());
         set.erase(set.begin());
+        hash_table.erase(node.key);
         return node;
     }
 
-    bool decreaseVal(TypeValue oldVal, Node node, TypeValue newVal)
+    bool decreaseVal(Node node, TypeValue newVal)
     {
-        auto ptr = set.find({oldVal, node});
+        auto ptr = set.find(node);
         if (ptr == set.end())
             return true;  // an error occured
         set.erase(ptr);
-        set.insert({newVal, node});
+        node.fVal = newVal;
+        set.insert(node);
         return false;
     }
 
