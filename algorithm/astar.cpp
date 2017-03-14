@@ -148,7 +148,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
     while (!open.empty()) {
         ++output.numberOfSteps;
         nodeNow = open.pop();
-        close[nodeNow] = nodeNow.gVal;  // TODO here
+        close[nodeNow.key] = nodeNow;  // TODO here
         if (nodeNow == nodeFinish)
             return true;  // returned value;
 
@@ -161,7 +161,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
             if (open.find(nodeNeig) != open.end()) {  // if is already created
                 nodeNeig = open[nodeNeig];
             }
-            if (!map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end() &&
+            if (!map.isObstacle(vx, vy)  && close.find(nodeNeig.key) == close.end() &&
                 map.isAllowed(ux, ux, vx, vy, allowDiag, allowSqueeze, cutCorners)) {
                 if (open.find(nodeNeig) == open.end()) {
                     ++output.numberOfNodesCreated;
@@ -208,9 +208,9 @@ bool AStar::constructPath(Output &output)
             nodeNeig.x = nodeNow.x + dxVec[ind];
             nodeNeig.y = nodeNow.y + dyVec[ind];
             nodeNeig.key = key(nodeNeig.x, nodeNeig.y);
-            if (close.find(nodeNeig) != close.end() && (!isInited || close[nodeNeig] < minVal)) {
+            if (close.find(nodeNeig.key) != close.end() && (!isInited || close.find(nodeNeig.key) < minVal)) {
                 nodeNext = nodeNeig;
-                minVal = close[nodeNeig];
+                minVal = close[nodeNeig.key];
                 isInited = true;
                 bestIndMovement = ind;
             }

@@ -22,6 +22,7 @@
 #include "../global/globalTypes.h"
 #include "../dataCode/output.h"
 #include "../dataCode/map.h"
+#include "Close.h"
 
 using std::cout;
 using std::cin;
@@ -57,7 +58,8 @@ private:
     unsigned int allowSqueeze;
     unsigned int cutCorners;
 
-    std::map<Node, TypeValue, cmp> close;  // node->g-value
+    //std::unordered_map<unsigned, Node> close;  // node->g-value
+    Close close;
     Heap open;  // a set of pairs(f-value, Node)
 
     inline unsigned key(unsigned ux, unsigned uy);
