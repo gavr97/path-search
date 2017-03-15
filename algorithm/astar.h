@@ -34,7 +34,7 @@ class cmp {
 public:
     bool operator()(const Node &left, const Node &right)
     {
-        return left.key < right.key;
+        return left.getKey() < right.getKey();
     }
 };
 

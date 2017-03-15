@@ -14,7 +14,7 @@ void AStar::printClose()
             if (close.find(node) == close.end()) {
                 printf("%*.2f", 6, -12);
             } else {
-                printf("%*.2f", 6, (close.find(node)->second).gVal);
+                printf("%*.2f", 6, (close.find(node)->second).getGVal());
             }
         }
         printf("\n");
@@ -53,7 +53,7 @@ inline TypeValue zero(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
 
 TypeValue AStar::heuristic(Node node1, Node node2)
 {
-    return heuristicHide(node1.x, node1.y, node2.x, node2.y);
+    return heuristicHide(node1.getX(), node1.getY(), node2.getX(), node2.getY());
 }
 
 inline unsigned AStar::key(unsigned ux, unsigned uy)
@@ -139,7 +139,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
     // open: (f-val, node)
     unsigned keyNow = key(startX, startY);
     Node nodeFinish{finishX, finishY, key(finishX, finishY)};
-    Node nodeNow{startX, startY, keyNow, 0, 0 + heuristic(nodeNow, nodeFinish)};
+    Node nodeNow(startX, startY, keyNow,  (TypeValue)0, 0 + heuristic(nodeNow, nodeFinish));
     open.push(nodeNow);
     ++output.numberOfNodesCreated;
     // output.nodesCreated.push_back(nodeNow);
@@ -151,7 +151,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
             std::cout << "size of open and close: " << open.size() << ' ' << close.size();
             return true;  // returned value;
         }
-        unsigned ux = nodeNow.x, uy = nodeNow.y;
+        unsigned ux = nodeNow.getX(), uy = nodeNow.getY();
         for (unsigned ind = 0; ind != dyVec.size(); ++ind) {
             unsigned vx = ux + dxVec[ind];
             unsigned vy = uy + dyVec[ind];
@@ -165,13 +165,13 @@ bool AStar::computeGValues(const Map &map, Output &output)
                 if (open.find(nodeNeig) == open.end()) {
                     ++output.numberOfNodesCreated;
                     //output.nodesCreated.push_back(nodeNeig);
-                    TypeValue  gVal = nodeNow.gVal + weightVec[ind];
-                    nodeNeig.gVal = gVal;
-                    nodeNeig.fVal = gVal + heuristic(nodeNeig, nodeFinish);
+                    TypeValue  gVal = nodeNow.getGVal() + weightVec[ind];
+                    nodeNeig.setGVal(gVal);
+                    nodeNeig.setFVal(gVal + heuristic(nodeNeig, nodeFinish));
                     open.push(nodeNeig);
                 } else {
-                    TypeValue  gVal = nodeNow.gVal + weightVec[ind];
-                    TypeValue  gOldVal = nodeNeig.gVal;
+                    TypeValue  gVal = nodeNow.getGVal() + weightVec[ind];
+                    TypeValue  gOldVal = nodeNeig.getGVal();
                     if (gVal < gOldVal) {
                         TypeValue hVal = heuristic(nodeNeig, nodeFinish);
                         if (open.decreaseVal(nodeNeig, gVal, gVal + hVal)) {
@@ -203,17 +203,15 @@ bool AStar::constructPath(Output &output)
         bool isInited = false;
         unsigned bestIndMovement;
         for (unsigned ind = 0; ind != weightVec.size(); ++ind) {
-            Node nodeNeig;
-            nodeNeig.x = nodeNow.x + dxVec[ind];
-            nodeNeig.y = nodeNow.y + dyVec[ind];
-            nodeNeig.key = key(nodeNeig.x, nodeNeig.y);
+            unsigned x1 = nodeNow.getX() + dxVec[ind], y1 = nodeNow.getY() + dyVec[ind];
+            Node nodeNeig(x1, y1, key(x1, y1));
             if (close.find(nodeNeig) != close.end()) {
                 nodeNeig = close[nodeNeig];
             }
-            if (close.find(nodeNeig) != close.end() && (!isInited || nodeNeig.gVal < minVal)) {
+            if (close.find(nodeNeig) != close.end() && (!isInited || nodeNeig.getGVal() < minVal)) {
                 nodeNeig = close[nodeNeig];
                 nodeNext = nodeNeig;
-                minVal = nodeNeig.gVal;
+                minVal = nodeNeig.getGVal();
                 isInited = true;
                 bestIndMovement = ind;
             }

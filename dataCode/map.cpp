@@ -21,7 +21,7 @@ Map::Map(std::vector<GridRow> grid)
 
 bool Map::isObstacle(Node node) const
 {
-    return grid[node.x][node.y] == '1';
+    return grid[node.getX()][node.getY()] == '1';
 }
 
 bool Map::isObstacle(unsigned x, unsigned y) const
