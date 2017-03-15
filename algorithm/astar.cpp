@@ -144,8 +144,6 @@ bool AStar::computeGValues(const Map &map, Output &output)
     ++output.numberOfNodesCreated;
     // output.nodesCreated.push_back(nodeNow);
     while (!open.empty()) {
-        printClose();
-        std::cout << std::endl;
         ++output.numberOfSteps;
         nodeNow = open.pop();
         close.push(nodeNow);
@@ -209,6 +207,9 @@ bool AStar::constructPath(Output &output)
             nodeNeig.x = nodeNow.x + dxVec[ind];
             nodeNeig.y = nodeNow.y + dyVec[ind];
             nodeNeig.key = key(nodeNeig.x, nodeNeig.y);
+            if (close.find(nodeNeig) != close.end()) {
+                nodeNeig = close[nodeNeig];
+            }
             if (close.find(nodeNeig) != close.end() && (!isInited || nodeNeig.gVal < minVal)) {
                 nodeNeig = close[nodeNeig];
                 nodeNext = nodeNeig;
