@@ -11,7 +11,9 @@ SOURCES += main.cpp \
     dataCode/task.cpp \
     dataCode/map.cpp \
     logger/log.cpp \
-    tinyxml/tinyxml2.cpp
+    tinyxml/tinyxml2.cpp \
+    algorithm/close.cpp \
+    algorithm/open.cpp
 
 DISTFILES += \
     algorithm/astar.h.gch \
@@ -30,4 +32,6 @@ HEADERS += \
     global/globalTypes.h \
     global/globalVars.h \
     logger/log.h \
-    tinyxml/tinyxml2.h
+    tinyxml/tinyxml2.h \
+    algorithm/close.h \
+    algorithm/open.h
