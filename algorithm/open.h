@@ -31,6 +31,8 @@ public:
     Node operator[] (Node node) const;
 
     bool empty() const;
+
+    unsigned size() const;
 };
 
 

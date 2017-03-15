@@ -5,15 +5,15 @@
         <width>4</width>
         <height>4</height>
         <cellsize>5</cellsize>
-        <startx>1</startx>
-        <starty>1</starty>
-        <finishx>4</finishx>
-        <finishy>4</finishy>
+        <startx>0</startx>
+        <starty>0</starty>
+        <finishx>3</finishx>
+        <finishy>3</finishy>
         <grid>
             <row>0001</row>
             <row>0101</row>
-            <row>0100 </row>
-            <row>0000</row>
+            <row>0000 </row>
+            <row>1100</row>
         </grid>
     </map>
     <algorithm>
@@ -23,7 +23,7 @@
         <breakingties>g-max</breakingties>
         <linecost>1</linecost>
         <diagonalcost>1.5</diagonalcost>
-        <allowdiagonal>1</allowdiagonal>
+        <allowdiagonal>0</allowdiagonal>
         <allowsqueeze>0</allowsqueeze>
     </algorithm>
     <options>
