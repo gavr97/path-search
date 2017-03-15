@@ -127,8 +127,6 @@ int AStar::solve(const Map &map, Output &output)
             return 1;
         }
     } else {
-        std::cout << "goal is not reached during computation of g-values\n";
-        return 1;
     }
     return 0;
 }
@@ -146,12 +144,15 @@ bool AStar::computeGValues(const Map &map, Output &output)
     ++output.numberOfNodesCreated;
     // output.nodesCreated.push_back(nodeNow);
     while (!open.empty()) {
+        printClose();
+        std::cout << std::endl;
         ++output.numberOfSteps;
         nodeNow = open.pop();
         close.push(nodeNow);
-        if (nodeNow == nodeFinish)
+        if (nodeNow == nodeFinish) {
+            std::cout << "size of open and close: " << open.size() << ' ' << close.size();
             return true;  // returned value;
-
+        }
         unsigned ux = nodeNow.x, uy = nodeNow.y;
         for (unsigned ind = 0; ind != dyVec.size(); ++ind) {
             unsigned vx = ux + dxVec[ind];
@@ -209,6 +210,7 @@ bool AStar::constructPath(Output &output)
             nodeNeig.y = nodeNow.y + dyVec[ind];
             nodeNeig.key = key(nodeNeig.x, nodeNeig.y);
             if (close.find(nodeNeig) != close.end() && (!isInited || nodeNeig.gVal < minVal)) {
+                nodeNeig = close[nodeNeig];
                 nodeNext = nodeNeig;
                 minVal = nodeNeig.gVal;
                 isInited = true;

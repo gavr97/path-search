@@ -26,5 +26,5 @@ bool Node::operator == (const Node &right) const
 
 bool Node::operator !=(const Node &right) const
 {
-    return this->key != this->key;
+    return this->key != right.key;
 }

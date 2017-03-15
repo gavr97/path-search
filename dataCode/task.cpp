@@ -240,10 +240,10 @@ int Task::myLoad(const char *nameIn)
     std::cout << "specific information about task has been read succesfully\n";
 
     // _______read map___________
-    //Grid grid(this->cntRealRows + 2, GridRow(this->cntRealCols + 2));
-    //this->grid = grid;
-    //if(readGrid(pGrid, this->grid)) return 1;
-    //std::cout << "map has been read successfully\n" << std::endl;
+    Grid grid(this->cntRealRows + 2, GridRow(this->cntRealCols + 2));
+    this->grid = grid;
+    if(readGrid(pGrid, this->grid)) return 1;
+    std::cout << "map has been read successfully\n" << std::endl;
     return 0;
 }
 
@@ -251,13 +251,13 @@ void Task::print() const
 {
     std::cout << "Task:\n";
     std::cout << "size: " << this->cntRealRows << ' ' << this->cntRealCols << std::endl;
-    //std::cout << "map\n";
-    //for (const auto &row : this->map) {
-        //for (const auto &elem : row) {
-            //std::cout << elem << ' ';
-        //}
-        //std::cout << std::endl;
-    //}
+    std::cout << "map\n";
+    for (const auto &row : this->grid) {
+        for (const auto &elem : row) {
+            std::cout << elem << ' ';
+        }
+        std::cout << std::endl;
+    }
     std::cout << "allow diag " << this->allowDiag << "\n";
     std::cout << "costs of movements: " << this->lineCost << " and " << this->diagCost << std::endl;
     // do not forget about transposing and shift

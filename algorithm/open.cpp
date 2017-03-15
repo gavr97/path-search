@@ -52,3 +52,8 @@ bool Open::empty() const
 {
     return set.empty();
 }
+
+unsigned Open::size() const
+{
+    return hash_table.size();
+}

@@ -15,6 +15,8 @@ public:
     void push(Node node);
     std::unordered_map<unsigned, Node>::const_iterator find(Node node);
     std::unordered_map<unsigned, Node>::const_iterator end();
+    unsigned size() const;
+    Node operator[](Node node) const;
 };
 
 
