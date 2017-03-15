@@ -118,7 +118,6 @@ int AStar::init(const Task &task)
 int AStar::solve(const Map &map, Output &output)
 {
     if (computeGValues(map, output)) {
-        std::cout << "good computation G\n";
         if (constructPath(output)) {
             //std::cout << "path is succesfully found\n";
             return 0;
@@ -148,9 +147,9 @@ bool AStar::computeGValues(const Map &map, Output &output)
         nodeNow = open.pop();
         close.push(nodeNow);
         if (nodeNow == nodeFinish) {
-            std::cout << "size of open and close: " << open.size() << ' ' << close.size();
             return true;  // returned value;
         }
+        
         unsigned ux = nodeNow.getX(), uy = nodeNow.getY();
         for (unsigned ind = 0; ind != dyVec.size(); ++ind) {
             unsigned vx = ux + dxVec[ind];
