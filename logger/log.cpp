@@ -65,10 +65,10 @@ int Log::savePath(const std::vector<Node> &path, const std::vector<double> &weig
     // remeber that vectors path and weightMovements are reversed
     // size of weightMovements is lower by 1;
     int ind = path.size() - 1;
-    this->initPath(path[ind].x, path[ind].y, 0);
+    this->initPath(path[ind].getX(), path[ind].getY(), 0);
     for (ind = path.size() - 2; ind >= 0; --ind) {
         unsigned number = path.size() - ind - 1;
-        this->addNode(path[ind].x, path[ind].y, weightMovements[ind], number);
+        this->addNode(path[ind].getX(), path[ind].getY(), weightMovements[ind], number);
     }
     return 0;
 }
@@ -77,8 +77,8 @@ int Log::saveMap(const std::vector<Node> &path, const Map &map)
 {
     Grid gridRes = map.grid;
     for (const auto &node : path) {
-        unsigned x = node.x;
-        unsigned y = node.y;
+        unsigned x = node.getX();
+        unsigned y = node.getY();
         // at the moment coordinates are considered to be as inside representation(not graphical system)
         gridRes[x][y] = '*';
     }

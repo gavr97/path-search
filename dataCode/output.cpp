@@ -23,7 +23,7 @@ void Output::printPath(const std::vector<Node> &path)
         // do not forget about transposing and shift
         for (int ind = path.size() - 1; ind != -1; --ind) {
             std::cout << "number " << path.size() - ind - 1 << ": "
-                      << path[ind].y - 1 << ' ' << path[ind].x - 1 << '\n';
+                      << path[ind].getY() - 1 << ' ' << path[ind].getX() - 1 << '\n';
         }
     }
 }

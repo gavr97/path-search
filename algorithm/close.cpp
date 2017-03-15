@@ -7,12 +7,12 @@
 
 void Close::push(Node node)
 {
-    hash_table[node.key] = node;
+    hash_table[node.getKey()] = node;
 }
 
 std::unordered_map<unsigned, Node>::const_iterator Close::find(Node node)
 {
-    return hash_table.find(node.key);
+    return hash_table.find(node.getKey());
 }
 
 std::unordered_map<unsigned, Node>::const_iterator Close::end()
@@ -26,5 +26,5 @@ unsigned Close::size() const
 }
 
 Node Close::operator[](Node node) const {
-    return hash_table.find(node.key)->second;
+    return hash_table.find(node.getKey())->second;
 }

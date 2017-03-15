@@ -28,3 +28,50 @@ bool Node::operator !=(const Node &right) const
 {
     return this->key != right.key;
 }
+
+Node::Node(unsigned int x, unsigned int y, unsigned int key) : x(x), y(y), key(key)
+{
+}
+
+Node::Node(unsigned int x, unsigned int y, unsigned int key, TypeValue gVal, TypeValue fVal) :
+        x(x), y(y), key(key), gVal(gVal), fVal(fVal)
+{}
+
+unsigned int Node::getX() const
+{
+    return x;
+}
+
+unsigned int Node::getY() const
+{
+    return y;
+}
+
+unsigned int Node::getKey() const
+{
+    return key;
+}
+
+TypeValue Node::getGVal() const
+{
+    return gVal;
+}
+
+TypeValue Node::getFVal() const
+{
+    return fVal;
+}
+
+void Node::setGVal(TypeValue gVal)
+{
+    Node::gVal = gVal;
+}
+
+void Node::setFVal(TypeValue fVal)
+{
+    Node::fVal = fVal;
+}
+
+Node::Node()
+{}
+
