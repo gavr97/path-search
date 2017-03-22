@@ -29,7 +29,8 @@ int main(int argc, char *argv[]) {
     Task task;
     myeResult = task.myLoad(nameIn);  // char* ! not std::string;
     if (myeResult) {
-        std::cout << "task: " << nameIn << " is skipped\n";
+        std::cout << "task: " << nameIn << " is skipped\n"
+                  << "out XML is not generated\n";
         return 1;
     }
 
@@ -37,7 +38,8 @@ int main(int argc, char *argv[]) {
     Map map;
     myeResult = map.readMap(nameIn);
     if (myeResult) {
-        std::cout << "task: " << nameIn << " is skipped\n";
+        std::cout << "task: " << nameIn << " is skipped\n"
+                  << "out XML is not generated\n";
         return 1;
     }
     task.print();
@@ -45,7 +47,8 @@ int main(int argc, char *argv[]) {
     AStar astar;
     myeResult = astar.init(task);
     if (myeResult) {
-        std::cout << "error: failure during initializing astar\n";
+        std::cout << "error: failure during initializing astar\n"
+                  << "out XML is not generated\n";
         return 1;
     }
 

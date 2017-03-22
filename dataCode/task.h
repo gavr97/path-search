@@ -41,8 +41,6 @@ private:
     int readDouble(XMLNode *pRoot, const char *tag, double &destination, double DEFAULT, bool obligatory);
 
     int readStr(XMLNode *pRoot, const char *tag, std::string &destination, const std::string DEFAULT, bool obligatory);
-
-    int readGrid(XMLNode *pRoot, Grid &grid);
 };
 
 #endif //REPO_MYMAP_H

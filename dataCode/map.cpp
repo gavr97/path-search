@@ -58,7 +58,6 @@ int Map::readInt(XMLNode *pRoot, const char *tag, unsigned int &destination, uns
             return 1;  // exit(1);
         } else {
             destination = DEFAULT;
-            std::cout << tag << " is assigned by default " << DEFAULT << "\n";
             return 0;
         }
     } else {
@@ -112,6 +111,10 @@ int Map::readMap(const char *nameIn)
 
     if(readInt(pMap, TAG_HEIGHT, this->cntRealRows, 0, 1)) return 1;
     if(readInt(pMap, TAG_WIDTH, this->cntRealCols, 0, 1)) return 1;
+    if (cntRealCols > 1000000 || cntRealRows > 1000000) {
+        std::cout << "error: height and width of map are too big\n";
+        return 1;
+    }
     if(readInt(pAlgorithm, TAG_ALLOWDIAGONAL, this->allowDiag, ALLOW_DIAG_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_CUTCORNERS, this->cutCorners, CUT_CORNERS_DEFAULT)) return 1;
@@ -128,7 +131,6 @@ int Map::readMap(const char *nameIn)
         std::cout << "error: allowsqueeze, cutcorners are not consistent\n";
         return 1;
     }
-    std::cout << "specific information about task has been read succesfully\n";
 
     // _______read map___________
     Grid grid(this->cntRealRows + 2, GridRow(this->cntRealCols + 2));
@@ -168,14 +170,14 @@ int Map::readGrid(XMLNode *pGrid, Grid &grid)
         while (*buf) {
             if (*buf == NO_OBSTACLE) {
                 if (indCol == width + 1) {
-                    std::cout << "warning: too many cells in row\n";
+                    std::cout << "warning: too many cells in row " << indRow << "\n";
                     break;
                 }
                 grid[indRow][indCol] = NO_OBSTACLE;
                 ++indCol;
             } else if (*buf == OBSTACLE) {
                 if (indCol == width + 1) {
-                    std::cout << "warning: too many cells in row\n";
+                    std::cout << "warning: too many cells in row " << indRow << "\n";
                     break;
                 }
                 grid[indRow][indCol] = OBSTACLE;

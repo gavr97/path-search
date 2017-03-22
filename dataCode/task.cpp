@@ -175,7 +175,6 @@ int Task::myLoad(const char *nameIn)
         std::cout << "error: allowsqueeze, cutcorners are not consistent\n";
         return 1;
     }
-    std::cout << "specific information about task has been read succesfully\n";
 
     //read map is the only thing which is not done here. it is in map.read()
 }
