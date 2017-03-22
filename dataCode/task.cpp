@@ -191,7 +191,6 @@ void Task::print() const
         //}
         //std::cout << std::endl;
     //}
-    std::cout << "allow diag " << this->allowDiag << "\n";
     std::cout << "costs of movements: " << this->lineCost << " and " << this->diagCost << std::endl;
     // do not forget about transposing and shift
     printf("start and end: %u %u and %u %u\n", this->startY - 1, this->startX - 1, this->finishY - 1, this->finishX - 1);

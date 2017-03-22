@@ -30,7 +30,7 @@ public:
     Map(const char *nameIn);
     bool isObstacle(Node node) const;
     bool isObstacle(unsigned x, unsigned y) const;
-    bool isAllowed(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const;
+    bool isAllowedFromTo(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const;
     int readMap(const char *nameIn);
 };
 

@@ -29,19 +29,23 @@ bool Map::isObstacle(unsigned x, unsigned y) const
     return grid[x][y] == '1';
 }
 
-bool Map::isAllowed(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const
+bool Map::isAllowedFromTo(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const
 {
     // as we here, (vx, vy) - is not obstacle
-    // also allowdiag  == 1 (otherwise we can not be here
     int diff = abs((int)ux - (int)vx) + abs((int)uy - (int)vy);
+    if (diff == 2 && allowDiag == 0)
+        return 0;
     if (diff == 1 || allowSqueeze == 1)
         return 1;
+
+    // here dif == 2; allowDiag == 1, squeeze == 0, cut is any;
     unsigned firstx = ux, firsty = vy;
     unsigned secondx = vx, secondy = uy;
-    if (!(this->isObstacle(firstx, firsty)) || !(this->isObstacle(secondx, secondy))) {
-        return 1;
+    if (cutCorners == 0) {
+        return (!(this->isObstacle(firstx, firsty)) && !(this->isObstacle(secondx, secondy)));
+    } else {
+        return (!(this->isObstacle(firstx, firsty)) || !(this->isObstacle(secondx, secondy)));
     }
-    return 0;
 }
 
 Map::Map(const char *nameIn)
@@ -116,6 +120,20 @@ int Map::readMap(const char *nameIn)
     if(readInt(pAlgorithm, TAG_ALLOWDIAGONAL, this->allowDiag, ALLOW_DIAG_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_CUTCORNERS, this->cutCorners, CUT_CORNERS_DEFAULT)) return 1;
+    if ((allowDiag != 0 && allowDiag != 1) || (allowSqueeze != 0 && allowSqueeze != 1) ||
+        (cutCorners != 0 && cutCorners != 1)) {
+        std::cout << "error: allowdiag, allowsqueeze, cutcorners are incorrect\n";
+        return 1;
+    }
+    if (allowDiag == 0 && (allowSqueeze == 1 || cutCorners == 1)) {
+        std::cout << "error: allowdiag, allowsqueeze, cutcorners are not consistent\n";
+        return 1;
+    }
+    if (allowSqueeze == 1 && cutCorners == 0) {
+        std::cout << "error: allowsqueeze, cutcorners are not consistent\n";
+        return 1;
+    }
+    std::cout << "specific information about task has been read succesfully\n";
 
     // _______read map___________
     Grid grid(this->cntRealRows + 2, GridRow(this->cntRealCols + 2));
