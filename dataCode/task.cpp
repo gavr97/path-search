@@ -135,7 +135,7 @@ int Task::myLoad(const char *nameIn)
     }
     if(readInt(pMap, TAG_STARTX, this->startX, STARTX_DEFAULT)) return 1;
     if(readInt(pMap, TAG_STARTY, this->startY, STARTY_DEFAULT)) return 1;
-    if(readInt(pMap, TAG__FINISHX, this->finishX, FINISHX_DEFAULT)) return 1;
+    if(readInt(pMap, TAG_FINISHX, this->finishX, FINISHX_DEFAULT)) return 1;
     if(readInt(pMap, TAG_FINISHY, this->finishY, FINISHY_DEFAULT)) return 1;
     ++startX;  // because it is comfortable for numerating real rows and cols from 1 (0 for abstract bound)
     ++startY;

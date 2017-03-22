@@ -11,7 +11,7 @@
 #define TAG_WIDTH "width"
 #define TAG_STARTX "startx"
 #define TAG_STARTY "starty"
-#define TAG__FINISHX "finishx"
+#define TAG_FINISHX "finishx"
 #define TAG_FINISHY "finishy"
 #define TAG_LINECOST "linecost"
 #define TAG_DIAGONALCONST "diagonalcost"
