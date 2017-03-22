@@ -5,7 +5,7 @@
 #include "open.h"
 
 
-void Open::push(Node node)
+void Open::push(const Node &node)
 {
     set.insert(node);
     hash_table[node.getKey()] = node;
@@ -19,7 +19,7 @@ Node Open::pop()
     return node;
 }
 
-std::unordered_map<unsigned, Node>::const_iterator Open::find(Node node) const
+std::unordered_map<unsigned, Node>::const_iterator Open::find(const Node &node) const
 {
     return hash_table.find(node.getKey());
 }
@@ -29,7 +29,8 @@ std::unordered_map<unsigned, Node>::const_iterator Open::end() const
     return hash_table.end();
 }
 
-bool Open::decreaseVal(Node node, TypeValue gVal, TypeValue fVal, unsigned keyNewParent, TypeValue weightMovement)
+bool Open::decreaseVal(Node &node, TypeValue gVal, TypeValue fVal, unsigned keyNewParent,
+                       TypeValue weightMovement)
 {
     auto ptr = set.find(node);
     if (ptr == set.end())
@@ -45,7 +46,7 @@ bool Open::decreaseVal(Node node, TypeValue gVal, TypeValue fVal, unsigned keyNe
     return false;
 }
 
-Node Open::operator[] (Node node) const
+Node Open::operator[](const Node &node) const
 {
     return hash_table.find(node.getKey())->second;
 }

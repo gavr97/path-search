@@ -26,9 +26,9 @@ private:
 public:
     std::vector<GridRow> grid;
     Map();
-    Map(std::vector<GridRow> grid);
+
     Map(const char *nameIn);
-    bool isObstacle(Node node) const;
+    bool isObstacle(const Node &node) const;
     bool isObstacle(unsigned x, unsigned y) const;
     bool isAllowedFromTo(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const;
     int readMap(const char *nameIn);

@@ -17,9 +17,12 @@ public:
     double lengtnPath;
     std::vector<Node> nodesCreated;
     std::vector<Node> path;  // reversed;
-    std::vector<double> weightMovements;  // if we consider vec reversed, i.e. index == vec.size()-1 is 0, then
-                                        // vec[index] contains weight from node == path[index] to node == path[index-1]
-                                        // and thus conceptually indexing of vec begins from 1!
+    std::vector<double> weightMovements;  // size of weightMovements is less by 1 thah path
+                                        // if we look at vectors from ends then nowWeight if for
+                                        // edge from now to next
+                                        // formally: weightMovements[ind] is for edge from path[ind+1] to path[ind]
+
+
     Output();
     void printPath(const std::vector<Node> &path);
 };
