@@ -113,7 +113,7 @@ int Log::saveData(const char *nameIn, const Output &output, const Map &map) {
     pSummary->SetAttribute("numberofsteps", output.numberOfSteps);
     pSummary->SetAttribute("nodescreated", output.numberOfNodesCreated);
     pSummary->SetAttribute("length", output.lengtnPath);
-    pSummary->SetAttribute("time", "?");
+    pSummary->SetAttribute("time", output.time);
     pLog->InsertEndChild(pSummary);
     // map with drawn path willbe accessable via pPath - Log's member
     this->saveMap(output.path, map);

@@ -3,6 +3,7 @@
 //
 
 #include <cmath>
+#include <ctime>
 #include "../algorithm/astar.h"
 
 inline int my_Max(int a, int b)
@@ -101,11 +102,17 @@ int AStar::init(const Task &task)
 
 int AStar::solve(const Map &map, Output &output)
 {
+    unsigned int start_time = clock();
+    unsigned int end_time, search_time;
     if (computeGValues(map, output)) {
         if (constructPath(output)) {
-            //std::cout << "path is succesfully found\n";
+            end_time = clock();
+            search_time = end_time - start_time;
+            output.time = (double)search_time / CLOCKS_PER_SEC;
             return 0;
         } else {
+            end_time = clock();
+            search_time = end_time - start_time;
             std::cout << "error: failure during constructing path\n";
             return 1;
         }
