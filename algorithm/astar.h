@@ -72,7 +72,6 @@ private:
 public:
     int init (const Task &task);
     int solve(const Map &map, Output &output);
-    void printClose();
 };
 
 #endif //REPO_ASTAR_H

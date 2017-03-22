@@ -17,14 +17,12 @@ SOURCES += main.cpp \
 
 DISTFILES += \
     algorithm/astar.h.gch \
-    algorithm/heap.h.gch \
     dataCode/task.h.gch \
     logger/log.h.gch \
     tinyxml/tinyxml2.h.gch
 
 HEADERS += \
     algorithm/astar.h \
-    algorithm/heap.h \
     algorithm/node.h \
     dataCode/output.h \
     dataCode/task.h \

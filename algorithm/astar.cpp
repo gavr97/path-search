@@ -5,22 +5,6 @@
 #include <cmath>
 #include "../algorithm/astar.h"
 
-// for debug
-void AStar::printClose()
-{
-    for (unsigned indRow = 1; indRow != cntRealRows + 1; ++indRow) {
-        for (unsigned indCol = 1; indCol != cntRealCols + 1; ++indCol) {
-            Node node{indRow, indCol, key(indRow, indCol)};
-            if (close.find(node) == close.end()) {
-                printf("%*.2f", 6, -12);
-            } else {
-                printf("%*.2f", 6, (close.find(node)->second).getGVal());
-            }
-        }
-        printf("\n");
-    }
-}
-
 inline int my_Max(int a, int b)
 {
     if (a > b)
