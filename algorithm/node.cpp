@@ -75,3 +75,19 @@ void Node::setFVal(TypeValue fVal)
 Node::Node()
 {}
 
+unsigned int Node::getKeyParent() const {
+    return keyParent;
+}
+
+void Node::setKeyParent(unsigned int keyParent) {
+    Node::keyParent = keyParent;
+}
+
+TypeValue Node::getWeightMovement() const {
+    return weightMovement;
+}
+
+void Node::setWeightMovement(TypeValue weightMovement) {
+    Node::weightMovement = weightMovement;
+}
+

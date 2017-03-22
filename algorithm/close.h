@@ -17,6 +17,7 @@ public:
     std::unordered_map<unsigned, Node>::const_iterator end();
     unsigned size() const;
     Node operator[](Node node) const;
+    Node operator[](unsigned nodeKey) const;
 };
 
 

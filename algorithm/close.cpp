@@ -28,3 +28,7 @@ unsigned Close::size() const
 Node Close::operator[](Node node) const {
     return hash_table.find(node.getKey())->second;
 }
+
+Node Close::operator[](unsigned nodeKey) const {
+    return hash_table.find(nodeKey)->second;
+}

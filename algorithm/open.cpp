@@ -29,7 +29,7 @@ std::unordered_map<unsigned, Node>::const_iterator Open::end() const
     return hash_table.end();
 }
 
-bool Open::decreaseVal(Node node, TypeValue gVal, TypeValue fVal)
+bool Open::decreaseVal(Node node, TypeValue gVal, TypeValue fVal, unsigned keyNewParent, TypeValue weightMovement)
 {
     auto ptr = set.find(node);
     if (ptr == set.end())
@@ -38,6 +38,8 @@ bool Open::decreaseVal(Node node, TypeValue gVal, TypeValue fVal)
     hash_table.erase(node.getKey());
     node.setGVal(gVal);
     node.setFVal(fVal);
+    node.setKeyParent(keyNewParent);
+    node.setWeightMovement(weightMovement);
     set.insert(node);
     hash_table[node.getKey()] = node;
     return false;

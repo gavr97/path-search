@@ -128,7 +128,6 @@ int AStar::solve(const Map &map, Output &output)
     } else {
         return 1;
     }
-    return 0;
 }
 
 bool AStar::computeGValues(const Map &map, Output &output)
@@ -140,6 +139,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
     unsigned keyNow = key(startX, startY);
     Node nodeFinish{finishX, finishY, key(finishX, finishY)};
     Node nodeNow(startX, startY, keyNow,  (TypeValue)0, 0 + heuristic(nodeNow, nodeFinish));
+    nodeNow.setKeyParent(keyNow); nodeNow.setWeightMovement(0);
     open.push(nodeNow);
     ++output.numberOfNodesCreated;
     // output.nodesCreated.push_back(nodeNow);
@@ -168,13 +168,15 @@ bool AStar::computeGValues(const Map &map, Output &output)
                     TypeValue  gVal = nodeNow.getGVal() + weightVec[ind];
                     nodeNeig.setGVal(gVal);
                     nodeNeig.setFVal(gVal + heuristic(nodeNeig, nodeFinish));
+                    nodeNeig.setKeyParent(nodeNow.getKey());
+                    nodeNeig.setWeightMovement(weightVec[ind]);
                     open.push(nodeNeig);
                 } else {
                     TypeValue  gVal = nodeNow.getGVal() + weightVec[ind];
                     TypeValue  gOldVal = nodeNeig.getGVal();
                     if (gVal < gOldVal) {
                         TypeValue hVal = heuristic(nodeNeig, nodeFinish);
-                        if (open.decreaseVal(nodeNeig, gVal, gVal + hVal)) {
+                        if (open.decreaseVal(nodeNeig, gVal, gVal + hVal, nodeNow.getKey(), weightVec[ind])) {
                             std::cout << "error: failure during computation g-values\n"
                                       << "astar attempted to modify f-val in open but did not find it\n"
                                       << std::endl;
@@ -190,38 +192,20 @@ bool AStar::computeGValues(const Map &map, Output &output)
 
 bool AStar::constructPath(Output &output)
 {
-    Node nodeStart{startX, startY, key(startX, startY)};
+    Node nodeStart = close[key(startX, startY)];
     unsigned keyNow = key(finishX, finishY);
-    Node nodeNow{finishX, finishY, keyNow};
+    Node nodeNow = close[keyNow];
     output.numberOfMovements = 0;
     output.lengtnPath = 0;
     while (nodeNow != nodeStart) {
-        output.path.push_back(nodeNow);
+        output.lengtnPath += nodeNow.getWeightMovement();
+        output.weightMovements.push_back(nodeNow.getWeightMovement());
         ++output.numberOfMovements;
-        Node nodeNext;
-        TypeValue minVal;
-        bool isInited = false;
-        unsigned bestIndMovement;
-        for (unsigned ind = 0; ind != weightVec.size(); ++ind) {
-            unsigned x1 = nodeNow.getX() + dxVec[ind], y1 = nodeNow.getY() + dyVec[ind];
-            Node nodeNeig(x1, y1, key(x1, y1));
-            if (close.find(nodeNeig) != close.end()) {
-                nodeNeig = close[nodeNeig];
-            }
-            if (close.find(nodeNeig) != close.end() && (!isInited || nodeNeig.getGVal() < minVal)) {
-                nodeNeig = close[nodeNeig];
-                nodeNext = nodeNeig;
-                minVal = nodeNeig.getGVal();
-                isInited = true;
-                bestIndMovement = ind;
-            }
-        }
-        if (!isInited) {
-            return false;
-        }
-        output.weightMovements.push_back(weightVec[bestIndMovement]);
-        output.lengtnPath += weightVec[bestIndMovement];
+        output.path.push_back(nodeNow);
+
+        Node nodeNext = close[nodeNow.getKeyParent()];
         nodeNow = nodeNext;
     }
+    output.path.push_back(nodeNow);
     return true;
 }
