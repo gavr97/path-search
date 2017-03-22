@@ -9,7 +9,6 @@
 #include <ctime>
 
 int main(int argc, char *argv[]) {
-    int RES = 0;
     //________specify input and output names________
     if (argc == 1) {
         std::cout << "error: input XML is not specified\n";
@@ -55,16 +54,14 @@ int main(int argc, char *argv[]) {
     myeResult = astar.solve(map, output);  // myeResult == 1 if no path found; else 0;
     if (myeResult) {
         std::cout << "no path found in task\n"
-                  << "Naturally, Path is not saved in output\n";
-        RES = 1;
+                  << "out XML is not generated\n";
+        return 1;
     } else {
         std::cout << "path is found\n";
-        RES = 0;
+        //_____Save results and write_____
+        Log log;
+        myeResult = log.saveData(nameIn, output, map);  // arg-map is neccessary because of drawing map with path
+        log.write(nameOut);
+        return 0;
     }
-
-    //_____Save results and write_____
-    Log log;
-    myeResult = log.saveData(nameIn, output, map);  // arg-map is neccessary because of drawing map with path
-    log.write(nameOut);
-    return RES;
 }

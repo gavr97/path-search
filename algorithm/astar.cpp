@@ -140,7 +140,12 @@ bool AStar::computeGValues(const Map &map, Output &output)
     Node nodeFinish{finishX, finishY, key(finishX, finishY)};
     Node nodeNow(startX, startY, keyNow,  (TypeValue)0, 0 + heuristic(nodeNow, nodeFinish));
     nodeNow.setKeyParent(keyNow); nodeNow.setWeightMovement(0);
-    open.push(nodeNow);
+    if (!map.isObstacle(nodeNow)) {
+        open.push(nodeNow);
+    } else {
+        std::cout << "warning: start is obstacle\n";
+        return false;
+    }
     ++output.numberOfNodesCreated;
     // output.nodesCreated.push_back(nodeNow);
     while (!open.empty()) {

@@ -84,7 +84,7 @@ int Map::readMap(const char *nameIn)
         return 1;
         //exit(1);
     }
-    XMLNode *pRoot = xmlDoc.FirstChild();
+    XMLNode *pRoot = xmlDoc.FirstChildElement("root");
     if (pRoot == nullptr){
         std::cout << "error: empty xml file\n";
         return 1;

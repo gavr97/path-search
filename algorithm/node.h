@@ -5,6 +5,8 @@
 #ifndef REPO_NODE_H
 #define REPO_NODE_H
 
+#include "../global/globalTypes.h"
+
 class Node{
 private:
     unsigned x;
