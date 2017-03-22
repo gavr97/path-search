@@ -7,7 +7,6 @@
 
 #include <string>
 
-
 #define TAG_HEIGHT "height"
 #define TAG_WIDTH "width"
 #define TAG_STARTX "startx"

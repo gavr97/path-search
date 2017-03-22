@@ -19,19 +19,14 @@ private:
 
 public:
     void push(Node node);
-
     Node pop();
-
-    std::unordered_map<unsigned, Node>::const_iterator find(Node node) const;
-
-    std::unordered_map<unsigned, Node>::const_iterator end() const;
-
     bool decreaseVal(Node node, TypeValue gVal, TypeValue fVal);
 
+    std::unordered_map<unsigned, Node>::const_iterator find(Node node) const;
+    std::unordered_map<unsigned, Node>::const_iterator end() const;
+
     Node operator[] (Node node) const;
-
     bool empty() const;
-
     unsigned size() const;
 };
 
