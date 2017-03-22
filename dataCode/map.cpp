@@ -91,7 +91,6 @@ int Map::readMap(const char *nameIn)
         return 1;
         //exit(1);
     }
-    std::cout << "XML has been read\n";
 
     // _______check obligatory tags________
     XMLNode *pMap = pRoot->FirstChildElement(TAG_MAP);
@@ -117,20 +116,6 @@ int Map::readMap(const char *nameIn)
     if(readInt(pAlgorithm, TAG_ALLOWDIAGONAL, this->allowDiag, ALLOW_DIAG_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_CUTCORNERS, this->cutCorners, CUT_CORNERS_DEFAULT)) return 1;
-    if ((allowDiag != 0 && allowDiag != 1) || (allowSqueeze != 0 && allowSqueeze != 1) ||
-        (cutCorners != 0 && cutCorners != 1)) {
-        std::cout << "error: allowdiag, allowsqueeze, cutcorners are incorrect\n";
-        return 1;
-    }
-    if (allowDiag == 0 && (allowSqueeze == 1 || cutCorners == 1)) {
-        std::cout << "error: allowdiag, allowsqueeze, cutcorners are not consistent\n";
-        return 1;
-    }
-    if (allowSqueeze == 1 && cutCorners == 0) {
-        std::cout << "error: allowsqueeze, cutcorners are not consistent\n";
-        return 1;
-    }
-    std::cout << "specific information about task has been read succesfully\n";
 
     // _______read map___________
     Grid grid(this->cntRealRows + 2, GridRow(this->cntRealCols + 2));

@@ -27,13 +27,12 @@ int main(int argc, char *argv[]) {
 
     //________Init Task________  reads everything except GRID. It is for Map
     int myeResult = 0;
-    Task task; Output output; Log log;
+    Task task;
     myeResult = task.myLoad(nameIn);  // char* ! not std::string;
     if (myeResult) {
         std::cout << "task: " << nameIn << " is skipped\n";
         return 1;
     }
-    task.print();
 
     //_______Init AStar and Map_____
     Map map;
@@ -42,6 +41,8 @@ int main(int argc, char *argv[]) {
         std::cout << "task: " << nameIn << " is skipped\n";
         return 1;
     }
+    task.print();
+
     AStar astar;
     myeResult = astar.init(task);
     if (myeResult) {
@@ -50,6 +51,7 @@ int main(int argc, char *argv[]) {
     }
 
     //_______Solve Task_________
+    Output output;
     myeResult = astar.solve(map, output);  // myeResult == 1 if no path found; else 0;
     if (myeResult) {
         std::cout << "no path found in task\n"
@@ -61,6 +63,7 @@ int main(int argc, char *argv[]) {
     }
 
     //_____Save results and write_____
+    Log log;
     myeResult = log.saveData(nameIn, output, map);  // arg-map is neccessary because of drawing map with path
     log.write(nameOut);
     return RES;
