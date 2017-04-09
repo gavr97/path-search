@@ -155,14 +155,12 @@ bool AStar::computeGValues(const Map &map, Output &output)
         for (unsigned ind = 0; ind != dyVec.size(); ++ind) {
             unsigned vx = ux + dxVec[ind];
             unsigned vy = uy + dyVec[ind];
-            unsigned keyNeig = key(vx, vy);
-            Node nodeNeig{vx, vy};
-            if (open.find(nodeNeig) != open.end()) {  // if is already created
-                nodeNeig = open[nodeNeig];
-            }
+            bool wasCreated;
+            Node nodeNeig = open.getNode(vx, vy, wasCreated);  // isCreated - reference passing arg
+            
             if (!map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end() &&
                     map.isAllowedFromTo(ux, uy, vx, vy)) {
-                if (open.find(nodeNeig) == open.end()) {
+                if (!wasCreated) {
                     ++output.numberOfNodesCreated;
                     //output.nodesCreated.push_back(nodeNeig);
                     TypeValue  gVal = nodeNow.getGVal() + weightVec[ind];

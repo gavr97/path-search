@@ -26,6 +26,7 @@ public:
     void push(const Node &node);
     Node pop();
     bool decreaseVal(Node &node, TypeValue gVal, TypeValue fVal, unsigned keyNewParent, TypeValue weightMovement);
+    Node getNode(unsigned x, unsigned y, bool &wasCreated);
 
     std::unordered_map<unsigned, Node>::const_iterator find(const Node &node) const;
     std::unordered_map<unsigned, Node>::const_iterator end() const;

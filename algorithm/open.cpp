@@ -75,3 +75,13 @@ inline unsigned Open::key(const Node &node) const
 {
     return key(node.getX(), node.getY());
 }
+
+Node Open::getNode(unsigned x, unsigned y, bool &wasCreated) {
+    wasCreated = false;
+    auto found = hash_table.find(key(x, y));
+    if (found != hash_table.end()) {
+        wasCreated = true;
+        return found->second;
+    }
+    return Node{x, y};
+}
