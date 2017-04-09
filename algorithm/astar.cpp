@@ -136,7 +136,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
     Node nodeNow(startX, startY, (TypeValue)0, 0 + heuristic(nodeNow, nodeFinish));
     nodeNow.setKeyParent(keyNow);
     if (!map.isObstacle(nodeNow)) {
-        open.push(nodeNow);
+        open.pushInit(nodeNow);
     } else {
         std::cout << "warning: start is obstacle\n";
         return false;
@@ -157,7 +157,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
             unsigned vy = uy + dyVec[ind];
             bool wasCreated;
             Node nodeNeig = open.getNode(vx, vy, wasCreated);  // isCreated - reference passing arg
-            
+
             if (!map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end() &&
                     map.isAllowedFromTo(ux, uy, vx, vy)) {
                 if (!wasCreated) {
@@ -173,7 +173,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
                     TypeValue  gOldVal = nodeNeig.getGVal();
                     if (gVal < gOldVal) {
                         TypeValue hVal = heuristic(nodeNeig, nodeFinish);
-                        if (open.decreaseVal(nodeNeig, gVal, gVal + hVal, key(nodeNow), weightVec[ind])) {
+                        if (open.decreaseVal(nodeNeig, gVal, gVal + hVal, key(nodeNow))) {
                             std::cout << "error: failure during computation g-values\n"
                                       << "astar attempted to modify f-val in open but did not find it\n"
                                       << std::endl;

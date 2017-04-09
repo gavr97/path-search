@@ -14,8 +14,8 @@
 
 class Open {
 private:
-    std::set<Node> set;
     std::unordered_map<unsigned, Node> hash_table;
+    Node nodeMin;
 
     unsigned cntRealCols;
     unsigned cntRealRows;
@@ -24,8 +24,9 @@ private:
 
 public:
     void push(const Node &node);
+    void pushInit(const Node &node);
     Node pop();
-    bool decreaseVal(Node &node, TypeValue gVal, TypeValue fVal, unsigned keyNewParent, TypeValue weightMovement);
+    bool decreaseVal(Node &node, TypeValue gVal, TypeValue fVal, unsigned keyNewParent);
     Node getNode(unsigned x, unsigned y, bool &wasCreated);
 
     std::unordered_map<unsigned, Node>::const_iterator find(const Node &node) const;

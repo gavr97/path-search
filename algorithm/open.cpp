@@ -7,15 +7,32 @@
 
 void Open::push(const Node &node)
 {
-    set.insert(node);
+    if (node.getFVal() < nodeMin.getFVal()) {
+        nodeMin = node;
+    }
+    hash_table[key(node)] = node;
+}
+
+void Open::pushInit(const Node &node)
+{
+    nodeMin = node;
     hash_table[key(node)] = node;
 }
 
 Node Open::pop()
 {
-    Node node = *(set.begin());
-    set.erase(set.begin());
-    hash_table.erase(key(node));
+    Node node = nodeMin;
+    hash_table.erase(key(nodeMin));
+    if (!hash_table.empty()) {
+        auto ptrNow = hash_table.begin();
+        nodeMin = ptrNow->second;
+        while (ptrNow != hash_table.end()) {
+            if ((ptrNow->second).getFVal() < nodeMin.getFVal()) {
+                nodeMin = ptrNow->second;
+            }
+            ++ptrNow;
+        }
+    }
     return node;
 }
 
@@ -29,19 +46,15 @@ std::unordered_map<unsigned, Node>::const_iterator Open::end() const
     return hash_table.end();
 }
 
-bool Open::decreaseVal(Node &node, TypeValue gVal, TypeValue fVal, unsigned keyNewParent,
-                       TypeValue weightMovement)
+bool Open::decreaseVal(Node &node, TypeValue gVal, TypeValue fVal, unsigned keyNewParent)
 {
-    auto ptr = set.find(node);
-    if (ptr == set.end())
-        return true;  // an error occured
-    set.erase(ptr);
-    hash_table.erase(key(node));
     node.setGVal(gVal);
     node.setFVal(fVal);
     node.setKeyParent(keyNewParent);
-    set.insert(node);
     hash_table[key(node)] = node;
+    if (node.getFVal() < nodeMin.getFVal()) {
+        nodeMin = node;
+    }
     return false;
 }
 
@@ -52,7 +65,7 @@ Node Open::operator[](const Node &node) const
 
 bool Open::empty() const
 {
-    return set.empty();
+    return hash_table.empty();
 }
 
 unsigned Open::size() const
@@ -76,7 +89,8 @@ inline unsigned Open::key(const Node &node) const
     return key(node.getX(), node.getY());
 }
 
-Node Open::getNode(unsigned x, unsigned y, bool &wasCreated) {
+Node Open::getNode(unsigned x, unsigned y, bool &wasCreated)
+{
     wasCreated = false;
     auto found = hash_table.find(key(x, y));
     if (found != hash_table.end()) {
