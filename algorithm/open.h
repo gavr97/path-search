@@ -17,6 +17,11 @@ private:
     std::set<Node> set;
     std::unordered_map<unsigned, Node> hash_table;
 
+    unsigned cntRealCols;
+    unsigned cntRealRows;
+    inline unsigned key(unsigned x, unsigned y) const;
+    inline unsigned key(const Node &node) const;
+
 public:
     void push(const Node &node);
     Node pop();
@@ -28,6 +33,7 @@ public:
     Node operator[](const Node &node) const;
     bool empty() const;
     unsigned size() const;
+    void setMapSizes(unsigned cntRealRows, unsigned cntRealCols);
 };
 
 

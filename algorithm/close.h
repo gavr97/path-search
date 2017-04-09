@@ -10,6 +10,10 @@
 class Close {
 private:
     std::unordered_map<unsigned, Node> hash_table;
+    unsigned cntRealCols;
+    unsigned cntRealRows;
+    inline unsigned key(unsigned x, unsigned y) const;
+    inline unsigned key(const Node &node) const;
 
 public:
     void push(const Node &node);
@@ -18,6 +22,7 @@ public:
     unsigned size() const;
     Node operator[](const Node &node) const;
     Node operator[](unsigned nodeKey) const;
+    void setMapSizes(unsigned cntRealRows, unsigned cntRealCols);
 };
 
 

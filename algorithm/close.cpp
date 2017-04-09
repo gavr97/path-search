@@ -7,12 +7,12 @@
 
 void Close::push(const Node &node)
 {
-    hash_table[node.getKey()] = node;
+    hash_table[key(node)] = node;
 }
 
 std::unordered_map<unsigned, Node>::const_iterator Close::find(const Node &node)
 {
-    return hash_table.find(node.getKey());
+    return hash_table.find(key(node));
 }
 
 std::unordered_map<unsigned, Node>::const_iterator Close::end()
@@ -26,9 +26,26 @@ unsigned Close::size() const
 }
 
 Node Close::operator[](const Node &node) const {
-    return hash_table.find(node.getKey())->second;
+    return hash_table.find(key(node))->second;
 }
 
 Node Close::operator[](unsigned nodeKey) const {
     return hash_table.find(nodeKey)->second;
 }
+
+void Close::setMapSizes(unsigned cntRealRows, unsigned cntRealCols)
+{
+    this->cntRealRows = cntRealRows;
+    this->cntRealCols = cntRealCols;
+}
+
+inline unsigned Close::key(unsigned x, unsigned y) const
+{
+    return x * (cntRealCols + 2) + y;
+}
+
+inline unsigned Close::key(const Node &node) const
+{
+    return key(node.getX(), node.getY());
+}
+

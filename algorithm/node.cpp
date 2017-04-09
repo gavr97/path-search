@@ -16,25 +16,25 @@
 
 bool Node::operator <(const Node &right) const
 {
-    return ((this->fVal < right.fVal) || (this->fVal == right.fVal && this->key < right.key));
+    return ((this->fVal < right.fVal));
 }
 
 bool Node::operator == (const Node &right) const
 {
-    return this->key == right.key;
+    return ((this->x == right.x) && (this->y == right.y));
 }
 
 bool Node::operator !=(const Node &right) const
 {
-    return this->key != right.key;
+    return !(*this == right);
 }
 
-Node::Node(unsigned int x, unsigned int y, unsigned int key) : x(x), y(y), key(key)
+Node::Node(unsigned int x, unsigned int y) : x(x), y(y)
 {
 }
 
-Node::Node(unsigned int x, unsigned int y, unsigned int key, TypeValue gVal, TypeValue fVal) :
-        x(x), y(y), key(key), gVal(gVal), fVal(fVal)
+Node::Node(unsigned int x, unsigned int y, TypeValue gVal, TypeValue fVal) :
+        x(x), y(y), gVal(gVal), fVal(fVal)
 {}
 
 unsigned int Node::getX() const
@@ -45,11 +45,6 @@ unsigned int Node::getX() const
 unsigned int Node::getY() const
 {
     return y;
-}
-
-unsigned int Node::getKey() const
-{
-    return key;
 }
 
 TypeValue Node::getGVal() const
@@ -82,4 +77,3 @@ unsigned int Node::getKeyParent() const {
 void Node::setKeyParent(unsigned int keyParent) {
     Node::keyParent = keyParent;
 }
-

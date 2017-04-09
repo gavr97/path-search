@@ -11,7 +11,6 @@ class Node{
 private:
     unsigned x;
     unsigned y;
-    unsigned key;
     TypeValue gVal;
     TypeValue fVal;
     unsigned keyParent;
@@ -19,12 +18,10 @@ private:
 public:
     Node();
     Node(unsigned int x, unsigned int y);
-    Node(unsigned int x, unsigned int y, unsigned int key);
-    Node(unsigned int x, unsigned int y, unsigned int key, TypeValue gVal, TypeValue fVal);
+    Node(unsigned int x, unsigned int y, TypeValue gVal, TypeValue fVal);
 
     unsigned int getX() const;
     unsigned int getY() const;
-    unsigned int getKey() const;
 
     TypeValue getGVal() const;
     TypeValue getFVal() const;

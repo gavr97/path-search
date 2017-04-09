@@ -6,6 +6,7 @@
 #include <ctime>
 #include "../algorithm/astar.h"
 
+
 inline int my_Max(int a, int b)
 {
     if (a > b)
@@ -41,9 +42,14 @@ TypeValue AStar::heuristic(Node node1, Node node2)
     return heuristicHide(node1.getX(), node1.getY(), node2.getX(), node2.getY());
 }
 
-inline unsigned AStar::key(unsigned ux, unsigned uy)
+inline unsigned AStar::key(unsigned ux, unsigned uy) const
 {
     return ux * (cntRealCols + 2) + uy;
+}
+
+inline unsigned AStar::key(const Node &node) const
+{
+    return key(node.getX(), node.getY());
 }
 
 inline unsigned AStar::coordinateFirst(unsigned key)
@@ -75,6 +81,8 @@ int AStar::init(const Task &task)
     }
 
     //_____define sizes of map (astar needs it)
+    open.setMapSizes(task.cntRealRows, task.cntRealCols);
+    close.setMapSizes(task.cntRealRows, task.cntRealCols);
     cntRealCols = task.cntRealCols;
     cntRealRows = task.cntRealRows;
     startX = task.startX;
@@ -128,8 +136,8 @@ bool AStar::computeGValues(const Map &map, Output &output)
     // close is a set of (Node, g-val);
     // open: (f-val, node)
     unsigned keyNow = key(startX, startY);
-    Node nodeFinish{finishX, finishY, key(finishX, finishY)};
-    Node nodeNow(startX, startY, keyNow,  (TypeValue)0, 0 + heuristic(nodeNow, nodeFinish));
+    Node nodeFinish{finishX, finishY};
+    Node nodeNow(startX, startY, (TypeValue)0, 0 + heuristic(nodeNow, nodeFinish));
     nodeNow.setKeyParent(keyNow);
     if (!map.isObstacle(nodeNow)) {
         open.push(nodeNow);
@@ -152,7 +160,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
             unsigned vx = ux + dxVec[ind];
             unsigned vy = uy + dyVec[ind];
             unsigned keyNeig = key(vx, vy);
-            Node nodeNeig{vx, vy, keyNeig};
+            Node nodeNeig{vx, vy};
             if (open.find(nodeNeig) != open.end()) {  // if is already created
                 nodeNeig = open[nodeNeig];
             }
@@ -164,14 +172,14 @@ bool AStar::computeGValues(const Map &map, Output &output)
                     TypeValue  gVal = nodeNow.getGVal() + weightVec[ind];
                     nodeNeig.setGVal(gVal);
                     nodeNeig.setFVal(gVal + heuristic(nodeNeig, nodeFinish));
-                    nodeNeig.setKeyParent(nodeNow.getKey());
+                    nodeNeig.setKeyParent(key(nodeNow));
                     open.push(nodeNeig);
                 } else {
                     TypeValue  gVal = nodeNow.getGVal() + weightVec[ind];
                     TypeValue  gOldVal = nodeNeig.getGVal();
                     if (gVal < gOldVal) {
                         TypeValue hVal = heuristic(nodeNeig, nodeFinish);
-                        if (open.decreaseVal(nodeNeig, gVal, gVal + hVal, nodeNow.getKey(), weightVec[ind])) {
+                        if (open.decreaseVal(nodeNeig, gVal, gVal + hVal, key(nodeNow), weightVec[ind])) {
                             std::cout << "error: failure during computation g-values\n"
                                       << "astar attempted to modify f-val in open but did not find it\n"
                                       << std::endl;

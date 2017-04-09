@@ -34,7 +34,7 @@ class cmp {
 public:
     bool operator()(const Node &left, const Node &right)
     {
-        return left.getKey() < right.getKey();
+        return ((left.getX() < right.getX()) && (left.getY() < right.getY()));
     }
 };
 
@@ -62,7 +62,8 @@ private:
     Close close;
     Open open;  // a set of pairs(f-value, Node)
 
-    inline unsigned key(unsigned ux, unsigned uy);
+    inline unsigned key(unsigned ux, unsigned uy) const;
+    inline unsigned key(const Node &node) const;
     inline unsigned coordinateFirst(unsigned key);
     inline unsigned coordinateSecond(unsigned key);
 
