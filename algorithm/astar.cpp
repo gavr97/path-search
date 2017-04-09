@@ -90,10 +90,6 @@ int AStar::init(const Task &task)
     finishX = task.finishX;
     finishY = task.finishY;
 
-    allowDiag = task.allowDiag;
-    allowSqueeze = task.allowSqueeze;
-    cutCorners = task.cutCorners;
-
     //_____define dx and dy weights______
     if (task.allowDiag == 1) {
         dxVec = {0, 0, 1, -1, 1, -1, -1, 1};

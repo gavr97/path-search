@@ -54,9 +54,6 @@ private:
     unsigned startY;
     unsigned finishX;
     unsigned finishY;
-    unsigned int allowDiag;
-    unsigned int allowSqueeze;
-    unsigned int cutCorners;
 
     //std::unordered_map<unsigned, Node> close;  // node->g-value
     Close close;

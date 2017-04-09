@@ -16,7 +16,9 @@
 
 bool Node::operator <(const Node &right) const
 {
-    return ((this->fVal < right.fVal));
+    bool is1 = this->fVal == right.fVal;
+    bool is2 = this->x == right.x;
+    return ((this->fVal < right.fVal) || ((is1) && (this->x < right.x)) || (is1 && is2 && (this->y < right.y)));
 }
 
 bool Node::operator == (const Node &right) const
