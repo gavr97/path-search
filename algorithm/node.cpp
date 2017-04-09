@@ -4,16 +4,6 @@
 
 #include "../global/globalTypes.h"
 
-//bool Node::operator <(const Node &right) const
-//{
-//    return this->key < right.key;
-//}
-
-//bool Node::operator <(Node &right)
-//{
-//    return this->key < right.key;
-//}
-
 bool Node::operator <(const Node &right) const
 {
     bool is1 = this->fVal == right.fVal;
@@ -72,10 +62,12 @@ void Node::setFVal(TypeValue fVal)
 Node::Node()
 {}
 
-unsigned int Node::getKeyParent() const {
+unsigned int Node::getKeyParent() const
+{
     return keyParent;
 }
 
-void Node::setKeyParent(unsigned int keyParent) {
+void Node::setKeyParent(unsigned int keyParent)
+{
     Node::keyParent = keyParent;
 }

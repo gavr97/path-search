@@ -12,7 +12,6 @@
 using namespace tinyxml2;
 
 class Map {
-
 private:
     unsigned cntRealRows;
     unsigned cntRealCols;

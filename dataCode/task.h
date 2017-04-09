@@ -32,7 +32,6 @@ public:
     std::string metricType;
 
     int myLoad(const char *nameIn);
-
     void print() const;
 
 private:
