@@ -16,9 +16,9 @@ class Map {
 private:
     unsigned cntRealRows;
     unsigned cntRealCols;
-    unsigned int allowDiag;
-    unsigned int allowSqueeze;
-    unsigned int cutCorners;
+    bool allowDiag;
+    bool allowSqueeze;
+    bool cutCorners;
 
     int readInt(XMLNode *pRoot, const char *tag, unsigned int &destination, unsigned int DEFAULT, bool obligatory);
     int readGrid(XMLNode *pRoot, Grid &grid);

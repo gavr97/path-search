@@ -36,7 +36,7 @@ bool Map::isAllowedFromTo(unsigned ux, unsigned uy, unsigned vx, unsigned vy) co
     // here dif == 2; allowDiag == 1, squeeze == 0, cut is any;
     unsigned firstx = ux, firsty = vy;
     unsigned secondx = vx, secondy = uy;
-    if (cutCorners == 0) {
+    if (!cutCorners) {
         return (!(this->isObstacle(firstx, firsty)) && !(this->isObstacle(secondx, secondy)));
     } else {
         return (!(this->isObstacle(firstx, firsty)) || !(this->isObstacle(secondx, secondy)));
@@ -115,22 +115,27 @@ int Map::readMap(const char *nameIn)
         std::cout << "error: height and width of map are too big\n";
         return 1;
     }
-    if(readInt(pAlgorithm, TAG_ALLOWDIAGONAL, this->allowDiag, ALLOW_DIAG_DEFAULT)) return 1;
-    if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT)) return 1;
-    if(readInt(pAlgorithm, TAG_CUTCORNERS, this->cutCorners, CUT_CORNERS_DEFAULT)) return 1;
-    if ((allowDiag != 0 && allowDiag != 1) || (allowSqueeze != 0 && allowSqueeze != 1) ||
-        (cutCorners != 0 && cutCorners != 1)) {
+    
+    unsigned allowDiagTemp, allowSqueezeTemp, cutCornersTemp;
+    if(readInt(pAlgorithm, TAG_ALLOWDIAGONAL, allowDiagTemp, ALLOW_DIAG_DEFAULT)) return 1;
+    if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, allowSqueezeTemp, ALLOW_SQUEEZE_DEFAULT)) return 1;
+    if(readInt(pAlgorithm, TAG_CUTCORNERS, cutCornersTemp, CUT_CORNERS_DEFAULT)) return 1;
+    if ((allowDiagTemp != 0 && allowDiagTemp != 1) || (allowSqueezeTemp != 0 && allowSqueezeTemp != 1) ||
+        (cutCornersTemp != 0 && cutCornersTemp != 1)) {
         std::cout << "error: allowdiag, allowsqueeze, cutcorners are incorrect\n";
         return 1;
     }
-    if (allowDiag == 0 && (allowSqueeze == 1 || cutCorners == 1)) {
+    if (allowDiagTemp == 0 && (allowSqueezeTemp == 1 || cutCornersTemp == 1)) {
         std::cout << "error: allowdiag, allowsqueeze, cutcorners are not consistent\n";
         return 1;
     }
-    if (allowSqueeze == 1 && cutCorners == 0) {
+    if (allowSqueezeTemp == 1 && cutCornersTemp == 0) {
         std::cout << "error: allowsqueeze, cutcorners are not consistent\n";
         return 1;
     }
+    allowDiag = allowDiagTemp;
+    allowSqueeze = allowSqueezeTemp;
+    cutCorners = cutCornersTemp;
 
     // _______read map___________
     Grid grid(this->cntRealRows + 2, GridRow(this->cntRealCols + 2));
