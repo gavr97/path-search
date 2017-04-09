@@ -40,7 +40,6 @@ bool Open::decreaseVal(Node &node, TypeValue gVal, TypeValue fVal, unsigned keyN
     node.setGVal(gVal);
     node.setFVal(fVal);
     node.setKeyParent(keyNewParent);
-    node.setWeightMovement(weightMovement);
     set.insert(node);
     hash_table[node.getKey()] = node;
     return false;

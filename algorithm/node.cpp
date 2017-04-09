@@ -83,11 +83,3 @@ void Node::setKeyParent(unsigned int keyParent) {
     Node::keyParent = keyParent;
 }
 
-TypeValue Node::getWeightMovement() const {
-    return weightMovement;
-}
-
-void Node::setWeightMovement(TypeValue weightMovement) {
-    Node::weightMovement = weightMovement;
-}
-
