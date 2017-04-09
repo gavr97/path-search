@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(repo)
+project(asearch)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
@@ -9,4 +9,4 @@ set(DATA_CODE dataCode/task.h dataCode/task.cpp dataCode/output.h dataCode/outpu
 set(ALGORITHM main.cpp algorithm/astar.h algorithm/astar.cpp algorithm/node.cpp algorithm/close.cpp algorithm/close.h algorithm/open.cpp algorithm/open.h algorithm/node.h)
 set(LOGGER logger/log.h logger/log.cpp)
 
-add_executable(repo ${TINY_XML} ${GLOBAL} ${DATA_CODE} ${ALGORITHM} ${LOGGER})
+add_executable(asearch ${TINY_XML} ${GLOBAL} ${DATA_CODE} ${ALGORITHM} ${LOGGER})
