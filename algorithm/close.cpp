@@ -4,7 +4,6 @@
 
 #include "close.h"
 
-
 void Close::push(const Node &node)
 {
     hash_table[key(node)] = node;

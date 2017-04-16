@@ -6,7 +6,6 @@
 #include <ctime>
 #include "../algorithm/astar.h"
 
-
 inline int my_Max(int a, int b)
 {
     if (a > b)
@@ -150,14 +149,13 @@ bool AStar::computeGValues(const Map &map, Output &output)
         if (nodeNow == nodeFinish) {
             return true;  // returned value;
         }
-        
+
         unsigned ux = nodeNow.getX(), uy = nodeNow.getY();
         for (unsigned ind = 0; ind != dyVec.size(); ++ind) {
             unsigned vx = ux + dxVec[ind];
             unsigned vy = uy + dyVec[ind];
             bool wasCreated;
             Node nodeNeig = open.getNode(vx, vy, wasCreated);  // isCreated - reference passing arg
-
             if (!map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end() &&
                     map.isAllowedFromTo(ux, uy, vx, vy)) {
                 if (!wasCreated) {

@@ -4,7 +4,6 @@
 
 #include "open.h"
 
-
 void Open::push(const Node &node)
 {
     if (node.getFVal() < nodeMin.getFVal()) {

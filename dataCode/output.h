@@ -22,7 +22,6 @@ public:
                                         // edge from now to next
                                         // formally: weightMovements[ind] is for edge from path[ind+1] to path[ind]
 
-
     Output();
     void printPath(const std::vector<Node> &path);
 };

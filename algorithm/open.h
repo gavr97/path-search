@@ -38,5 +38,4 @@ public:
     void setMapSizes(unsigned cntRealRows, unsigned cntRealCols);
 };
 
-
 #endif //REPO_OPEN_H

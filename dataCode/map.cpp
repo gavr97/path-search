@@ -11,7 +11,6 @@
 
 Map::Map()
 {
-
 }
 
 bool Map::isObstacle(const Node &node) const
