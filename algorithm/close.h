@@ -22,7 +22,7 @@ public:
     unsigned size() const;
     Node operator[](const Node &node) const;
     Node operator[](unsigned nodeKey) const;
-    void setMapSizes(unsigned cntRealRows, unsigned cntRealCols);
+    void init(unsigned cntRealRows, unsigned cntRealCols);
 };
 
 #endif //REPO_CLOSE_H

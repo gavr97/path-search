@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    //_______Init AStar and Map_____
+    //_______Init Map_____
     Map map;
     myeResult = map.readMap(nameIn);
     if (myeResult) {
@@ -44,6 +44,7 @@ int main(int argc, char *argv[]) {
     }
     task.print();
 
+    //______Init Astar______
     AStar astar;
     myeResult = astar.init(task);
     if (myeResult) {

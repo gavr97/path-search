@@ -10,32 +10,29 @@
 #include <set>
 #include <unordered_map>
 #include <unordered_set>
+#include <list>
 #include "../global/globalTypes.h"
 
 class Open {
 private:
-    std::unordered_map<unsigned, Node> hash_table;
     Node nodeMin;
+    bool _empty;
 
     unsigned cntRealCols;
     unsigned cntRealRows;
+    std::vector<std::list<Node> > lists;
+
     inline unsigned key(unsigned x, unsigned y) const;
     inline unsigned key(const Node &node) const;
 
 public:
     void push(const Node &node);
-    void pushInit(const Node &node);
+    bool update(const Node &node, bool &wasCreated);  // returned val is whether is pushed or not
+                                                                    // wasCreated for countind created nodes
     Node pop();
-    bool decreaseVal(Node &node, TypeValue gVal, TypeValue fVal, unsigned keyNewParent);
     Node getNode(unsigned x, unsigned y, bool &wasCreated);
-
-    std::unordered_map<unsigned, Node>::const_iterator find(const Node &node) const;
-    std::unordered_map<unsigned, Node>::const_iterator end() const;
-
-    Node operator[](const Node &node) const;
     bool empty() const;
-    unsigned size() const;
-    void setMapSizes(unsigned cntRealRows, unsigned cntRealCols);
+    void init(unsigned cntRealRows, unsigned cntRealCols);  // in other words it is constructor for Open
 };
 
 #endif //REPO_OPEN_H

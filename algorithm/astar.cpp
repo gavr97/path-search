@@ -79,9 +79,11 @@ int AStar::init(const Task &task)
         heuristicHide = &euclid;
     }
 
+    //_____init containers open and close____
+    open.init(task.cntRealRows, task.cntRealCols);
+    close.init(task.cntRealRows, task.cntRealCols);
+
     //_____define sizes of map (astar needs it)
-    open.setMapSizes(task.cntRealRows, task.cntRealCols);
-    close.setMapSizes(task.cntRealRows, task.cntRealCols);
     cntRealCols = task.cntRealCols;
     cntRealRows = task.cntRealRows;
     startX = task.startX;
@@ -130,16 +132,16 @@ bool AStar::computeGValues(const Map &map, Output &output)
     // open is a set of (f-val, Node)
     // close is a set of (Node, g-val);
     // open: (f-val, node)
-    unsigned keyNow = key(startX, startY);
     Node nodeFinish{finishX, finishY};
     Node nodeNow(startX, startY, (TypeValue)0, 0 + heuristic(nodeNow, nodeFinish));
-    nodeNow.setKeyParent(keyNow);
+    nodeNow.setKeyParent(key(startX, startY));
     if (!map.isObstacle(nodeNow)) {
-        open.pushInit(nodeNow);
+        open.push(nodeNow);
     } else {
         std::cout << "warning: start is obstacle\n";
         return false;
     }
+
     ++output.numberOfNodesCreated;
     // output.nodesCreated.push_back(nodeNow);
     while (!open.empty()) {
@@ -147,7 +149,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
         nodeNow = open.pop();
         close.push(nodeNow);
         if (nodeNow == nodeFinish) {
-            return true;  // returned value;
+            return true;
         }
 
         unsigned ux = nodeNow.getX(), uy = nodeNow.getY();
@@ -155,34 +157,22 @@ bool AStar::computeGValues(const Map &map, Output &output)
             unsigned vx = ux + dxVec[ind];
             unsigned vy = uy + dyVec[ind];
             bool wasCreated;
-            Node nodeNeig = open.getNode(vx, vy, wasCreated);  // isCreated - reference passing arg
+            Node nodeNeig{vx, vy};
             if (!map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end() &&
                     map.isAllowedFromTo(ux, uy, vx, vy)) {
+                TypeValue  gVal = nodeNow.getGVal() + weightVec[ind];
+                nodeNeig.setGVal(gVal);
+                nodeNeig.setFVal(gVal + heuristic(nodeNeig, nodeFinish));
+                nodeNeig.setKeyParent(key(nodeNow));
+                open.update(nodeNeig, wasCreated); // wasCreated - reference passing arg
                 if (!wasCreated) {
                     ++output.numberOfNodesCreated;
-                    //output.nodesCreated.push_back(nodeNeig);
-                    TypeValue  gVal = nodeNow.getGVal() + weightVec[ind];
-                    nodeNeig.setGVal(gVal);
-                    nodeNeig.setFVal(gVal + heuristic(nodeNeig, nodeFinish));
-                    nodeNeig.setKeyParent(key(nodeNow));
-                    open.push(nodeNeig);
-                } else {
-                    TypeValue  gVal = nodeNow.getGVal() + weightVec[ind];
-                    TypeValue  gOldVal = nodeNeig.getGVal();
-                    if (gVal < gOldVal) {
-                        TypeValue hVal = heuristic(nodeNeig, nodeFinish);
-                        if (open.decreaseVal(nodeNeig, gVal, gVal + hVal, key(nodeNow))) {
-                            std::cout << "error: failure during computation g-values\n"
-                                      << "astar attempted to modify f-val in open but did not find it\n"
-                                      << std::endl;
-                            return false;
-                        }
-                    }
+                    // output.nodesCreated.push_back(nodeNow);
                 }
             }
         }
     }
-    return false;  // goal is not reached, thus situation is bad and true is returned
+    return false;  // goal is not reached
 }
 
 bool AStar::constructPath(Output &output)

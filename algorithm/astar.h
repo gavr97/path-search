@@ -55,8 +55,7 @@ private:
     unsigned finishX;
     unsigned finishY;
 
-    //std::unordered_map<unsigned, Node> close;  // node->g-value
-    Close close;
+    Close close; //std::unordered_map<unsigned, Node> close;  // node->g-value
     Open open;  // a set of pairs(f-value, Node)
 
     inline unsigned key(unsigned ux, unsigned uy) const;

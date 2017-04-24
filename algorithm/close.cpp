@@ -4,6 +4,13 @@
 
 #include "close.h"
 
+
+void Close::init(unsigned cntRealRows, unsigned cntRealCols)
+{
+    this->cntRealRows = cntRealRows;
+    this->cntRealCols = cntRealCols;
+}
+
 void Close::push(const Node &node)
 {
     hash_table[key(node)] = node;
@@ -30,12 +37,6 @@ Node Close::operator[](const Node &node) const {
 
 Node Close::operator[](unsigned nodeKey) const {
     return hash_table.find(nodeKey)->second;
-}
-
-void Close::setMapSizes(unsigned cntRealRows, unsigned cntRealCols)
-{
-    this->cntRealRows = cntRealRows;
-    this->cntRealCols = cntRealCols;
 }
 
 inline unsigned Close::key(unsigned x, unsigned y) const

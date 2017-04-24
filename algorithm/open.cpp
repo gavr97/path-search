@@ -4,78 +4,131 @@
 
 #include "open.h"
 
-void Open::push(const Node &node)
+void Open::init(unsigned cntRealRows, unsigned cntRealCols)
 {
-    if (node.getFVal() < nodeMin.getFVal()) {
-        nodeMin = node;
-    }
-    hash_table[key(node)] = node;
+    this->cntRealRows = cntRealRows;
+    this->cntRealCols = cntRealCols;
+    lists.resize(cntRealRows + 2);  // because indexing from one
+    _empty = true;
 }
 
-void Open::pushInit(const Node &node)
+void Open::push(const Node &node)
 {
-    nodeMin = node;
-    hash_table[key(node)] = node;
+    if (_empty || node.getFVal() < nodeMin.getFVal()) {
+        nodeMin = node;
+    }
+    _empty = false;
+
+    std::list<Node> &chain = lists[node.getX()];
+    auto newPlace = chain.end(); // before which new node Node should be placed
+    auto iter = chain.begin();
+    while (iter != chain.end()) {
+        if (newPlace == chain.end() && iter->getFVal() > node.getFVal()) {
+            newPlace = iter;
+            break;
+        }
+        ++iter;
+    }
+    chain.insert(newPlace, node);
+}
+
+bool isBetter(std::list<Node>::const_iterator iter, const Node &node)
+{
+    return ((iter->getFVal() > node.getFVal()) ||
+            (iter->getFVal() == node.getFVal() && iter->getGVal() < node.getGVal()));
+}
+
+bool Open::update(const Node &node, bool &wasCreated)
+{
+    if (_empty || node.getFVal() < nodeMin.getFVal()) {
+        nodeMin = node;
+    } else if (node.getFVal() == nodeMin.getFVal()) {  // breking ties
+        if (node.getGVal() > nodeMin.getGVal()) {
+            nodeMin = node;
+        }
+    }
+
+    _empty = false;
+    wasCreated = false;
+    bool shouldPut = true;
+
+    //_____pass chain and find out a place to insert_______
+    std::list<Node> &chain = lists[node.getX()];
+    auto newPlace = chain.end(); // before which new node Node should be placed
+    auto iter = chain.begin();
+    while (iter != chain.end()) {
+        if (newPlace == chain.end() && isBetter(iter, node))
+        {
+            newPlace = iter;
+            shouldPut = true;
+        }
+
+        if (iter->getY() == node.getY() && isBetter(iter, node))
+        {
+            if (iter == newPlace) {  // specific case
+                auto tmp_iter = iter;
+                ++tmp_iter;
+                newPlace = tmp_iter;
+            }
+            chain.remove(*iter);
+            shouldPut = true;
+            wasCreated = true;
+            break;
+        }
+
+        if (iter->getY() == node.getY() && iter->getFVal() <= node.getFVal())
+        {
+            shouldPut = false;
+            wasCreated = true;
+            break;
+        }
+        ++iter;
+    }
+
+    //____insert or not____
+    if (shouldPut)
+    {
+        chain.insert(newPlace, node);
+        return true;
+    } else {
+        return false;
+    }
 }
 
 Node Open::pop()
 {
     Node node = nodeMin;
-    hash_table.erase(key(nodeMin));
-    if (!hash_table.empty()) {
-        auto ptrNow = hash_table.begin();
-        nodeMin = ptrNow->second;
-        while (ptrNow != hash_table.end()) {
-            if ((ptrNow->second).getFVal() < nodeMin.getFVal()) {
-                nodeMin = ptrNow->second;
+    auto &chain = lists[nodeMin.getX()];
+    auto iter = chain.begin();
+    while (iter->getY() != nodeMin.getY()) {
+        ++iter;
+    }
+    chain.remove(*iter);
+
+    bool isInited = false;
+    TypeValue minF;
+    TypeValue maxG;
+    for (auto &chain : lists) {
+        if (chain.begin() != chain.end()) {
+            if (chain.begin()->getFVal() < minF ||
+                (chain.begin()->getFVal() == minF && chain.begin()->getGVal() > maxG) ||
+                !isInited)
+            {
+                isInited = true;
+                nodeMin = *(chain.begin());
+                minF = nodeMin.getFVal();
+                maxG = nodeMin.getGVal();
             }
-            ++ptrNow;
         }
     }
+    if (!isInited)
+        _empty = true;
     return node;
-}
-
-std::unordered_map<unsigned, Node>::const_iterator Open::find(const Node &node) const
-{
-    return hash_table.find(key(node));
-}
-
-std::unordered_map<unsigned, Node>::const_iterator Open::end() const
-{
-    return hash_table.end();
-}
-
-bool Open::decreaseVal(Node &node, TypeValue gVal, TypeValue fVal, unsigned keyNewParent)
-{
-    node.setGVal(gVal);
-    node.setFVal(fVal);
-    node.setKeyParent(keyNewParent);
-    hash_table[key(node)] = node;
-    if (node.getFVal() < nodeMin.getFVal()) {
-        nodeMin = node;
-    }
-    return false;
-}
-
-Node Open::operator[](const Node &node) const
-{
-    return hash_table.find(key(node))->second;
 }
 
 bool Open::empty() const
 {
-    return hash_table.empty();
-}
-
-unsigned Open::size() const
-{
-    return hash_table.size();
-}
-
-void Open::setMapSizes(unsigned cntRealRows, unsigned cntRealCols)
-{
-    this->cntRealRows = cntRealRows;
-    this->cntRealCols = cntRealCols;
+    return _empty;
 }
 
 inline unsigned Open::key(unsigned x, unsigned y) const
@@ -91,10 +144,15 @@ inline unsigned Open::key(const Node &node) const
 Node Open::getNode(unsigned x, unsigned y, bool &wasCreated)
 {
     wasCreated = false;
-    auto found = hash_table.find(key(x, y));
-    if (found != hash_table.end()) {
-        wasCreated = true;
-        return found->second;
+    std::list<Node> &chain = lists[x];
+    auto iter = chain.begin();
+    while (iter != chain.end()) {
+        if (iter->getY() == y) {
+            wasCreated = true;
+            return *iter;
+        }
+        ++iter;
     }
-    return Node{x, y};
+    return Node{x, y, (TypeValue)-1, (TypeValue)-1};
 }
+
