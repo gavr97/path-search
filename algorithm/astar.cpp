@@ -134,7 +134,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
     // open: (f-val, node)
     Node nodeFinish{finishX, finishY};
     Node nodeNow(startX, startY, (TypeValue)0, 0 + heuristic(nodeNow, nodeFinish));
-    nodeNow.setKeyParent(key(startX, startY));
+    nodeNow.setParent(nullptr);
     if (!map.isObstacle(nodeNow)) {
         open.push(nodeNow);
     } else {
@@ -147,7 +147,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
     while (!open.empty()) {
         ++output.numberOfSteps;
         nodeNow = open.pop();
-        close.push(nodeNow);
+        const Node* pNodeNow = close.push(nodeNow);
         if (nodeNow == nodeFinish) {
             return true;
         }
@@ -163,7 +163,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
                 TypeValue  gVal = nodeNow.getGVal() + weightVec[ind];
                 nodeNeig.setGVal(gVal);
                 nodeNeig.setFVal(gVal + heuristic(nodeNeig, nodeFinish));
-                nodeNeig.setKeyParent(key(nodeNow));
+                nodeNeig.setParent(pNodeNow);
                 open.update(nodeNeig, wasCreated); // wasCreated - reference passing arg
                 if (!wasCreated) {
                     ++output.numberOfNodesCreated;
@@ -184,7 +184,7 @@ bool AStar::constructPath(Output &output)
     output.numberOfMovements = 0;
     output.lengtnPath = 0;
     while (nodeNow != nodeStart) {
-        Node nodeNext = close[nodeNow.getKeyParent()];
+        Node nodeNext = (close.find(*nodeNow.getParent()))->second;
         TypeValue gValNext = nodeNext.getGVal();
         output.lengtnPath += gValNow - gValNext;
         output.weightMovements.push_back(gValNow - gValNext);
