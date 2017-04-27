@@ -13,7 +13,7 @@ private:
     unsigned y;
     TypeValue gVal;
     TypeValue fVal;
-    unsigned keyParent;
+    const Node* parent;
 
 public:
     Node();
@@ -25,11 +25,11 @@ public:
 
     TypeValue getGVal() const;
     TypeValue getFVal() const;
-    unsigned int getKeyParent() const;
+    const Node *getParent() const;
 
     void setGVal(TypeValue gVal);
     void setFVal(TypeValue fVal);
-    void setKeyParent(unsigned int keyParent);
+    void setParent(const Node *parent);
 
     bool operator == (const Node &right) const;
     bool operator <(const Node &right) const;

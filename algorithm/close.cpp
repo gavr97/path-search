@@ -4,24 +4,26 @@
 
 #include "close.h"
 
-
 void Close::init(unsigned cntRealRows, unsigned cntRealCols)
 {
     this->cntRealRows = cntRealRows;
     this->cntRealCols = cntRealCols;
 }
 
-void Close::push(const Node &node)
+const Node * Close::push(const Node &node)
 {
-    hash_table[key(node)] = node;
+    auto pair = hash_table.insert(std::pair<unsigned, const Node>(key(node), node));
+    auto iter = pair.first;
+    const Node * pNode = &(iter->second);
+    return pNode;
 }
 
-std::unordered_map<unsigned, Node>::const_iterator Close::find(const Node &node)
+std::unordered_map<unsigned int, const Node>::const_iterator Close::find(const Node &node) const
 {
     return hash_table.find(key(node));
 }
 
-std::unordered_map<unsigned, Node>::const_iterator Close::end()
+std::unordered_map<unsigned, const Node>::const_iterator Close::end() const
 {
     return hash_table.end();
 }

@@ -62,12 +62,12 @@ void Node::setFVal(TypeValue fVal)
 Node::Node()
 {}
 
-unsigned int Node::getKeyParent() const
+const Node * Node::getParent() const
 {
-    return keyParent;
+    return parent;
 }
 
-void Node::setKeyParent(unsigned int keyParent)
+void Node::setParent(const Node *parent)
 {
-    Node::keyParent = keyParent;
+    Node::parent = parent;
 }
