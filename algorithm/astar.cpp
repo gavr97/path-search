@@ -184,7 +184,7 @@ bool AStar::constructPath(Output &output)
     output.numberOfMovements = 0;
     output.lengtnPath = 0;
     while (nodeNow != nodeStart) {
-        Node nodeNext = (close.find(*nodeNow.getParent()))->second;
+        Node nodeNext = *(nodeNow.getParent());
         TypeValue gValNext = nodeNext.getGVal();
         output.lengtnPath += gValNow - gValNext;
         output.weightMovements.push_back(gValNow - gValNext);
