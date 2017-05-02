@@ -22,41 +22,25 @@ int Log::initPath(unsigned startX, unsigned startY, unsigned number)
     --startX, --startY;
 
     pLowLevel = xmlDoc.NewElement("lplevel");
-    pHighLevel = xmlDoc.NewElement("hplevel");
     XMLElement *pElement = xmlDoc.NewElement("node");
     pElement->SetAttribute("x", startX);
     pElement->SetAttribute("y", startY);
     pElement->SetAttribute("number", number);
     pLowLevel->InsertEndChild(pElement);
-
-    rememberedX = startX;
-    rememberedY = startY;
     return 0;
 }
 
-int Log::addNode(unsigned toX, unsigned toY, TypeValue weightMovement, unsigned number)
+int Log::addNode(unsigned toX, unsigned toY, unsigned number)
 {
     // REMEMBER about transposing map and shift +1; so inversed transposing and shift -1 is required
     std::swap(toX, toY);
     --toX, --toY;
-
     XMLElement *pElement = xmlDoc.NewElement("node");
+
     pElement->SetAttribute("x", toX);
     pElement->SetAttribute("y", toY);
     pElement->SetAttribute("number", number);
     pLowLevel->InsertEndChild(pElement);
-
-    pElement = xmlDoc.NewElement("section");
-    pElement->SetAttribute("number", number - 1);  // CHANGE. -1 because pHighLevel has less nodes by 1
-    pElement->SetAttribute("start.x", rememberedX);
-    pElement->SetAttribute("start.y", rememberedY);
-    pElement->SetAttribute("finish.x", toX);
-    pElement->SetAttribute("finish.y", toY);
-    pElement->SetAttribute("length", weightMovement);
-    pHighLevel->InsertEndChild(pElement);
-
-    rememberedX = toX;
-    rememberedY = toY;
     return 0;
 }
 
@@ -68,7 +52,7 @@ int Log::savePath(const std::vector<Node> &path, const std::vector<double> &weig
     this->initPath(path[ind].getX(), path[ind].getY(), 0);
     for (ind = path.size() - 2; ind >= 0; --ind) {
         unsigned number = path.size() - ind - 1;
-        this->addNode(path[ind].getX(), path[ind].getY(), weightMovements[ind], number);
+        this->addNode(path[ind].getX(), path[ind].getY(), number);
     }
     return 0;
 }
@@ -162,7 +146,11 @@ int Log::saveData(const char *nameIn, const Output &output, const Map &map) {
     pSummary->SetAttribute("time", output.time);
     pLog->InsertEndChild(pSummary);
     // map with drawn path willbe accessable via pPath - Log's member
-    this->saveMap(output.path, map);
+    if (output.isLowLevel) {
+        this->saveMap(output.path, map);
+    } else {
+        this->saveMap(output.otherPath, map);
+    }
     pLog->InsertEndChild(pPath);
     if (output.path.size() != 0) {  // if there is found path
         // consequence of nodes will be accessable via pHighLevel and pLowLevel - Log's members
