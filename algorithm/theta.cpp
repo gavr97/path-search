@@ -247,14 +247,11 @@ void Theta::highToLow
          std::vector<TypeValue> &otherWeightMovements
         ) const
 {
-    TypeValue rememberedCost = 0;
     bool isFirst = true;
     for (unsigned ind_to = 1; ind_to != path.size(); ++ind_to) {
         unsigned ind_from = ind_to - 1;
         int x1 = path[ind_from].getX(); int y1 = path[ind_from].getY();
         int x2 = path[ind_to].getX(); int y2 = path[ind_to].getY();
-        TypeValue diagCost = 1.414;
-        TypeValue lineCost = 1.0;
 
         const int deltaX = abs(x2 - x1);
         const int deltaY = abs(y2 - y1);
@@ -266,25 +263,24 @@ void Theta::highToLow
         {
             //setPixel(x1, y1);
             otherPath.push_back(Node{static_cast<unsigned>(x1), static_cast<unsigned>(y1)});
-            if (!isFirst)
-                otherWeightMovements.push_back(rememberedCost);
 
             const int error2 = error * 2;
             if(error2 > -deltaY)
             {
                 error -= deltaY;
                 x1 += signX;
-                otherWeightMovements.push_back(lineCost);
             }
             if(error2 < deltaX)
             {
                 error += deltaX;
                 y1 += signY;
-                otherWeightMovements.push_back(diagCost);
             }
             isFirst = false;
         }
         //setPixel(x2, y2);  it will be taken in next iteration;
     }
+    // in this case next iteration has not happened
+    //setPixel(x1, y1);
+    otherPath.push_back(path.back());
 }
 
