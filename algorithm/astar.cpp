@@ -79,6 +79,10 @@ int AStar::init(const Task &task)
         heuristicHide = &euclid;
     }
 
+    //______init start and finish_____
+    nodeStart = Node{task.startX, task.startY};
+    nodeFinish = Node{task.finishX, task.finishY};
+
     //_____init containers open and close____
     open.init(task.cntRealRows, task.cntRealCols);
     close.init(task.cntRealRows, task.cntRealCols);
@@ -132,7 +136,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
     // open is a set of (f-val, Node)
     // close is a set of (Node, g-val);
     // open: (f-val, node)
-    Node nodeFinish{finishX, finishY};
+
     Node nodeNow(startX, startY, (TypeValue)0, 0 + heuristic(nodeNow, nodeFinish));
     nodeNow.setParent(nullptr);
     if (!map.isObstacle(nodeNow)) {
@@ -152,7 +156,6 @@ bool AStar::computeGValues(const Map &map, Output &output)
         if (nodeNow == nodeFinish) {
             return true;
         }
-
         unsigned ux = nodeNow.getX(), uy = nodeNow.getY();
         for (unsigned ind = 0; ind != dyVec.size(); ++ind) {
             unsigned vx = ux + dxVec[ind];
@@ -161,10 +164,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
             Node nodeNeig{vx, vy};
             if (!map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end() &&
                     map.isAllowedFromTo(ux, uy, vx, vy)) {
-                TypeValue  gVal = nodeNow.getGVal() + weightVec[ind];
-                nodeNeig.setGVal(gVal);
-                nodeNeig.setFVal(gVal + heuristic(nodeNeig, nodeFinish));
-                nodeNeig.setParent(pNodeNow);
+                computeCost(pNodeNow, nodeNeig, map);  // make nodeNeig a pretendent(set gVal, ..., parent)
                 open.update(nodeNeig, wasCreated); // wasCreated - reference passing arg
                 if (!wasCreated) {
                     ++output.numberOfNodesCreated;
@@ -197,4 +197,25 @@ bool AStar::constructPath(Output &output)
     }
     output.path.push_back(nodeNow);
     return true;
+}
+
+void AStar::computeCost(const Node *const pNodeParent, Node &nodeSon, const Map &map) const
+{
+    const Node nodeParent = *pNodeParent;
+    const Node * const pNodeGrandParent = nodeParent.getParent();
+
+    const Node * pNodePretendent;
+    Node nodePretendent;
+    if (pNodeGrandParent != nullptr && map.lineOfSight(*pNodeGrandParent, nodeSon)) {
+        pNodePretendent = pNodeGrandParent;
+        nodePretendent = *pNodePretendent;
+    } else {
+        pNodePretendent = pNodeParent;
+        nodePretendent = *pNodePretendent;
+    }
+
+    TypeValue  gVal = nodePretendent.getGVal() + heuristic(nodePretendent, nodeSon);
+    nodeSon.setGVal(gVal);
+    nodeSon.setFVal(gVal + heuristic(nodeSon, nodeFinish));
+    nodeSon.setParent(pNodePretendent);
 }

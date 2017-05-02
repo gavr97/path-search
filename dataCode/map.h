@@ -31,6 +31,8 @@ public:
     bool isObstacle(unsigned x, unsigned y) const;
     bool isAllowedFromTo(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const;
     int readMap(const char *nameIn);
+    bool lineOfSight(const Node &node1, const Node &node2) const;
+    bool lineOfSight(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const;
 };
 
 

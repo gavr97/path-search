@@ -205,3 +205,47 @@ int Map::readGrid(XMLNode *pGrid, Grid &grid)
     }
     return 0;
 }
+
+bool Map::lineOfSight(const Node &node1, const Node &node2) const
+{
+    return lineOfSight(node1.getX(), node1.getY(), node2.getX(), node2.getY());
+}
+
+
+bool Map::lineOfSight(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const
+{
+    // from (x1, y1) to (x2, y2)
+    int x1 = ux; int y1 = uy;
+    int x2 = vx; int y2 = vy;
+    const int deltaX = abs(x2 - x1);
+    const int deltaY = abs(y2 - y1);
+    const int signX = x1 < x2 ? 1 : -1;
+    const int signY = y1 < y2 ? 1 : -1;
+    int error = deltaX - deltaY;
+
+    //setPixel(x2, y2); now check whether it is obstacle!
+    if (this->isObstacle(x2, y2)) {
+        return false;
+    }
+
+    while(x1 != x2 || y1 != y2)
+    {
+        //setPixel(x1, y1); check!
+        if (this->isObstacle(x1, y1)) {
+            return false;
+        }
+
+        const int error2 = error * 2;
+        if(error2 > -deltaY)
+        {
+            error -= deltaY;
+            x1 += signX;
+        }
+        if(error2 < deltaX)
+        {
+            error += deltaX;
+            y1 += signY;
+        }
+    }
+    return true;
+}

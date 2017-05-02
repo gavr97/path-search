@@ -67,6 +67,8 @@ private:
 
     bool computeGValues(const Map &map, Output &output);
     bool constructPath(Output &output);
+    // the best best path for nodeSon across nodeParent or nodeGrandParent
+    void computeCost(const Node *const pNodeParent, Node &nodeSon, const Map &map) const;
 
 public:
     int init (const Task &task);
