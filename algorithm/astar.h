@@ -42,7 +42,7 @@ class AStar {
 private:
     //____members that define features of algorithm(object)_____
     TypeValue (*heuristicHide)(unsigned ux, unsigned uy, unsigned vx, unsigned vy);
-    TypeValue heuristic(Node node1, Node node2);
+    TypeValue heuristic(const Node &node1, const Node &node2) const;
     std::vector<short> dxVec;
     std::vector<short> dyVec;
     std::vector<TypeValue> weightVec;
@@ -54,6 +54,8 @@ private:
     unsigned startY;
     unsigned finishX;
     unsigned finishY;
+    Node nodeStart;
+    Node nodeFinish;
 
     Close close; //std::unordered_map<unsigned, Node> close;  // node->g-value
     Open open;  // a set of pairs(f-value, Node)

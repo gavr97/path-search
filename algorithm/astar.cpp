@@ -36,7 +36,7 @@ inline TypeValue zero(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
     return 0;
 }
 
-TypeValue AStar::heuristic(Node node1, Node node2)
+TypeValue AStar::heuristic(const Node &node1, const Node &node2) const
 {
     return heuristicHide(node1.getX(), node1.getY(), node2.getX(), node2.getY());
 }
@@ -206,8 +206,8 @@ bool AStar::constructPath(Output &output)
 void AStar::computeCost(const Node &nodeParent, Node &nodeSon) const
 {
     const Node * const pNodeParent = &nodeParent;
-    TypeValue  gVal = nodeParent.getGVal() + weightVec[ind];
+    TypeValue  gVal = nodeParent.getGVal() + heuristic(nodeParent, nodeSon);
     nodeSon.setGVal(gVal);
     nodeSon.setFVal(gVal + heuristic(nodeSon, nodeFinish));
-    nodeSon.setParent(pNodeNow);
+    nodeSon.setParent(pNodeParent);
 }
