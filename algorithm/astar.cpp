@@ -148,6 +148,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
         ++output.numberOfSteps;
         nodeNow = open.pop();
         const Node* pNodeNow = close.push(nodeNow);
+        nodeNow = *pNodeNow;  // for correct adress of nodeNow in memory;
         if (nodeNow == nodeFinish) {
             return true;
         }
@@ -160,10 +161,14 @@ bool AStar::computeGValues(const Map &map, Output &output)
             Node nodeNeig{vx, vy};
             if (!map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end() &&
                     map.isAllowedFromTo(ux, uy, vx, vy)) {
+
+                /*
                 TypeValue  gVal = nodeNow.getGVal() + weightVec[ind];
                 nodeNeig.setGVal(gVal);
                 nodeNeig.setFVal(gVal + heuristic(nodeNeig, nodeFinish));
                 nodeNeig.setParent(pNodeNow);
+                 */
+                computeCost(nodeNow, nodeNeig);  // make nodeNeig a pretendent(set gVal, ..., parent)
                 open.update(nodeNeig, wasCreated); // wasCreated - reference passing arg
                 if (!wasCreated) {
                     ++output.numberOfNodesCreated;
@@ -196,4 +201,13 @@ bool AStar::constructPath(Output &output)
     }
     output.path.push_back(nodeNow);
     return true;
+}
+
+void AStar::computeCost(const Node &nodeParent, Node &nodeSon) const
+{
+    const Node * const pNodeParent = &nodeParent;
+    TypeValue  gVal = nodeParent.getGVal() + weightVec[ind];
+    nodeSon.setGVal(gVal);
+    nodeSon.setFVal(gVal + heuristic(nodeSon, nodeFinish));
+    nodeSon.setParent(pNodeNow);
 }
