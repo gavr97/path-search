@@ -5,6 +5,7 @@ CONFIG -= qt
 QMAKE_LFLAGS += -static
 
 SOURCES += main.cpp \
+    algorithm/theta.cpp \
     algorithm/astar.cpp \
     algorithm/node.cpp \
     dataCode/output.cpp \
@@ -22,6 +23,7 @@ DISTFILES += \
     tinyxml/tinyxml2.h.gch
 
 HEADERS += \
+    algorithm/theta.h \
     algorithm/astar.h \
     algorithm/node.h \
     dataCode/output.h \

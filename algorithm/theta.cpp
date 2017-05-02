@@ -1,6 +1,6 @@
 #include <cmath>
 #include <ctime>
-#include "../algorithm/astar.h"
+#include "../algorithm/theta.h"
 
 inline int my_Max(int a, int b)
 {
@@ -32,32 +32,32 @@ inline TypeValue zero(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
     return 0;
 }
 
-TypeValue AStar::heuristic(const Node &node1, const Node &node2) const
+TypeValue Theta::heuristic(const Node &node1, const Node &node2) const
 {
     return heuristicHide(node1.getX(), node1.getY(), node2.getX(), node2.getY());
 }
 
-inline unsigned AStar::key(unsigned ux, unsigned uy) const
+inline unsigned Theta::key(unsigned ux, unsigned uy) const
 {
     return ux * (cntRealCols + 2) + uy;
 }
 
-inline unsigned AStar::key(const Node &node) const
+inline unsigned Theta::key(const Node &node) const
 {
     return key(node.getX(), node.getY());
 }
 
-inline unsigned AStar::coordinateFirst(unsigned key)
+inline unsigned Theta::coordinateFirst(unsigned key)
 {
     return key / (cntRealCols + 2);
 }
 
-inline unsigned AStar::coordinateSecond(unsigned key)
+inline unsigned Theta::coordinateSecond(unsigned key)
 {
     return key % (cntRealCols + 2);
 }
 
-int AStar::init(const Task &task)
+int Theta::init(const Task &task)
 {
     //_____define heuristic_____
     if (task.metricType == "manhattan")
@@ -105,7 +105,7 @@ int AStar::init(const Task &task)
     return 0;
 }
 
-int AStar::solve(const Map &map, Output &output)
+int Theta::solve(const Map &map, Output &output)
 {
     unsigned int start_time = clock();
     unsigned int end_time, search_time;
@@ -126,9 +126,9 @@ int AStar::solve(const Map &map, Output &output)
     }
 }
 
-bool AStar::computeGValues(const Map &map, Output &output)
+bool Theta::computeGValues(const Map &map, Output &output)
 {
-    // open, close are inside AStar astar
+    // open, close are inside Theta astar
     // open is a set of (f-val, Node)
     // close is a set of (Node, g-val);
     // open: (f-val, node)
@@ -159,7 +159,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
             bool wasCreated;
             Node nodeNeig{vx, vy};
             if (!map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end() &&
-                    map.isAllowedFromTo(ux, uy, vx, vy)) {
+                map.isAllowedFromTo(ux, uy, vx, vy)) {
                 computeCost(pNodeNow, nodeNeig, map);  // make nodeNeig a pretendent(set gVal, ..., parent)
                 open.update(nodeNeig, wasCreated); // wasCreated - reference passing arg
                 if (!wasCreated) {
@@ -172,7 +172,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
     return false;  // goal is not reached
 }
 
-bool AStar::constructPath(Output &output)
+bool Theta::constructPath(Output &output)
 {
     Node nodeStart = close[key(startX, startY)];
     unsigned keyNow = key(finishX, finishY);
@@ -195,11 +195,20 @@ bool AStar::constructPath(Output &output)
     return true;
 }
 
-void AStar::computeCost(const Node *const pNodeParent, Node &nodeSon, const Map &map) const
+void Theta::computeCost(const Node *const pNodeParent, Node &nodeSon, const Map &map) const
 {
     const Node nodeParent = *pNodeParent;
-    const Node * pNodePretendent = pNodeParent;
-    Node nodePretendent = *pNodePretendent;
+    const Node * const pNodeGrandParent = nodeParent.getParent();
+
+    const Node * pNodePretendent;
+    Node nodePretendent;
+    if (pNodeGrandParent != nullptr && map.lineOfSight(*pNodeGrandParent, nodeSon)) {
+        pNodePretendent = pNodeGrandParent;
+        nodePretendent = *pNodePretendent;
+    } else {
+        pNodePretendent = pNodeParent;
+        nodePretendent = *pNodePretendent;
+    }
 
     TypeValue  gVal = nodePretendent.getGVal() + heuristic(nodePretendent, nodeSon);
     nodeSon.setGVal(gVal);

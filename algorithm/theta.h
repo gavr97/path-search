@@ -1,5 +1,5 @@
-#ifndef REPO_ASTAR_H
-#define REPO_ASTAR_H
+#ifndef ASEARCH_THETA_H
+#define ASEARCH_THETA_H
 
 #include <vector>
 #include <string>
@@ -19,7 +19,7 @@ using std::endl;
 using std::vector;
 using std::pair;
 
-class AStar {
+class Theta {
 private:
     //____members that define features of algorithm(object)_____
     TypeValue (*heuristicHide)(unsigned ux, unsigned uy, unsigned vx, unsigned vy);
@@ -56,4 +56,6 @@ public:
     int solve(const Map &map, Output &output);
 };
 
-#endif //REPO_ASTAR_H
+
+
+#endif //ASEARCH_THETA_H
