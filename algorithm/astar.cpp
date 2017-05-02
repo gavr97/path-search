@@ -118,9 +118,9 @@ int AStar::solve(const Map &map, Output &output)
             if (!output.isLowLevel) {
                 highToLow(output.path, output.weightMovements, output.otherPath, output.otherWeightMovements);
             }
-            //else {
-            //    lowTpHigh(output.path, output.weightMovements, output.otherPath, output.otherWeightMovements);
-            //}
+            else {
+                lowToHigh(output.path, output.weightMovements, output.otherPath, output.otherWeightMovements);
+            }
             return 0;
         } else {
             end_time = clock();
@@ -227,7 +227,38 @@ void AStar::lowToHigh
                 std::vector<TypeValue> &otherWeightMovements
         ) const
 {
-
+    otherPath.clear();
+    unsigned ind = 0;
+    while (ind < path.size()) {
+        unsigned x1 = path[ind].getX();
+        unsigned y1 = path[ind].getY();
+        otherPath.push_back(Node{x1, y1});
+        ++ind;
+        if (ind == path.size()) {
+            break;
+        }
+        int deltaX = path[ind].getX() - x1;
+        int deltaY = path[ind].getY() - y1;
+        int deltaNowX = deltaX;
+        int deltaNowY = deltaY;
+        unsigned xPrev = path[ind].getX();
+        unsigned yPrev = path[ind].getY();
+        while (ind < path.size() && deltaNowX == deltaX && deltaNowY == deltaY) {
+            ++ind;
+            if (ind == path.size()) {
+                break;
+            }
+            deltaNowX = path[ind].getX() - xPrev;
+            deltaNowY = path[ind].getY() - yPrev;
+            xPrev = path[ind].getX();
+            yPrev = path[ind].getY();
+        }
+        unsigned x2 = xPrev;
+        unsigned y2 = yPrev;
+        TypeValue weightSection = heuristic(Node{x1, y1}, Node{x2, y2});
+        otherWeightMovements.push_back(weightSection);
+        --ind;
+    }
 }
 
 void AStar::highToLow
@@ -238,6 +269,7 @@ void AStar::highToLow
                 std::vector<TypeValue> &otherWeightMovements
         ) const
 {
+    otherPath.clear();
     TypeValue rememberedCost = 0;
     bool isFirst = true;
     for (unsigned ind_to = 1; ind_to != otherPath.size(); ++ind_to) {
