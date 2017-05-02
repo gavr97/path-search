@@ -73,6 +73,52 @@ int Log::savePath(const std::vector<Node> &path, const std::vector<double> &weig
     return 0;
 }
 
+int Log::initPathHigh(unsigned startX, unsigned startY, unsigned number)
+{
+    // REMEMBER about transposing map and shift +1; so inversed transposing and shift -1 is required
+    std::swap(startX, startY);
+    --startX, --startY;
+
+    pHighLevel = xmlDoc.NewElement("hplevel");
+    XMLElement *pElement = xmlDoc.NewElement("node");
+    rememberedX = startX;
+    rememberedY = startY;
+    return 0;
+}
+
+int Log::addNodeHigh(unsigned toX, unsigned toY, TypeValue weightMovement, unsigned number)
+{
+    // REMEMBER about transposing map and shift +1; so inversed transposing and shift -1 is required
+    std::swap(toX, toY);
+    --toX, --toY;
+
+    XMLElement *pElement = xmlDoc.NewElement("section");
+    pElement->SetAttribute("number", number);  // CHANGE. -1 because pHighLevel has less nodes by 1
+    pElement->SetAttribute("start.x", rememberedX);
+    pElement->SetAttribute("start.y", rememberedY);
+    pElement->SetAttribute("finish.x", toX);
+    pElement->SetAttribute("finish.y", toY);
+    pElement->SetAttribute("length", weightMovement);
+    pHighLevel->InsertEndChild(pElement);
+
+    rememberedX = toX;
+    rememberedY = toY;
+    return 0;
+}
+
+int Log::savePathHigh(const std::vector<Node> &path, const std::vector<double> &weightMovements)
+{
+    // remeber that vectors path and weightMovements are reversed
+    // size of weightMovements is lower by 1;
+    int ind = path.size() - 1;
+    this->initPathHigh(path[ind].getX(), path[ind].getY(), 0);
+    for (ind = path.size() - 2; ind >= 0; --ind) {
+        unsigned number = path.size() - ind - 1;
+        this->addNodeHigh(path[ind].getX(), path[ind].getY(), weightMovements[ind], number);
+    }
+    return 0;
+}
+
 int Log::saveMap(const std::vector<Node> &path, const Map &map)
 {
     Grid gridRes = map.grid;
@@ -118,9 +164,15 @@ int Log::saveData(const char *nameIn, const Output &output, const Map &map) {
     // map with drawn path willbe accessable via pPath - Log's member
     this->saveMap(output.path, map);
     pLog->InsertEndChild(pPath);
-    // consequence of nodes will be accessable via pHighLevel and pLowLevel - Log's members
     if (output.path.size() != 0) {  // if there is found path
-        if (this->savePath(output.path, output.weightMovements)) return 1;
+        // consequence of nodes will be accessable via pHighLevel and pLowLevel - Log's members
+        if (output.isLowLevel) {
+            if (this->savePath(output.path, output.weightMovements)) return 1;
+            if (this->savePathHigh(output.otherPath, output.otherWeightMovements)) return 1;
+        } else {
+            if (this->savePathHigh(output.path, output.weightMovements)) return 1;
+            if (this->savePath(output.otherPath, output.otherWeightMovements)) return 1;
+        }
         pLog->InsertEndChild(pLowLevel);
         pLog->InsertEndChild(pHighLevel);
     }
