@@ -17,10 +17,16 @@ public:
     double lengtnPath;
     std::vector<Node> nodesCreated;
     std::vector<Node> path;  // reversed;
-    std::vector<double> weightMovements;  // size of weightMovements is less by 1 thah path
-                                        // if we look at vectors from ends then nowWeight if for
-                                        // edge from now to next
-                                        // formally: weightMovements[ind] is for edge from path[ind+1] to path[ind]
+    std::vector<Node> otherPath;  // reversed;
+
+    // size of weightMovements is less by 1 thah path
+    // if we look at vectors from ends then nowWeight if for
+    // edge from now to next
+    // formally: weightMovements[ind] is for edge from path[ind+1] to path[ind]
+    std::vector<TypeValue> weightMovements;
+    std::vector<TypeValue> otherWeightMovements;
+
+    bool isLowLevel;
 
     Output();
     void printPath(const std::vector<Node> &path);

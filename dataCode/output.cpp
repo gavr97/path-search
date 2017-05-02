@@ -12,6 +12,7 @@ Output::Output()
     numberOfSteps = 0;
     numberOfMovements = 0;
     lengtnPath = 0;
+    isLowLevel = true;
 }
 
 void Output::printPath(const std::vector<Node> &path)

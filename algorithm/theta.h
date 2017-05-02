@@ -51,6 +51,20 @@ private:
     // the best best path for nodeSon across nodeParent or nodeGrandParent
     void computeCost(const Node *const pNodeParent, Node &nodeSon, const Map &map) const;
 
+    void setLevelPath(Output &output);
+    void lowToHigh
+            (const std::vector<Node> &path,
+             const std::vector<TypeValue> &weightMovements,
+             std::vector<Node> &otherPath,
+             std::vector<TypeValue> &otherWeightMovements
+            ) const;
+    void highToLow
+            (const std::vector<Node> &path,
+             const std::vector<TypeValue> &weightMovements,
+             std::vector<Node> &otherPath,
+             std::vector<TypeValue> &otherWeightMovements
+            ) const;
+
 public:
     int init (const Task &task);
     int solve(const Map &map, Output &output);

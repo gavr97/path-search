@@ -107,6 +107,7 @@ int AStar::init(const Task &task)
 
 int AStar::solve(const Map &map, Output &output)
 {
+    setLevelPath(output);
     unsigned int start_time = clock();
     unsigned int end_time, search_time;
     if (computeGValues(map, output)) {
@@ -114,6 +115,12 @@ int AStar::solve(const Map &map, Output &output)
             end_time = clock();
             search_time = end_time - start_time;
             output.time = (double)search_time / CLOCKS_PER_SEC;
+            if (!output.isLowLevel) {
+                highToLow(output.path, output.weightMovements, output.otherPath, output.otherWeightMovements);
+            }
+            //else {
+            //    lowTpHigh(output.path, output.weightMovements, output.otherPath, output.otherWeightMovements);
+            //}
             return 0;
         } else {
             end_time = clock();
@@ -205,4 +212,70 @@ void AStar::computeCost(const Node *const pNodeParent, Node &nodeSon, const Map 
     nodeSon.setGVal(gVal);
     nodeSon.setFVal(gVal + heuristic(nodeSon, nodeFinish));
     nodeSon.setParent(pNodePretendent);
+}
+
+void AStar::setLevelPath(Output &output)
+{
+    output.isLowLevel = true;
+}
+
+void AStar::lowToHigh
+        (
+                const std::vector<Node> &path,
+                const std::vector<TypeValue> &weightMovements,
+                std::vector<Node> &otherPath,
+                std::vector<TypeValue> &otherWeightMovements
+        ) const
+{
+
+}
+
+void AStar::highToLow
+        (
+                const std::vector<Node> &path,
+                const std::vector<TypeValue> &weightMovements,
+                std::vector<Node> &otherPath,
+                std::vector<TypeValue> &otherWeightMovements
+        ) const
+{
+    TypeValue rememberedCost = 0;
+    bool isFirst = true;
+    for (unsigned ind_to = 1; ind_to != otherPath.size(); ++ind_to) {
+        unsigned ind_from = ind_to - 1;
+        int x1 = path[ind_from].getX(); int y1 = path[ind_from].getY();
+        int x2 = path[ind_to].getX(); int y2 = path[ind_to].getY();
+        TypeValue diagCost = 1.414;
+        TypeValue lineCost = 1.0;
+
+        const int deltaX = abs(x2 - x1);
+        const int deltaY = abs(y2 - y1);
+        const int signX = x1 < x2 ? 1 : -1;
+        const int signY = y1 < y2 ? 1 : -1;
+        int error = deltaX - deltaY;
+
+
+        while(x1 != x2 || y1 != y2)
+        {
+            //setPixel(x1, y1);
+            otherPath.push_back(Node{static_cast<unsigned>(x1), static_cast<unsigned>(y1)});
+            if (!isFirst)
+                otherWeightMovements.push_back(rememberedCost);
+
+            const int error2 = error * 2;
+            if(error2 > -deltaY)
+            {
+                error -= deltaY;
+                x1 += signX;
+                otherWeightMovements.push_back(lineCost);
+            }
+            if(error2 < deltaX)
+            {
+                error += deltaX;
+                y1 += signY;
+                otherWeightMovements.push_back(diagCost);
+            }
+            isFirst = false;
+        }
+        //setPixel(x2, y2);  it will be taken in next iteration;
+    }
 }

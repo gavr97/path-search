@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
     task.print();
 
     //______Init algo______
-    AStar astar;
+    Theta astar;
     myeResult = astar.init(task);
     if (myeResult) {
         std::cout << "error: failure during initializing astar\n"
