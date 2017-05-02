@@ -36,7 +36,7 @@ inline TypeValue zero(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
     return 0;
 }
 
-TypeValue AStar::heuristic(Node node1, Node node2)
+TypeValue AStar::heuristic(const Node &node1, const Node &node2) const
 {
     return heuristicHide(node1.getX(), node1.getY(), node2.getX(), node2.getY());
 }
@@ -148,6 +148,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
         ++output.numberOfSteps;
         nodeNow = open.pop();
         const Node* pNodeNow = close.push(nodeNow);
+        nodeNow = *pNodeNow;  // for correct adress of nodeNow in memory;
         if (nodeNow == nodeFinish) {
             return true;
         }
