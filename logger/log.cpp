@@ -165,7 +165,7 @@ int Log::saveData(const char *nameIn, const Output &output, const Map &map) {
         pLog->InsertEndChild(pHighLevel);
     }
 
-    XMLNode *pRoot = xmlDoc.FirstChild();
+    XMLNode *pRoot = xmlDoc.FirstChildElement("root");
     pRoot->InsertEndChild(pLog);
     return 0;
 }
