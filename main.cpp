@@ -4,6 +4,7 @@
 #include "logger/log.h"
 #include "dataCode/output.h"
 #include "algorithm/astar.h"
+#include "algorithm/theta.h"
 
 #include <fstream>
 #include <ctime>
@@ -44,8 +45,8 @@ int main(int argc, char *argv[]) {
     }
     task.print();
 
-    //______Init Astar______
-    AStar astar;
+    //______Init algo______
+    Theta astar;
     myeResult = astar.init(task);
     if (myeResult) {
         std::cout << "error: failure during initializing astar\n"

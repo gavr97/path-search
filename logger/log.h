@@ -30,10 +30,16 @@ public:
     int saveData(const char *nameIn, const Output &output, const Map &task);
     int write(const char *nameOut);
 private:
+    int saveMap(const std::vector<Node> &path, const Map &map);
+
     int savePath(const std::vector<Node> &path, const std::vector<double> &weightMovements);
     int initPath(unsigned ux, unsigned uy, unsigned number);
-    int addNode(unsigned toX, unsigned toY, TypeValue length, unsigned number);
-    int saveMap(const std::vector<Node> &path, const Map &map);
+    int addNode(unsigned toX, unsigned toY, unsigned number);
+
+    int savePathHigh(const std::vector<Node> &path, const std::vector<double> &weightMovements);
+    int initPathHigh(unsigned ux, unsigned uy, unsigned number);
+    int addNodeHigh(unsigned toX, unsigned toY, TypeValue length, unsigned number);
+
 };
 
 #endif //REPO_MYLOG_H

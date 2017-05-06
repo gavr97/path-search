@@ -1,6 +1,6 @@
 #include <cmath>
 #include <ctime>
-#include "../algorithm/astar.h"
+#include "../algorithm/theta.h"
 
 inline int my_Max(int a, int b)
 {
@@ -32,32 +32,32 @@ inline TypeValue zero(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
     return 0;
 }
 
-TypeValue AStar::heuristic(const Node &node1, const Node &node2) const
+TypeValue Theta::heuristic(const Node &node1, const Node &node2) const
 {
     return heuristicHide(node1.getX(), node1.getY(), node2.getX(), node2.getY());
 }
 
-inline unsigned AStar::key(unsigned ux, unsigned uy) const
+inline unsigned Theta::key(unsigned ux, unsigned uy) const
 {
     return ux * (cntRealCols + 2) + uy;
 }
 
-inline unsigned AStar::key(const Node &node) const
+inline unsigned Theta::key(const Node &node) const
 {
     return key(node.getX(), node.getY());
 }
 
-inline unsigned AStar::coordinateFirst(unsigned key)
+inline unsigned Theta::coordinateFirst(unsigned key)
 {
     return key / (cntRealCols + 2);
 }
 
-inline unsigned AStar::coordinateSecond(unsigned key)
+inline unsigned Theta::coordinateSecond(unsigned key)
 {
     return key % (cntRealCols + 2);
 }
 
-int AStar::init(const Task &task)
+int Theta::init(const Task &task)
 {
     //_____define heuristic_____
     if (task.metricType == "manhattan")
@@ -105,7 +105,7 @@ int AStar::init(const Task &task)
     return 0;
 }
 
-int AStar::solve(const Map &map, Output &output)
+int Theta::solve(const Map &map, Output &output)
 {
     setLevelPath(output);
     unsigned int start_time = clock();
@@ -118,9 +118,9 @@ int AStar::solve(const Map &map, Output &output)
             if (!output.isLowLevel) {
                 highToLow(output.path, output.weightMovements, output.otherPath, output.otherWeightMovements);
             }
-            else {
-                lowToHigh(output.path, output.weightMovements, output.otherPath, output.otherWeightMovements);
-            }
+            //else {
+            //    lowTpHigh(output.path, output.weightMovements, output.otherPath, output.otherWeightMovements);
+            //}
             return 0;
         } else {
             end_time = clock();
@@ -133,9 +133,9 @@ int AStar::solve(const Map &map, Output &output)
     }
 }
 
-bool AStar::computeGValues(const Map &map, Output &output)
+bool Theta::computeGValues(const Map &map, Output &output)
 {
-    // open, close are inside AStar astar
+    // open, close are inside Theta astar
     // open is a set of (f-val, Node)
     // close is a set of (Node, g-val);
     // open: (f-val, node)
@@ -166,7 +166,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
             bool wasCreated;
             Node nodeNeig{vx, vy};
             if (!map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end() &&
-                    map.isAllowedFromTo(ux, uy, vx, vy)) {
+                map.isAllowedFromTo(ux, uy, vx, vy)) {
                 computeCost(pNodeNow, nodeNeig, map);  // make nodeNeig a pretendent(set gVal, ..., parent)
                 open.update(nodeNeig, wasCreated); // wasCreated - reference passing arg
                 if (!wasCreated) {
@@ -179,7 +179,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
     return false;  // goal is not reached
 }
 
-bool AStar::constructPath(Output &output)
+bool Theta::constructPath(Output &output)
 {
     Node nodeStart = close[key(startX, startY)];
     unsigned keyNow = key(finishX, finishY);
@@ -202,11 +202,20 @@ bool AStar::constructPath(Output &output)
     return true;
 }
 
-void AStar::computeCost(const Node *const pNodeParent, Node &nodeSon, const Map &map) const
+void Theta::computeCost(const Node *const pNodeParent, Node &nodeSon, const Map &map) const
 {
     const Node nodeParent = *pNodeParent;
-    const Node * pNodePretendent = pNodeParent;
-    Node nodePretendent = *pNodePretendent;
+    const Node * const pNodeGrandParent = nodeParent.getParent();
+
+    const Node * pNodePretendent;
+    Node nodePretendent;
+    if (pNodeGrandParent != nullptr && map.lineOfSight(*pNodeGrandParent, nodeSon)) {
+        pNodePretendent = pNodeGrandParent;
+        nodePretendent = *pNodePretendent;
+    } else {
+        pNodePretendent = pNodeParent;
+        nodePretendent = *pNodePretendent;
+    }
 
     TypeValue  gVal = nodePretendent.getGVal() + heuristic(nodePretendent, nodeSon);
     nodeSon.setGVal(gVal);
@@ -214,70 +223,35 @@ void AStar::computeCost(const Node *const pNodeParent, Node &nodeSon, const Map 
     nodeSon.setParent(pNodePretendent);
 }
 
-void AStar::setLevelPath(Output &output)
+void Theta::setLevelPath(Output &output)
 {
-    output.isLowLevel = true;
+    output.isLowLevel = false;
 }
 
-void AStar::lowToHigh
+void Theta::lowToHigh
         (
-                const std::vector<Node> &path,
-                const std::vector<TypeValue> &weightMovements,
-                std::vector<Node> &otherPath,
-                std::vector<TypeValue> &otherWeightMovements
+        const std::vector<Node> &path,
+        const std::vector<TypeValue> &weightMovements,
+        std::vector<Node> &otherPath,
+        std::vector<TypeValue> &otherWeightMovements
         ) const
 {
-    otherPath.clear();
-    unsigned ind = 0;
-    while (ind < path.size()) {
-        unsigned x1 = path[ind].getX();
-        unsigned y1 = path[ind].getY();
-        otherPath.push_back(Node{x1, y1});
-        ++ind;
-        if (ind == path.size()) {
-            break;
-        }
-        int deltaX = path[ind].getX() - x1;
-        int deltaY = path[ind].getY() - y1;
-        int deltaNowX = deltaX;
-        int deltaNowY = deltaY;
-        unsigned xPrev = path[ind].getX();
-        unsigned yPrev = path[ind].getY();
-        while (ind < path.size() && deltaNowX == deltaX && deltaNowY == deltaY) {
-            ++ind;
-            if (ind == path.size()) {
-                break;
-            }
-            deltaNowX = path[ind].getX() - xPrev;
-            deltaNowY = path[ind].getY() - yPrev;
-            xPrev = path[ind].getX();
-            yPrev = path[ind].getY();
-        }
-        unsigned x2 = xPrev;
-        unsigned y2 = yPrev;
-        TypeValue weightSection = heuristic(Node{x1, y1}, Node{x2, y2});
-        otherWeightMovements.push_back(weightSection);
-        --ind;
-    }
+
 }
 
-void AStar::highToLow
+void Theta::highToLow
         (
-                const std::vector<Node> &path,
-                const std::vector<TypeValue> &weightMovements,
-                std::vector<Node> &otherPath,
-                std::vector<TypeValue> &otherWeightMovements
+         const std::vector<Node> &path,
+         const std::vector<TypeValue> &weightMovements,
+         std::vector<Node> &otherPath,
+         std::vector<TypeValue> &otherWeightMovements
         ) const
 {
-    otherPath.clear();
-    TypeValue rememberedCost = 0;
     bool isFirst = true;
-    for (unsigned ind_to = 1; ind_to != otherPath.size(); ++ind_to) {
+    for (unsigned ind_to = 1; ind_to != path.size(); ++ind_to) {
         unsigned ind_from = ind_to - 1;
         int x1 = path[ind_from].getX(); int y1 = path[ind_from].getY();
         int x2 = path[ind_to].getX(); int y2 = path[ind_to].getY();
-        TypeValue diagCost = 1.414;
-        TypeValue lineCost = 1.0;
 
         const int deltaX = abs(x2 - x1);
         const int deltaY = abs(y2 - y1);
@@ -285,29 +259,28 @@ void AStar::highToLow
         const int signY = y1 < y2 ? 1 : -1;
         int error = deltaX - deltaY;
 
-
         while(x1 != x2 || y1 != y2)
         {
             //setPixel(x1, y1);
             otherPath.push_back(Node{static_cast<unsigned>(x1), static_cast<unsigned>(y1)});
-            if (!isFirst)
-                otherWeightMovements.push_back(rememberedCost);
 
             const int error2 = error * 2;
             if(error2 > -deltaY)
             {
                 error -= deltaY;
                 x1 += signX;
-                otherWeightMovements.push_back(lineCost);
             }
             if(error2 < deltaX)
             {
                 error += deltaX;
                 y1 += signY;
-                otherWeightMovements.push_back(diagCost);
             }
             isFirst = false;
         }
         //setPixel(x2, y2);  it will be taken in next iteration;
     }
+    // in this case next iteration has not happened
+    //setPixel(x1, y1);
+    otherPath.push_back(path.back());
 }
+
