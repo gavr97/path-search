@@ -67,6 +67,4 @@ public:
     int solve(const Map &map, Output &output);
 };
 
-
-
 #endif //ASEARCH_THETA_H

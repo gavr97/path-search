@@ -1,36 +1,6 @@
-#include <cmath>
 #include <ctime>
+#include "heuristics.h"
 #include "../algorithm/astar.h"
-
-inline int my_Max(int a, int b)
-{
-    if (a > b)
-        return a;
-    else
-        return b;
-}
-
-inline TypeValue straight(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
-{
-    TypeValue ret = my_Max(abs((int)ux - (int)vx), abs((int)uy - (int)vy));
-    return ret;
-}
-
-inline TypeValue euclid(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
-{
-    return sqrt(pow(((int)ux - (int)vx), 2) + pow(((int)uy - (int)vy), 2));
-}
-
-inline TypeValue manhattan(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
-{
-    TypeValue ret = abs((int)ux - (int)vx) + abs((int)uy - (int)vy);
-    return ret;
-}
-
-inline TypeValue zero(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
-{
-    return 0;
-}
 
 TypeValue AStar::heuristic(const Node &node1, const Node &node2) const
 {
