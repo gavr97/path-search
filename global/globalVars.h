@@ -34,6 +34,10 @@
 #define ALLOW_SQUEEZE_DEFAULT 0
 #define CUT_CORNERS_DEFAULT 0
 
+#define ASTAR std::string("astar")
+#define JPS std::string("jp_search")
+#define THETA std::string("theta")
+
 #define OBSTACLE '1'
 #define NO_OBSTACLE '0'
 

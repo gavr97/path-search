@@ -153,11 +153,18 @@ int Task::myLoad(const char *nameIn)
     if(readDouble(pAlgorithm, TAG_DIAGONALCONST, this->diagCost, DIAG_COST_DEFAULT)) return 1;
     if(readStr(pAlgorithm, TAG_SEARCHTYPE, this->searchType, SEARCH_TYPE_DEFAULT)) return 1;
     if(readStr(pAlgorithm, TAG_METRICTYPE, this->metricType, METRIC_TYPE_DEFAULT)) return 1;
+    if (this->searchType != ASTAR && this->searchType != THETA && this->searchType != JPS) {
+        std::cout << "error: incorrect search type\n";
+        return 1;
+    }
+    if (this->searchType == JPS) {
+        std::cout << "warning: jps is not implemented\nastar will be chosen\n";
+    }
 
     if(readInt(pAlgorithm, TAG_ALLOWDIAGONAL, this->allowDiag, ALLOW_DIAG_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_CUTCORNERS, this->cutCorners, CUT_CORNERS_DEFAULT)) return 1;
-    if (this->searchType == "theta" && this->allowDiag == 0) {
+    if (this->searchType == THETA && this->allowDiag == 0) {
         std::cout << "error: algorithm theta requires allowDiag == 1\n";
         return 1;
     }
