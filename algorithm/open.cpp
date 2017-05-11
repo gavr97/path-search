@@ -1,7 +1,3 @@
-//
-// Created by alexgavr on 14.03.17.
-//
-
 #include "open.h"
 
 void Open::init(unsigned cntRealRows, unsigned cntRealCols)

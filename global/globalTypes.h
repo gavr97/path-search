@@ -1,7 +1,3 @@
-//
-// Created by alexgavr on 29.01.17.
-//
-
 #ifndef REPO_CONSTANTTYPES_H
 #define REPO_CONSTANTTYPES_H
 

@@ -1,7 +1,3 @@
-//
-// Created by alexgavr on 14.03.17.
-//
-
 #ifndef REPO_CLOSE_H
 #define REPO_CLOSE_H
 #include <unordered_map>

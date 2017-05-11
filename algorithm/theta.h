@@ -1,13 +1,10 @@
 #ifndef ASEARCH_THETA_H
 #define ASEARCH_THETA_H
 
+#include <iostream>
 #include <vector>
-#include <string>
-#include <unordered_map>
-#include <map>
-#include <set>
-#include "../dataCode/task.h"
 #include "../global/globalTypes.h"
+#include "../dataCode/task.h"
 #include "../dataCode/output.h"
 #include "../dataCode/map.h"
 #include "open.h"

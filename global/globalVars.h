@@ -1,7 +1,3 @@
-//
-// Created by alexgavr on 30.01.17.
-//
-
 #ifndef REPO_TAGNAMES_H
 #define REPO_TAGNAMES_H
 

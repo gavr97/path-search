@@ -1,9 +1,4 @@
-//
-// Created by alexgavr on 07.01.17.
-//
 #include <iostream>
-#include <vector>
-#include "../tinyxml/tinyxml2.h"
 #include "task.h"
 
 using namespace tinyxml2;

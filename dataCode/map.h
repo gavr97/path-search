@@ -1,11 +1,6 @@
-//
-// Created by alexgavr on 20.02.17.
-//
-
 #ifndef REPO_MAP_H
 #define REPO_MAP_H
 
-#include <vector>
 #include "../tinyxml/tinyxml2.h"
 #include "../global/globalTypes.h"
 

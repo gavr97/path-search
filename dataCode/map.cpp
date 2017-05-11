@@ -1,9 +1,4 @@
-//
-// Created by alexgavr on 20.02.17.
-//
-
 #include <iostream>
-#include "../tinyxml/tinyxml2.h"
 #include "../global/globalTypes.h"
 #include "../global/globalVars.h"
 #include "map.h"

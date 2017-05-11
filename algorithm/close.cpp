@@ -1,7 +1,3 @@
-//
-// Created by alexgavr on 14.03.17.
-//
-
 #include "close.h"
 
 void Close::init(unsigned cntRealRows, unsigned cntRealCols)

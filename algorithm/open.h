@@ -1,15 +1,7 @@
-//
-// Created by alexgavr on 14.03.17.
-//
-
 #ifndef REPO_OPEN_H
 #define REPO_OPEN_H
 
-#include <iostream>
 #include <vector>
-#include <set>
-#include <unordered_map>
-#include <unordered_set>
 #include <list>
 #include "../global/globalTypes.h"
 

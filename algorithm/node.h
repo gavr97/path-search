@@ -1,7 +1,3 @@
-//
-// Created by alexgavr on 15.03.17.
-//
-
 #ifndef REPO_NODE_H
 #define REPO_NODE_H
 

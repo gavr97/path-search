@@ -1,12 +1,7 @@
-//
-// Created by alexgavr on 11.01.17.
-//
-
 #ifndef REPO_MYLOG_H
 #define REPO_MYLOG_H
 
 #include <vector>
-#include <string>
 #include "../tinyxml/tinyxml2.h"
 #include "../global/globalTypes.h"
 #include "../global/globalVars.h"
