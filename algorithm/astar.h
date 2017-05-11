@@ -17,7 +17,7 @@ using std::vector;
 using std::pair;
 
 class AStar {
-private:
+protected:
     //____members that define features of algorithm(object)_____
     TypeValue (*heuristicHide)(unsigned ux, unsigned uy, unsigned vx, unsigned vy);
     TypeValue heuristic(const Node &node1, const Node &node2) const;
@@ -63,7 +63,7 @@ private:
             ) const;
 
 public:
-    int init (const Task &task);
+    int init(const Task &task);
     int solve(const Map &map, Output &output);
 };
 
