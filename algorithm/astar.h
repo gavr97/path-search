@@ -46,9 +46,9 @@ protected:
     bool computeGValues(const Map &map, Output &output);
     bool constructPath(Output &output);
     // the best best path for nodeSon across nodeParent or nodeGrandParent
-    void computeCost(const Node *const pNodeParent, Node &nodeSon, const Map &map) const;
+    virtual void computeCost(const Node *const pNodeParent, Node &nodeSon, const Map &map) const;
 
-    void setLevelPath(Output &output);
+    virtual void setLevelPath(Output &output);
     void lowToHigh
             (const std::vector<Node> &path,
              const std::vector<TypeValue> &weightMovements,
