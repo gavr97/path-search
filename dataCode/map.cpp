@@ -235,6 +235,8 @@ bool Map::lineOfSight(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const
             return false;
         }
 
+        unsigned prevX = x1;
+        unsigned prevY = y1;
         const int error2 = error * 2;
         if(error2 > -deltaY)
         {
@@ -245,6 +247,9 @@ bool Map::lineOfSight(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const
         {
             error += deltaX;
             y1 += signY;
+        }
+        if (!isAllowedFromTo(prevX, prevY, x1, y1)) {
+            return false;
         }
     }
     return true;

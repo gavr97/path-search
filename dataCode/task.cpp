@@ -162,6 +162,11 @@ int Task::myLoad(const char *nameIn)
     if(readInt(pAlgorithm, TAG_ALLOWDIAGONAL, this->allowDiag, ALLOW_DIAG_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_CUTCORNERS, this->cutCorners, CUT_CORNERS_DEFAULT)) return 1;
+    if (this->searchType == "theta" && this->allowDiag == 0) {
+        std::cout << "error: algorithm theta requires allowDiag == 1\n";
+        return 1;
+    }
+
     if ((allowDiag != 0 && allowDiag != 1) || (allowSqueeze != 0 && allowSqueeze != 1) ||
         (cutCorners != 0 && cutCorners != 1)) {
         std::cout << "error: allowdiag, allowsqueeze, cutcorners are incorrect\n";
