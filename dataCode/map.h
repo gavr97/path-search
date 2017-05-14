@@ -15,6 +15,7 @@ private:
     bool cutCorners;
 
     int readInt(XMLNode *pRoot, const char *tag, unsigned int &destination, unsigned int DEFAULT, bool obligatory);
+    int readStr(XMLNode *pRoot, const char *tag, std::string &destination, const std::string DEFAULT, bool obligatory);
     int readGrid(XMLNode *pRoot, Grid &grid);
 
 public:
@@ -28,6 +29,7 @@ public:
     int readMap(const char *nameIn);
     bool lineOfSight(const Node &node1, const Node &node2) const;
     bool lineOfSight(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const;
+    void print() const;
 };
 
 

@@ -157,13 +157,22 @@ int Task::myLoad(const char *nameIn)
         std::cout << "error: incorrect search type\n";
         return 1;
     }
-    if (this->searchType == JPS) {
-        std::cout << "warning: jps is not implemented\nastar will be chosen\n";
-    }
 
     if(readInt(pAlgorithm, TAG_ALLOWDIAGONAL, this->allowDiag, ALLOW_DIAG_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_CUTCORNERS, this->cutCorners, CUT_CORNERS_DEFAULT)) return 1;
+
+    // TODO while developing:
+    searchType = JPS;
+
+    if (this->searchType == JPS) {
+        std::cout << "warning: jps is  implemented only if allowDiag == 1 and e.t.c\n";
+        std::cout << "thus allowDiag, allowSqueeze, cutCorners are assigned := 1\n";
+        allowSqueeze = 1;
+        allowDiag = 1;
+        cutCorners = 1;
+    }
+
     if (this->searchType == THETA && this->allowDiag == 0) {
         std::cout << "error: algorithm theta requires allowDiag == 1\n";
         return 1;

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "../global/globalTypes.h"
 #include "../global/globalVars.h"
 #include "map.h"
@@ -65,6 +66,29 @@ int Map::readInt(XMLNode *pRoot, const char *tag, unsigned int &destination, uns
     return 0;
 }
 
+int Map::readStr(XMLNode *pRoot, const char *tag, std::string &destination, const std::string DEFAULT = 0, bool obligatory = 0)  // code of error is returned
+{
+    XMLError eResult;
+    XMLElement * pElement = pRoot->FirstChildElement(tag);
+    if (pElement == nullptr) {
+        if (obligatory) {
+            std::cout << "error: obligatory tag " << tag << " is not found\n";
+            return 1;  // exit(1);
+        } else {
+            destination = DEFAULT;
+            std::cout << tag << " is assigned by default " << DEFAULT << "\n";
+            return 0;
+        }
+    } else {
+        if (pElement->GetText() == nullptr) {
+            std::cout << "error: empty " << tag << std::endl;
+            return 1;  // exit(1);
+        }
+        destination = pElement->GetText();
+    }
+    return 0;
+}
+
 int Map::readMap(const char *nameIn)
 {
     // ____load xml tree____
@@ -109,11 +133,25 @@ int Map::readMap(const char *nameIn)
         std::cout << "error: height and width of map are too big\n";
         return 1;
     }
-    
+
     unsigned allowDiagTemp, allowSqueezeTemp, cutCornersTemp;
     if(readInt(pAlgorithm, TAG_ALLOWDIAGONAL, allowDiagTemp, ALLOW_DIAG_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, allowSqueezeTemp, ALLOW_SQUEEZE_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_CUTCORNERS, cutCornersTemp, CUT_CORNERS_DEFAULT)) return 1;
+
+    std::string searchType;
+    if(readStr(pAlgorithm, TAG_SEARCHTYPE, searchType, SEARCH_TYPE_DEFAULT)) return 1;
+
+
+    // TODO while developing:
+    searchType = "jp_search";
+
+    if (searchType == JPS) {
+        allowSqueeze = 1;
+        allowDiag = 1;
+        cutCorners = 1;
+    }
+
     if ((allowDiagTemp != 0 && allowDiagTemp != 1) || (allowSqueezeTemp != 0 && allowSqueezeTemp != 1) ||
         (cutCornersTemp != 0 && cutCornersTemp != 1)) {
         std::cout << "error: allowdiag, allowsqueeze, cutcorners are incorrect\n";
@@ -127,9 +165,6 @@ int Map::readMap(const char *nameIn)
         std::cout << "error: allowsqueeze, cutcorners are not consistent\n";
         return 1;
     }
-    allowDiag = allowDiagTemp;
-    allowSqueeze = allowSqueezeTemp;
-    cutCorners = cutCornersTemp;
 
     // _______read map___________
     Grid grid(this->cntRealRows + 2, GridRow(this->cntRealCols + 2));
@@ -248,4 +283,19 @@ bool Map::lineOfSight(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const
         }
     }
     return true;
+}
+
+void Map::print() const {
+    std::cout << "size: " << this->cntRealRows << ' ' << this->cntRealCols << std::endl;
+    std::cout << "map\n";
+    for (const auto &row : this->grid) {
+        for (const auto &elem : row) {
+            std::cout << elem << ' ';
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << "about movements: " << "allow diagonal, allow squeeze, cut corners: "
+              << this->allowDiag << " " << this->allowSqueeze << ' ' << this->cutCorners << std::endl;
+    std::cout << std::endl;
 }
