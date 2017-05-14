@@ -168,6 +168,10 @@ int Task::myLoad(const char *nameIn)
         std::cout << "error: algorithm theta requires allowDiag == 1\n";
         return 1;
     }
+    if (this->searchType == JPS && this->allowDiag == 0) {
+        std::cout << "error: algorithm jps requires allowDiag == 1\n";
+        return 1;
+    }
 
     if ((allowDiag != 0 && allowDiag != 1) || (allowSqueeze != 0 && allowSqueeze != 1) ||
         (cutCorners != 0 && cutCorners != 1)) {
