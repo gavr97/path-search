@@ -129,7 +129,6 @@ bool AStar::computeGValues(const Map &map, Output &output)
         if (nodeNow == nodeFinish) {
             return true;
         }
-
         for (Node &nodeSuccessor : getSuccessors(nodeNow, map)) {
             bool wasCreated;
             computeCost(pNodeNow, nodeSuccessor, map);  // make nodeSuccessor a pretendent(set gVal, ..., parent)
@@ -270,8 +269,20 @@ void AStar::highToLow
     otherPath.push_back(path.back());
 }
 
-std::vector<Node> AStar::getSuccessors(const Node &node, const Map &map) const
-{
+std::vector<Node> AStar::getSuccessors(const Node &node, const Map &map) const {
     std::vector<Node> successors;
+    unsigned ux = node.getX();
+    unsigned uy = node.getY();
+    // if !start
+    //unsigned px = node.getParent()->getX();
+    //unsigned py = node.getParent()->getY();
+    for (unsigned indDirection = 0; indDirection != dyVec.size(); ++indDirection) {
+        unsigned vx = ux + dxVec[indDirection];
+        unsigned vy = uy + dyVec[indDirection];
+        if (!map.isObstacle(vx, vy)  && close.find(vx, vy) == close.end() &&
+            map.isAllowedFromTo(ux, uy, vx, vy)) {
+            successors.push_back(Node{vx, vy});
+        }
+    }
     return successors;
 }
