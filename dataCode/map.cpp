@@ -252,3 +252,18 @@ bool Map::lineOfSight(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const
     }
     return true;
 }
+
+void Map::print() const {
+    std::cout << "size: " << this->cntRealRows << ' ' << this->cntRealCols << std::endl;
+    std::cout << "map\n";
+    for (const auto &row : this->grid) {
+        for (const auto &elem : row) {
+            std::cout << elem << ' ';
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << "about movements: " << "allow diagonal, allow squeeze, cut corners: "
+              << this->allowDiag << " " << this->allowSqueeze << ' ' << this->cutCorners << std::endl;
+    std::cout << std::endl;
+}

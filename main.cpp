@@ -47,6 +47,7 @@ int main(int argc, char *argv[]) {
     task.allowDiag = 1;
     task.cutCorners = 1;
     task.print();
+    map.print();
 
     task.searchType = "jp_search";
 
