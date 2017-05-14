@@ -130,7 +130,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
             return true;
         }
 
-        for (Node nodeSuccessor : getSuccessors(nodeNow, map)) {
+        for (Node &nodeSuccessor : getSuccessors(nodeNow, map)) {
             bool wasCreated;
             computeCost(pNodeNow, nodeSuccessor, map);  // make nodeSuccessor a pretendent(set gVal, ..., parent)
             open.update(nodeSuccessor, wasCreated); // wasCreated - reference passing arg
@@ -270,22 +270,30 @@ void AStar::highToLow
     otherPath.push_back(path.back());
 }
 
-std::vector<Node> AStar::getSuccessors(const Node &node, const Map &map) const {
+std::vector<Node> AStar::getSuccessors(const Node &node, const Map &map) const
+{
     std::vector<Node> successors;
     unsigned ux = node.getX();
     unsigned uy = node.getY();
-    unsigned px = node.getParent()->getX();
-    unsigned py = node.getParent()->getY();
+    unsigned px, py;
+    if (node != nodeStart) {
+        px = node.getParent()->getX();
+        py = node.getParent()->getY();
+    }
     for (unsigned indDirection = 0; indDirection != dyVec.size(); ++indDirection) {
         unsigned vx = ux + dxVec[indDirection];
         unsigned vy = uy + dyVec[indDirection];
         if (!map.isObstacle(vx, vy)  && close.find(vx, vy) == close.end() &&
-            map.isAllowedFromTo(ux, uy, vx, vy)) {
+            map.isAllowedFromTo(ux, uy, vx, vy))
+        {
             if (node != nodeStart && !isNatural(px, py, ux, uy, indDirection, map) &&
                 !isForced(px, py, ux, uy, indDirection, map))
+            {
+                // prune;
                 continue;
+            }
 
-            std::pair<bool, Node> jumpRes = jump(ux, uy, indDirection, map);
+            std::pair<bool, Node> jumpRes = jump(ux, uy, dxVec[indDirection], dyVec[indDirection], map);
             if (jumpRes.first)
                 successors.push_back(jumpRes.second);
         }
@@ -295,15 +303,91 @@ std::vector<Node> AStar::getSuccessors(const Node &node, const Map &map) const {
 
 bool AStar::isNatural(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigned indDirection, const Map &map) const
 {
-    if (indDirection <= 3) {  // straight move
+    unsigned vx = ux + dxVec[indDirection];
+    unsigned vy = uy + dyVec[indDirection];
+    if (map.isObstacle(vx, vy)) {
+        return false;
+    }
 
+    // indDirection is from u to v;
+    // determine indDirection from p to u;
+    // p ->(dx1, dy1)-> u ->(x2, y2)-> v
+    int dx1 = ux - px;
+    int dy1 = uy - py;
+    int x2 = vx - ux;
+    int y2 = vy - uy;
+    if (dx1 * dy1 != 0) {  // from p to u diagonal move
+        return (px != vx && py != vy);
+    } else { // from p to u straight
+        return (dx1 == x2 && dy1 == y2);
     }
 }
 
-bool AStar::isForced(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigned indDirection, const Map &map) const {
-    return false;
+bool AStar::isForced(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigned indDirection, const Map &map) const
+{
+    unsigned vx = ux + dxVec[indDirection];
+    unsigned vy = uy + dyVec[indDirection];
+    if (map.isObstacle(vx, vy)) {
+        return false;
+    }
+
+    // indDirection is from u to v;
+    // determine indDirection from p to u;
+    // p ->(dx1, dy1)-> u ->(x2, y2)-> v
+    int dx1 = ux - px;
+    int dy1 = uy - py;
+    int x2 = vx - ux;
+    int y2 = vy - uy;
+    if (dx1 * dy1 != 0) {  // from p to u diagonal move
+        if ((px + 2 * dx1 == vx) && (py == vy) && map.isObstacle(px + dx1, uy)) {
+            return true;
+        } else if ((py + 2 * dy1 == vy) && (px == vx) && map.isObstacle(ux, py + dy1)) {
+            return true;
+        } else {
+            return false;
+        }
+    } else { // from p to u straight
+        if ((px + 2 * dx1 == vx) && (py + dy1 == vy) && map.isObstacle(px + dx1, py + dy1)) {
+            return true;
+        } else if ((py + 2 * dy1 == vy) && (px + dx1 == vx) && map.isObstacle(px + dx1, py + dy1)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
-std::pair<bool, Node> AStar::jump(unsigned ux, unsigned vx, unsigned indDirection, const Map &map) {
-    return pair<bool, Node>();
+std::pair<bool, Node> AStar::jump(unsigned ux, unsigned uy, int dx, int dy, const Map &map) const
+{
+    unsigned vx = ux + dx;
+    unsigned vy = uy + dy;
+    if (map.isObstacle(vx, vy)) {
+        return {false, Node{0, 0}};
+    }
+    if (nodeFinish == Node{vx, vy}) {
+        return {true, Node{vx, vy}};
+    }
+    bool isThereForcedNeig = false;
+    for (unsigned indDirection = 0; indDirection != dyVec.size(); ++indDirection) {
+        unsigned zx = vx + dxVec[indDirection];
+        unsigned zy = vy + dyVec[indDirection];
+        if (isForced(ux, uy, vx, vy, indDirection, map)) {
+            isThereForcedNeig = true;
+            break;
+        }
+    }
+    if (isThereForcedNeig) {
+        return {true, Node{vx, vy}};
+    }
+    if (dx * dy != 0) {  // diagonal move from u to v
+        std::pair<bool, Node> jumpRes = jump(vx, vy, dx, 0, map);
+        if (jumpRes.first) {
+            return {true, Node{vx, vy}};
+        }
+        jumpRes = jump(vx, vy, 0, dy, map);
+        if (jumpRes.first) {
+            return {true, Node{vx, vy}};
+        }
+    }
+    return jump(vx, vy, dx, dy, map);
 }

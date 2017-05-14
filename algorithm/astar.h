@@ -65,7 +65,7 @@ protected:
 
     bool isNatural(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigned indDirection, const Map &map) const;
     bool isForced(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigned indDirection, const Map &map) const;
-    std::pair<bool, Node> jump(unsigned ux, unsigned vx, unsigned indDirection, const Map &map);
+    std::pair<bool, Node> jump(unsigned ux, unsigned uy, int dx, int dy, const Map &map) const;
 
 public:
     int init(const Task &task);
