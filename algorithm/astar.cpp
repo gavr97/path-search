@@ -294,7 +294,7 @@ std::vector<Node> AStar::getSuccessors(const Node &node, const Map &map) const
             }
 
             std::pair<bool, Node> jumpRes = jump(ux, uy, dxVec[indDirection], dyVec[indDirection], map);
-            if (jumpRes.first)
+            if (jumpRes.first && close.find(jumpRes.second) == close.end())
                 successors.push_back(jumpRes.second);
         }
     }
