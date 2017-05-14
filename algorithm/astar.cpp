@@ -129,7 +129,7 @@ bool AStar::computeGValues(const Map &map, Output &output)
         if (nodeNow == nodeFinish) {
             return true;
         }
-        for (Node nodeSuccessor : getSuccessors(nodeNow, map)) {
+        for (Node &nodeSuccessor : getSuccessors(nodeNow, map)) {
             bool wasCreated;
             computeCost(pNodeNow, nodeSuccessor, map);  // make nodeSuccessor a pretendent(set gVal, ..., parent)
             open.update(nodeSuccessor, wasCreated); // wasCreated - reference passing arg

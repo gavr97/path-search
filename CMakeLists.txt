@@ -11,7 +11,7 @@ set(ALGORITHM
         algorithm/astar.h algorithm/astar.cpp algorithm/node.h algorithm/node.cpp
         algorithm/close.cpp algorithm/close.h algorithm/open.cpp algorithm/open.h
         algorithm/theta.cpp algorithm/theta.h
-        )
+        algorithm/jps.cpp algorithm/jps.h)
 set(LOGGER logger/log.h logger/log.cpp)
 
 add_executable(asearch main.cpp ${TINY_XML} ${GLOBAL} ${DATA_CODE} ${ALGORITHM} ${LOGGER})
