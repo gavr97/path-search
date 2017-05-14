@@ -283,11 +283,10 @@ std::vector<Node> AStar::getSuccessors(const Node &node, const Map &map) const
     for (unsigned indDirection = 0; indDirection != dyVec.size(); ++indDirection) {
         unsigned vx = ux + dxVec[indDirection];
         unsigned vy = uy + dyVec[indDirection];
-        if (!map.isObstacle(vx, vy)  &&
-            map.isAllowedFromTo(ux, uy, vx, vy))
+        if (!map.isObstacle(vx, vy) && map.isAllowedFromTo(ux, uy, vx, vy))
         {
-            if (node != nodeStart && !isNatural(px, py, ux, uy, indDirection, map) &&
-                !isForced(px, py, ux, uy, indDirection, map))
+            if (node != nodeStart && !isNatural(px, py, ux, uy, vx, vy, map) &&
+                !isForced(px, py, ux, uy, vx, vy, map))
             {
                 // prune;
                 continue;
@@ -301,42 +300,15 @@ std::vector<Node> AStar::getSuccessors(const Node &node, const Map &map) const
     return successors;
 }
 
-bool AStar::isNatural(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigned indDirection, const Map &map) const
+bool AStar::isNatural(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigned vx, unsigned vy, const Map &map) const
 {
-    unsigned vx = ux + dxVec[indDirection];
-    unsigned vy = uy + dyVec[indDirection];
     if (map.isObstacle(vx, vy)) {
         return false;
     }
 
-
     // p ->(dx1, dy1)-> u ->(dx2, dy2)-> v
-    int dx1 = ux - px;
-    int dy1 = uy - py;
-    // now normalize towards 1
-    if (dx1 > 0)
-        dx1 = 1;
-    else if (dx1 < 0)
-        dx1 = -1;
-    if (dy1 > 0)
-        dy1 = 1;
-    else if (dy1 < 0)
-        dy1 = -1;
-
-    // respevtively
-    int dx2 = vx - ux;
-    int dy2 = vy - uy;
-    if (dx2 > 0)
-        dx2 = 1;
-    else if (dx2 < 0)
-        dx2 = -1;
-    if (dy2 > 0)
-        dy2 = 1;
-    else if (dy2 < 0)
-        dy2 = -1;
-
-    px = ux - dx1;
-    py = uy - dy1;
+    int dx1, dx2, dy1, dy2;
+    getCoordinats(px, py, ux, uy, vx, vy, dx1, dy1, dx2, dy2);
 
     if (dx1 * dy1 != 0) {  // from p to u diagonal move
         return (px != vx && py != vy);
@@ -345,41 +317,15 @@ bool AStar::isNatural(unsigned px, unsigned py, unsigned ux, unsigned uy, unsign
     }
 }
 
-bool AStar::isForced(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigned indDirection, const Map &map) const
+bool AStar::isForced(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigned vx, unsigned vy, const Map &map) const
 {
-    unsigned vx = ux + dxVec[indDirection];
-    unsigned vy = uy + dyVec[indDirection];
     if (map.isObstacle(vx, vy)) {
         return false;
     }
 
     // p ->(dx1, dy1)-> u ->(dx2, dy2)-> v
-    int dx1 = ux - px;
-    int dy1 = uy - py;
-    // now normalize towards 1
-    if (dx1 > 0)
-        dx1 = 1;
-    else if (dx1 < 0)
-        dx1 = -1;
-    if (dy1 > 0)
-        dy1 = 1;
-    else if (dy1 < 0)
-        dy1 = -1;
-
-    // respevtively
-    int dx2 = vx - ux;
-    int dy2 = vy - uy;
-    if (dx2 > 0)
-        dx2 = 1;
-    else if (dx2 < 0)
-        dx2 = -1;
-    if (dy2 > 0)
-        dy2 = 1;
-    else if (dy2 < 0)
-        dy2 = -1;
-
-    px = ux - dx1;
-    py = uy - dy1;
+    int dx1, dx2, dy1, dy2;
+    getCoordinats(px, py, ux, uy, vx, vy, dx1, dy1, dx2, dy2);
 
     if (dx1 * dy1 != 0) {  // from p to u diagonal move
         if ((px + 2 * dx1 == vx) && (py == vy) && map.isObstacle(px + dx1, py)) {
@@ -414,7 +360,7 @@ std::pair<bool, Node> AStar::jump(unsigned ux, unsigned uy, int dx, int dy, cons
     for (unsigned indDirection = 0; indDirection != dyVec.size(); ++indDirection) {
         unsigned zx = vx + dxVec[indDirection];
         unsigned zy = vy + dyVec[indDirection];
-        if (isForced(ux, uy, vx, vy, indDirection, map)) {
+        if (isForced(ux, uy, vx, vy, zx, zy, map)) {
             isThereForcedNeig = true;
             break;
         }
@@ -433,4 +379,37 @@ std::pair<bool, Node> AStar::jump(unsigned ux, unsigned uy, int dx, int dy, cons
         }
     }
     return jump(vx, vy, dx, dy, map);
+}
+
+void AStar::getCoordinats(unsigned &px, unsigned &py, unsigned &ux, unsigned &uy, unsigned &vx, unsigned &vy,
+                          int &dx1, int &dy1, int &dx2, int &dy2) const
+{
+    // p ->(dx1, dy1)-> u ->(dx2, dy2)-> v
+    dx1 = ux - px;
+    dy1 = uy - py;
+    // now normalize towards 1
+    if (dx1 > 0)
+        dx1 = 1;
+    else if (dx1 < 0)
+        dx1 = -1;
+    if (dy1 > 0)
+        dy1 = 1;
+    else if (dy1 < 0)
+        dy1 = -1;
+
+    // respevtively
+    dx2 = vx - ux;
+    dy2 = vy - uy;
+    if (dx2 > 0)
+        dx2 = 1;
+    else if (dx2 < 0)
+        dx2 = -1;
+    if (dy2 > 0)
+        dy2 = 1;
+    else if (dy2 < 0)
+        dy2 = -1;
+
+    // consider parent to just near in right direction
+    px = ux - dx1;
+    py = uy - dy1;
 }
