@@ -130,6 +130,9 @@ int Map::readMap(const char *nameIn)
     allowDiag = allowDiagTemp;
     allowSqueeze = allowSqueezeTemp;
     cutCorners = cutCornersTemp;
+    allowDiag = 1;
+    allowSqueeze = 1;
+    cutCorners = 1;
 
     // _______read map___________
     Grid grid(this->cntRealRows + 2, GridRow(this->cntRealCols + 2));
