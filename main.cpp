@@ -5,6 +5,7 @@
 #include "dataCode/output.h"
 #include "algorithm/astar.h"
 #include "algorithm/theta.h"
+#include "algorithm/jps.h"
 
 #include <fstream>
 #include <ctime>
@@ -77,7 +78,7 @@ int main(int argc, char *argv[]) {
         }
     } else if (task.searchType == ASTAR || task.searchType == JPS){
         std::cout << "ASTAR or JPS is working\n";
-        AStar solver;
+        Jps solver;
         myeResult = solver.init(task);
         if (myeResult) {
             std::cout << "error: failure during initializing solver\n"

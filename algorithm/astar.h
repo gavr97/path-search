@@ -62,12 +62,6 @@ protected:
              std::vector<TypeValue> &otherWeightMovements
             ) const;
 
-    bool isNatural(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigned vx, unsigned vy, const Map &map) const;
-    bool isForced(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigned vx, unsigned vy, const Map &map) const;
-    std::pair<bool, Node> jump(unsigned ux, unsigned uy, int dx, int dy, const Map &map) const;
-    void getCoordinats(unsigned &px, unsigned &py, unsigned &ux, unsigned &uy, unsigned &vx, unsigned &vy,
-                       int &dx1, int &dy1, int &dx2, int &dy2) const;
-
 public:
     int init(const Task &task);
     int solve(const Map &map, Output &output);
