@@ -283,7 +283,7 @@ std::vector<Node> AStar::getSuccessors(const Node &node, const Map &map) const
     for (unsigned indDirection = 0; indDirection != dyVec.size(); ++indDirection) {
         unsigned vx = ux + dxVec[indDirection];
         unsigned vy = uy + dyVec[indDirection];
-        if (!map.isObstacle(vx, vy)  && close.find(vx, vy) == close.end() &&
+        if (!map.isObstacle(vx, vy)  &&
             map.isAllowedFromTo(ux, uy, vx, vy))
         {
             if (node != nodeStart && !isNatural(px, py, ux, uy, indDirection, map) &&
