@@ -46,6 +46,7 @@ int main(int argc, char *argv[]) {
     task.print();
     
     if (task.searchType == THETA) {
+        std::cout << "THETA is working\n";
         Theta solver;
         myeResult = solver.init(task);
         if (myeResult) {
@@ -69,6 +70,7 @@ int main(int argc, char *argv[]) {
             return 0;
         }
     } else if (task.searchType == ASTAR || task.searchType == JPS){
+        std::cout << "ASTAR or JPS is working\n";
         AStar solver;
         myeResult = solver.init(task);
         if (myeResult) {

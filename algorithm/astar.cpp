@@ -311,15 +311,15 @@ bool AStar::isNatural(unsigned px, unsigned py, unsigned ux, unsigned uy, unsign
 
     // indDirection is from u to v;
     // determine indDirection from p to u;
-    // p ->(dx1, dy1)-> u ->(x2, y2)-> v
+    // p ->(dx1, dy1)-> u ->(dx2, dy2)-> v
     int dx1 = ux - px;
     int dy1 = uy - py;
-    int x2 = vx - ux;
-    int y2 = vy - uy;
+    int dx2 = vx - ux;
+    int dy2 = vy - uy;
     if (dx1 * dy1 != 0) {  // from p to u diagonal move
         return (px != vx && py != vy);
     } else { // from p to u straight
-        return (dx1 == x2 && dy1 == y2);
+        return (dx1 == dx2 && dy1 == dy2);
     }
 }
 
@@ -333,23 +333,23 @@ bool AStar::isForced(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigne
 
     // indDirection is from u to v;
     // determine indDirection from p to u;
-    // p ->(dx1, dy1)-> u ->(x2, y2)-> v
+    // p ->(dx1, dy1)-> u ->(dx2, dy2)-> v
     int dx1 = ux - px;
     int dy1 = uy - py;
-    int x2 = vx - ux;
-    int y2 = vy - uy;
+    int dx2 = vx - ux;
+    int dy2 = vy - uy;
     if (dx1 * dy1 != 0) {  // from p to u diagonal move
-        if ((px + 2 * dx1 == vx) && (py == vy) && map.isObstacle(px + dx1, uy)) {
+        if ((px + 2 * dx1 == vx) && (py == vy) && map.isObstacle(px + dx1, py)) {
             return true;
-        } else if ((py + 2 * dy1 == vy) && (px == vx) && map.isObstacle(ux, py + dy1)) {
+        } else if ((py + 2 * dy1 == vy) && (px == vx) && map.isObstacle(px, py + dy1)) {
             return true;
         } else {
             return false;
         }
     } else { // from p to u straight
-        if ((px + 2 * dx1 == vx) && (py + dy1 == vy) && map.isObstacle(px + dx1, py + dy1)) {
+        if ((px + 2 * dx1 == vx) && (py + dy2 == vy) && map.isObstacle(px + dx2, py + dy2)) {
             return true;
-        } else if ((py + 2 * dy1 == vy) && (px + dx1 == vx) && map.isObstacle(px + dx1, py + dy1)) {
+        } else if ((py + 2 * dy1 == vy) && (px + dx2 == vx) && map.isObstacle(px + dx2, py + dy2)) {
             return true;
         } else {
             return false;
