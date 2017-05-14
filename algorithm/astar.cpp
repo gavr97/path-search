@@ -309,13 +309,35 @@ bool AStar::isNatural(unsigned px, unsigned py, unsigned ux, unsigned uy, unsign
         return false;
     }
 
-    // indDirection is from u to v;
-    // determine indDirection from p to u;
+
     // p ->(dx1, dy1)-> u ->(dx2, dy2)-> v
     int dx1 = ux - px;
     int dy1 = uy - py;
+    // now normalize towards 1
+    if (dx1 > 0)
+        dx1 = 1;
+    else if (dx1 < 0)
+        dx1 = -1;
+    if (dy1 > 0)
+        dy1 = 1;
+    else if (dy1 < 0)
+        dy1 = -1;
+
+    // respevtively
     int dx2 = vx - ux;
     int dy2 = vy - uy;
+    if (dx2 > 0)
+        dx2 = 1;
+    else if (dx2 < 0)
+        dx2 = -1;
+    if (dy2 > 0)
+        dy2 = 1;
+    else if (dy2 < 0)
+        dy2 = -1;
+
+    px = ux - dx1;
+    py = uy - dy1;
+
     if (dx1 * dy1 != 0) {  // from p to u diagonal move
         return (px != vx && py != vy);
     } else { // from p to u straight
@@ -331,13 +353,34 @@ bool AStar::isForced(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigne
         return false;
     }
 
-    // indDirection is from u to v;
-    // determine indDirection from p to u;
     // p ->(dx1, dy1)-> u ->(dx2, dy2)-> v
     int dx1 = ux - px;
     int dy1 = uy - py;
+    // now normalize towards 1
+    if (dx1 > 0)
+        dx1 = 1;
+    else if (dx1 < 0)
+        dx1 = -1;
+    if (dy1 > 0)
+        dy1 = 1;
+    else if (dy1 < 0)
+        dy1 = -1;
+
+    // respevtively
     int dx2 = vx - ux;
     int dy2 = vy - uy;
+    if (dx2 > 0)
+        dx2 = 1;
+    else if (dx2 < 0)
+        dx2 = -1;
+    if (dy2 > 0)
+        dy2 = 1;
+    else if (dy2 < 0)
+        dy2 = -1;
+
+    px = ux - dx1;
+    py = uy - dy1;
+
     if (dx1 * dy1 != 0) {  // from p to u diagonal move
         if ((px + 2 * dx1 == vx) && (py == vy) && map.isObstacle(px + dx1, py)) {
             return true;
