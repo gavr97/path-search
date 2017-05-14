@@ -15,6 +15,7 @@ private:
     bool cutCorners;
 
     int readInt(XMLNode *pRoot, const char *tag, unsigned int &destination, unsigned int DEFAULT, bool obligatory);
+    int readStr(XMLNode *pRoot, const char *tag, std::string &destination, const std::string DEFAULT, bool obligatory);
     int readGrid(XMLNode *pRoot, Grid &grid);
 
 public:

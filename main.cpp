@@ -44,13 +44,7 @@ int main(int argc, char *argv[]) {
                   << "out XML is not generated\n";
         return 1;
     }
-    task.allowSqueeze = 1;
-    task.allowDiag = 1;
-    task.cutCorners = 1;
     task.print();
-    map.print();
-
-    task.searchType = "jp_search";
 
     if (task.searchType == THETA) {
         std::cout << "THETA is working\n";
