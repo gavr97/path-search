@@ -347,9 +347,9 @@ bool AStar::isForced(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigne
             return false;
         }
     } else { // from p to u straight
-        if ((px + 2 * dx1 == vx) && (py + dy2 == vy) && map.isObstacle(px + dx2, py + dy2)) {
+        if ((px + 2 * dx2 == vx) && (py + dy2 == vy) && map.isObstacle(px + dx2, py + dy2)) {
             return true;
-        } else if ((py + 2 * dy1 == vy) && (px + dx2 == vx) && map.isObstacle(px + dx2, py + dy2)) {
+        } else if ((py + 2 * dy2 == vy) && (px + dx2 == vx) && map.isObstacle(px + dx2, py + dy2)) {
             return true;
         } else {
             return false;
