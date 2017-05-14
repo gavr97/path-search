@@ -19,6 +19,12 @@ std::unordered_map<unsigned int, const Node>::const_iterator Close::find(const N
     return hash_table.find(key(node));
 }
 
+
+std::unordered_map<unsigned, const Node>::const_iterator Close::find(unsigned ux, unsigned uy) const
+{
+    return hash_table.find(key(ux, uy));
+}
+
 std::unordered_map<unsigned, const Node>::const_iterator Close::end() const
 {
     return hash_table.end();
@@ -46,4 +52,3 @@ inline unsigned Close::key(const Node &node) const
 {
     return key(node.getX(), node.getY());
 }
-

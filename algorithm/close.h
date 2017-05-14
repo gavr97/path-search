@@ -14,6 +14,7 @@ private:
 public:
     const Node * push(const Node &node);
     std::unordered_map<unsigned, const Node>::const_iterator find(const Node &node) const;
+    std::unordered_map<unsigned, const Node>::const_iterator find(unsigned ux, unsigned uy) const;
     std::unordered_map<unsigned, const Node>::const_iterator end() const;
     unsigned size() const;
     Node operator[](const Node &node) const;

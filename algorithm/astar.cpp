@@ -129,20 +129,13 @@ bool AStar::computeGValues(const Map &map, Output &output)
         if (nodeNow == nodeFinish) {
             return true;
         }
-        unsigned ux = nodeNow.getX(), uy = nodeNow.getY();
-        for (unsigned ind = 0; ind != dyVec.size(); ++ind) {
-            unsigned vx = ux + dxVec[ind];
-            unsigned vy = uy + dyVec[ind];
+        for (Node nodeSuccessor : getSuccessors(nodeNow, map)) {
             bool wasCreated;
-            Node nodeNeig{vx, vy};
-            if (!map.isObstacle(vx, vy)  && close.find(nodeNeig) == close.end() &&
-                    map.isAllowedFromTo(ux, uy, vx, vy)) {
-                computeCost(pNodeNow, nodeNeig, map);  // make nodeNeig a pretendent(set gVal, ..., parent)
-                open.update(nodeNeig, wasCreated); // wasCreated - reference passing arg
-                if (!wasCreated) {
-                    ++output.numberOfNodesCreated;
-                    // output.nodesCreated.push_back(nodeNow);
-                }
+            computeCost(pNodeNow, nodeSuccessor, map);  // make nodeSuccessor a pretendent(set gVal, ..., parent)
+            open.update(nodeSuccessor, wasCreated); // wasCreated - reference passing arg
+            if (!wasCreated) {
+                ++output.numberOfNodesCreated;
+                // output.nodesCreated.push_back(nodeNow);
             }
         }
     }
@@ -274,4 +267,22 @@ void AStar::highToLow
     // in this case next iteration has not happened
     //setPixel(x1, y1);
     otherPath.push_back(path.back());
+}
+
+std::vector<Node> AStar::getSuccessors(const Node &node, const Map &map) const {
+    std::vector<Node> successors;
+    unsigned ux = node.getX();
+    unsigned uy = node.getY();
+    // if !start
+    //unsigned px = node.getParent()->getX();
+    //unsigned py = node.getParent()->getY();
+    for (unsigned indDirection = 0; indDirection != dyVec.size(); ++indDirection) {
+        unsigned vx = ux + dxVec[indDirection];
+        unsigned vy = uy + dyVec[indDirection];
+        if (!map.isObstacle(vx, vy)  && close.find(vx, vy) == close.end() &&
+            map.isAllowedFromTo(ux, uy, vx, vy)) {
+            successors.push_back(Node{vx, vy});
+        }
+    }
+    return successors;
 }
