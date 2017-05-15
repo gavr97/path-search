@@ -14,8 +14,10 @@ SOURCES += main.cpp \
     logger/log.cpp \
     tinyxml/tinyxml2.cpp \
     algorithm/close.cpp \
-    algorithm/open.cpp
-    algorithm/jps.cpp
+    algorithm/open.cpp \
+    algorithm/jps.cpp \
+    algorithm/heuristics.cpp \
+    algorithm/coordinats.cpp
 
 DISTFILES += \
     algorithm/astar.h.gch \
@@ -35,5 +37,7 @@ HEADERS += \
     logger/log.h \
     tinyxml/tinyxml2.h \
     algorithm/close.h \
-    algorithm/open.h
-    algorithm/jps.h
+    algorithm/open.h \
+    algorithm/jps.h \
+    algorithm/heuristics.h \
+    algorithm/coordinats.h
