@@ -15,6 +15,7 @@ SOURCES += main.cpp \
     tinyxml/tinyxml2.cpp \
     algorithm/close.cpp \
     algorithm/open.cpp
+    algorithm/jps.cpp
 
 DISTFILES += \
     algorithm/astar.h.gch \
@@ -35,3 +36,4 @@ HEADERS += \
     tinyxml/tinyxml2.h \
     algorithm/close.h \
     algorithm/open.h
+    algorithm/jps.h
