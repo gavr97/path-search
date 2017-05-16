@@ -108,7 +108,6 @@ int Log::saveMap(const std::vector<Node> &path, const Map &map)
         // at the moment coordinates are considered to be as inside representation(not graphical system)
         gridRes[x][y] = '*';
     }
-    //printMap(gridRes);
 
     unsigned bufSize = gridRes[0].size() * 3 + 1;
     pPath = xmlDoc.NewElement("path");
@@ -141,7 +140,7 @@ int Log::saveData(const char *nameIn, const Output &output, const Map &map) {
     pSummary->SetAttribute("length", output.lengtnPath);
     pSummary->SetAttribute("time", output.time);
     pLog->InsertEndChild(pSummary);
-    // map with drawn path willbe accessable via pPath - Log's member
+    // map with drawn path will be accessible via pPath - Log's member
     if (output.isLowLevel) {
         this->saveMap(output.path, map);
     } else {
@@ -149,7 +148,7 @@ int Log::saveData(const char *nameIn, const Output &output, const Map &map) {
     }
     pLog->InsertEndChild(pPath);
     if (output.path.size() != 0) {  // if there is found path
-        // consequence of nodes will be accessable via pHighLevel and pLowLevel - Log's members
+        // consequence of nodes will be accessible via pHighLevel and pLowLevel - Log's members
         if (output.isLowLevel) {
             if (this->savePath(output.path, output.weightMovements)) return 1;
             if (this->savePathHigh(output.otherPath, output.otherWeightMovements)) return 1;

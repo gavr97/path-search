@@ -35,6 +35,7 @@ int main(int argc, char *argv[]) {
                   << "out XML is not generated\n";
         return 1;
     }
+    task.print();
 
     //_______Init Map_____
     Map map;
@@ -44,7 +45,6 @@ int main(int argc, char *argv[]) {
                   << "out XML is not generated\n";
         return 1;
     }
-    task.print();
 
     if (task.searchType == THETA) {
         std::cout << "THETA is working\n";
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
             std::cout << "path is found\n";
             //_____Save results and write_____
             Log log;
-            myeResult = log.saveData(nameIn, output, map);  // arg-map is neccessary because of drawing map with path
+            myeResult = log.saveData(nameIn, output, map);
             log.write(nameOut);
             return 0;
         }
@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
             std::cout << "path is found\n";
             //_____Save results and write_____
             Log log;
-            myeResult = log.saveData(nameIn, output, map);  // arg-map is neccessary because of drawing map with path
+            myeResult = log.saveData(nameIn, output, map);
             log.write(nameOut);
             return 0;
         }

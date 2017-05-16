@@ -9,6 +9,7 @@ void Jps::setLevelPath(Output &output)
 
 std::vector<Node> Jps::getSuccessors(const Node &node, const Map &map) const
 {
+    // p -> u -> v
     std::vector<Node> successors;
     unsigned ux = node.getX();
     unsigned uy = node.getY();
@@ -39,11 +40,11 @@ std::vector<Node> Jps::getSuccessors(const Node &node, const Map &map) const
 
 bool Jps::isNatural(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigned vx, unsigned vy, const Map &map) const
 {
+    // p ->(dx1, dy1)-> u ->(dx2, dy2)-> v
     if (map.isObstacle(vx, vy)) {
         return false;
     }
 
-    // p ->(dx1, dy1)-> u ->(dx2, dy2)-> v
     int dx1, dx2, dy1, dy2;
     getCoordinats(px, py, ux, uy, vx, vy, dx1, dy1, dx2, dy2);
 
@@ -56,11 +57,11 @@ bool Jps::isNatural(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigned
 
 bool Jps::isForced(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigned vx, unsigned vy, const Map &map) const
 {
+    // p ->(dx1, dy1)-> u ->(dx2, dy2)-> v
     if (map.isObstacle(vx, vy)) {
         return false;
     }
 
-    // p ->(dx1, dy1)-> u ->(dx2, dy2)-> v
     int dx1, dx2, dy1, dy2;
     getCoordinats(px, py, ux, uy, vx, vy, dx1, dy1, dx2, dy2);
 
@@ -93,6 +94,7 @@ std::pair<bool, Node> Jps::jump(unsigned ux, unsigned uy, int dx, int dy, const 
     if (nodeFinish == Node{vx, vy}) {
         return {true, Node{vx, vy}};
     }
+
     bool isThereForcedNeig = false;
     for (unsigned indDirection = 0; indDirection != dyVec.size(); ++indDirection) {
         unsigned zx = vx + dxVec[indDirection];
@@ -105,6 +107,7 @@ std::pair<bool, Node> Jps::jump(unsigned ux, unsigned uy, int dx, int dy, const 
     if (isThereForcedNeig) {
         return {true, Node{vx, vy}};
     }
+
     if (dx * dy != 0) {  // diagonal move from u to v
         std::pair<bool, Node> jumpRes = jump(vx, vy, dx, 0, map);
         if (jumpRes.first) {

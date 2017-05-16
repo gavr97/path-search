@@ -31,7 +31,6 @@ int Task::readInt(XMLNode *pRoot, const char *tag, unsigned int &destination, un
             std::cout << "error: format of " << tag << " is incorrect\n";
             return 1;  // exit(1);
         }
-        //std::cout << tag << " is saved correctly\n";
     }
     return 0;
 }
@@ -55,7 +54,6 @@ int Task::readDouble(XMLNode *pRoot, const char *tag, double &destination, doubl
             std::cout << "error: format of " << tag << " is incorrect\n";
             return 1;  // exit(1);
         }
-        //std::cout << tag << " is saved correctly\n";
     }
     return 0;
 }
@@ -196,20 +194,13 @@ int Task::myLoad(const char *nameIn)
         return 1;
     }
 
-    //read map is the only thing which is not done here. it is in map.read()
+    //read grid is the only thing which is not done here. it is in map.read()
 }
 
 void Task::print() const
 {
     std::cout << "Task:\n";
     std::cout << "size: " << this->cntRealRows << ' ' << this->cntRealCols << std::endl;
-    //std::cout << "map\n";
-    //for (const auto &row : this->grid) {
-        //for (const auto &elem : row) {
-            //std::cout << elem << ' ';
-        //}
-        //std::cout << std::endl;
-    //}
     std::cout << "costs of movements: " << this->lineCost << " and " << this->diagCost << std::endl;
     // do not forget about transposing and shift
     printf("start and end: %u %u and %u %u\n", this->startY - 1, this->startX - 1, this->finishY - 1, this->finishX - 1);

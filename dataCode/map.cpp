@@ -21,7 +21,9 @@ bool Map::isObstacle(unsigned x, unsigned y) const
 
 bool Map::isAllowedFromTo(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const
 {
-    // as we here, (vx, vy) - is not obstacle
+    if (this->isObstacle(vx, vy)) {
+        return false;
+    }
     int diff = abs((int)ux - (int)vx) + abs((int)uy - (int)vy);
     if (diff == 2 && allowDiag == 0)
         return 0;
@@ -61,7 +63,6 @@ int Map::readInt(XMLNode *pRoot, const char *tag, unsigned int &destination, uns
             std::cout << "error: format of " << tag << " is incorrect\n";
             return 1;  // exit(1);
         }
-        //std::cout << tag << " is saved correctly\n";
     }
     return 0;
 }

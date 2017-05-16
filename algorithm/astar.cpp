@@ -67,8 +67,7 @@ int AStar::solve(const Map &map, Output &output)
             output.time = (double)search_time / CLOCKS_PER_SEC;
             if (!output.isLowLevel) {
                 highToLow(output.path, output.weightMovements, output.otherPath, output.otherWeightMovements);
-            }
-            else {
+            } else {
                 lowToHigh(output.path, output.weightMovements, output.otherPath, output.otherWeightMovements);
             }
             return 0;
@@ -100,7 +99,6 @@ bool AStar::computeGValues(const Map &map, Output &output)
     }
 
     ++output.numberOfNodesCreated;
-    // output.nodesCreated.push_back(nodeNow);
     while (!open.empty()) {
         ++output.numberOfSteps;
         nodeNow = open.pop();
@@ -112,10 +110,9 @@ bool AStar::computeGValues(const Map &map, Output &output)
         for (Node &nodeSuccessor : getSuccessors(nodeNow, map)) {
             bool wasCreated;
             computeCost(pNodeNow, nodeSuccessor, map);  // make nodeSuccessor a pretendent(set gVal, ..., parent)
-            open.update(nodeSuccessor, wasCreated); // wasCreated - reference passing arg
+            open.update(nodeSuccessor, wasCreated); // wasCreated - reference passing arg for log
             if (!wasCreated) {
                 ++output.numberOfNodesCreated;
-                // output.nodesCreated.push_back(nodeNow);
             }
         }
     }
@@ -242,7 +239,7 @@ void AStar::highToLow
             }
             isFirst = false;
         }
-        //setPixel(x2, y2);  it will be taken in next iteration;
+        // (x2, y2) will be taken in next iteration;
     }
     // in this case next iteration has not happened
     //setPixel(x1, y1);
@@ -253,9 +250,6 @@ std::vector<Node> AStar::getSuccessors(const Node &node, const Map &map) const {
     std::vector<Node> successors;
     unsigned ux = node.getX();
     unsigned uy = node.getY();
-    // if !start
-    //unsigned px = node.getParent()->getX();
-    //unsigned py = node.getParent()->getY();
     for (unsigned indDirection = 0; indDirection != dyVec.size(); ++indDirection) {
         unsigned vx = ux + dxVec[indDirection];
         unsigned vy = uy + dyVec[indDirection];
