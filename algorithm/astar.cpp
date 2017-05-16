@@ -10,19 +10,21 @@ inline TypeValue AStar::heuristic(const Node &node1, const Node &node2) const
 int AStar::init(const Task &task)
 {
     //_____define heuristic_____
-    if (task.metricType == "manhattan")
-        heuristicHide = &manhattan;
+    if (task.metricType == "chebyshev")
+        heuristicHide = &straight;
     else if (task.metricType == "euclid")
         heuristicHide = &euclid;
-    else if (task.metricType == "chebyshev"){
-        heuristicHide = &straight;
+    else if (task.metricType == "manhattan") {
+        heuristicHide = &manhattan;
         if (task.allowDiag == 1) {
-            std::cout << "error: straight is inadmissible heiristic when allowdiag = 1\n";
+            std::cout << "error: manhattan is inadmissible heiristic when allowdiag = 1\n";
             return 1;
         }
+    } else if (task.metricType == "diagonal") {
+        heuristicHide = &diagonal;
     } else {
-        std::cout << "warning: metrictype is incorrect. By default, euclid is assigned\n";
-        heuristicHide = &euclid;
+        std::cout << "warning: metrictype is incorrect. By default, diagonal is assigned\n";
+        heuristicHide = &diagonal;
     }
 
     //______init start and finish_____
