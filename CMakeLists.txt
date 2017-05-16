@@ -8,6 +8,7 @@ set(GLOBAL global/globalVars.h global/globalTypes.h)
 set(DATA_CODE dataCode/task.h dataCode/task.cpp dataCode/output.h dataCode/output.cpp dataCode/map.cpp dataCode/map.h)
 set(ALGORITHM
         algorithm/heuristics.cpp algorithm/heuristics.h
+        algorithm/coordinats.cpp
         algorithm/astar.h algorithm/astar.cpp algorithm/node.h algorithm/node.cpp
         algorithm/close.cpp algorithm/close.h algorithm/open.cpp algorithm/open.h
         algorithm/theta.cpp algorithm/theta.h

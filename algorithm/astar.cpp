@@ -2,29 +2,9 @@
 #include "heuristics.h"
 #include "../algorithm/astar.h"
 
-TypeValue AStar::heuristic(const Node &node1, const Node &node2) const
+inline TypeValue AStar::heuristic(const Node &node1, const Node &node2) const
 {
     return heuristicHide(node1.getX(), node1.getY(), node2.getX(), node2.getY());
-}
-
-inline unsigned AStar::key(unsigned ux, unsigned uy) const
-{
-    return ux * (cntRealCols + 2) + uy;
-}
-
-inline unsigned AStar::key(const Node &node) const
-{
-    return key(node.getX(), node.getY());
-}
-
-inline unsigned AStar::coordinateFirst(unsigned key)
-{
-    return key / (cntRealCols + 2);
-}
-
-inline unsigned AStar::coordinateSecond(unsigned key)
-{
-    return key % (cntRealCols + 2);
 }
 
 int AStar::init(const Task &task)

@@ -38,17 +38,16 @@ protected:
     Close close; //std::unordered_map<unsigned, Node> close;  // node->g-value
     Open open;  // a set of pairs(f-value, Node)
 
-    inline unsigned key(unsigned ux, unsigned uy) const;
-    inline unsigned key(const Node &node) const;
-    inline unsigned coordinateFirst(unsigned key);
-    inline unsigned coordinateSecond(unsigned key);
+    unsigned key(unsigned ux, unsigned uy) const;
+    unsigned key(const Node &node) const;
+    unsigned coordinateFirst(unsigned key);
+    unsigned coordinateSecond(unsigned key);
 
     bool computeGValues(const Map &map, Output &output);
     bool constructPath(Output &output);
     virtual void computeCost(const Node *const pNodeParent, Node &nodeSon, const Map &map) const;
     virtual std::vector<Node> getSuccessors(const Node &node, const Map &map) const;
-
-    virtual void setLevelPath(Output &output);
+    virtual void setLevelPath(Output &output);  // if JPS or Theta then output.isLowLevel := false;
     void lowToHigh
             (const std::vector<Node> &path,
              const std::vector<TypeValue> &weightMovements,
