@@ -128,11 +128,11 @@ int Log::saveMap(const std::vector<Node> &path, const Map &map)
     return 0;
 }
 
-int Log::saveData(const char *nameIn, const Output &output, const Map &map) {
-    xmlDoc.LoadFile(nameIn);
+int Log::saveData(std::string nameIn, const Output &output, const Map &map) {
+    xmlDoc.LoadFile(nameIn.c_str());
     pLog = xmlDoc.NewElement("log");
     pMapFileName = xmlDoc.NewElement("mapfilename");
-    pMapFileName->SetText(nameIn);
+    pMapFileName->SetText(nameIn.c_str());
     pLog->InsertFirstChild(pMapFileName);
     pSummary = xmlDoc.NewElement("summary");
     pSummary->SetAttribute("numberofsteps", output.numberOfSteps);
@@ -165,9 +165,9 @@ int Log::saveData(const char *nameIn, const Output &output, const Map &map) {
     return 0;
 }
 
-int Log::write(const char *nameOut)
+int Log::write(std::string nameOut)
 {
-    XMLError eResult = xmlDoc.SaveFile(nameOut);
+    XMLError eResult = xmlDoc.SaveFile(nameOut.c_str());
     if (eResult == XML_SUCCESS) {
         printf("Success during saving XML\n");
         return 0;

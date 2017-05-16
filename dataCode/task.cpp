@@ -81,13 +81,22 @@ int Task::readStr(XMLNode *pRoot, const char *tag, std::string &destination, con
     return 0;
 }
 
-int Task::myLoad(const char *nameIn)
+int Task::myLoad(std::string nameIn)
 {
+    //_____ define outName_____
+    std::string str = nameIn;
+    size_t found = str.find_last_of(".");
+    if (found != std::string::npos)
+        str.insert(found, "_log");
+    else
+        str.append("_log");
+    nameOut = str;
+
     // ____load xml tree____
     XMLDocument xmlDoc;
     XMLError eResult;
     int myeResult;
-    eResult = xmlDoc.LoadFile(nameIn);
+    eResult = xmlDoc.LoadFile(nameIn.c_str());
     if (eResult != XML_SUCCESS) {
         std::cout << "error: incorrect xml file\n";
         return 1;
@@ -157,6 +166,7 @@ int Task::myLoad(const char *nameIn)
     }
     
     //grid, allowDiag,.., cutcorners are not read here. it is in map.read()
+    return 0;
 }
 
 void Task::print() const
@@ -167,5 +177,6 @@ void Task::print() const
     // do not forget about transposing and shift
     printf("start and end: %u %u and %u %u\n", this->startY - 1, this->startX - 1, this->finishY - 1, this->finishX - 1);
     std::cout << "search type and metric type: " << this->searchType << " and " << this->metricType << std::endl;
+    std::cout << "out filename:" << nameOut << std::endl;
     std::cout << std::endl;
 }

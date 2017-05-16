@@ -22,8 +22,9 @@ public:
     unsigned int finishX;
     unsigned int finishY;
     std::string metricType;
+    std::string nameOut;
 
-    int myLoad(const char *nameIn);
+    int myLoad(std::string nameIn);
     void print() const;
 
 private:

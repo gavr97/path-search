@@ -16,15 +16,9 @@ int main(int argc, char *argv[]) {
         std::cout << "error: input XML is not specified\n";
         return 1;
     }
-    const char *nameIn = argv[1];
-    const char *nameOut;
-    if (argc > 2) {
-        nameOut = argv[2];
-    } else {
-        nameOut = "out.xml";
-    }
+    std::string nameIn = argv[1];
+    std::string nameOut;
     std:: cout << "name of input = " << nameIn << std::endl;
-    std:: cout << "name of output = " << nameOut << std::endl << std::endl;
 
     //________Init Task________  reads everything except GRID. It is for Map
     int myeResult = 0;
@@ -35,6 +29,7 @@ int main(int argc, char *argv[]) {
                   << "out XML is not generated\n";
         return 1;
     }
+    nameOut = task.nameOut;
 
     //_______Init Map_____
     Map map;

@@ -22,8 +22,8 @@ private:
     XMLNode *pLowLevel;
     XMLNode *pHighLevel;
 public:
-    int saveData(const char *nameIn, const Output &output, const Map &task);
-    int write(const char *nameOut);
+    int saveData(std::string nameIn, const Output &output, const Map &task);
+    int write(std::string nameOut);
 private:
     int saveMap(const std::vector<Node> &path, const Map &map);
 

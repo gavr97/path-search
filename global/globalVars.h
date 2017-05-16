@@ -29,7 +29,7 @@
 #define FINISHX_DEFAULT 0
 #define FINISHY_DEFAULT 0
 #define SEARCH_TYPE_DEFAULT std::string("astar")
-#define METRIC_TYPE_DEFAULT "euclid"
+#define METRIC_TYPE_DEFAULT std::string("diagonal")
 #define ALLOW_DIAG_DEFAULT 0
 #define ALLOW_SQUEEZE_DEFAULT 0
 #define CUT_CORNERS_DEFAULT 0

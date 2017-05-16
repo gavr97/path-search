@@ -90,13 +90,13 @@ int Map::readStr(XMLNode *pRoot, const char *tag, std::string &destination, cons
     return 0;
 }
 
-int Map::readMap(const char *nameIn)
+int Map::readMap(std::string nameIn)
 {
     // ____load xml tree____
     XMLDocument xmlDoc;
     XMLError eResult;
     int myeResult;
-    eResult = xmlDoc.LoadFile(nameIn);
+    eResult = xmlDoc.LoadFile(nameIn.c_str());
     if (eResult != XML_SUCCESS) {
         std::cout << "error: incorrect xml file\n";
         return 1;

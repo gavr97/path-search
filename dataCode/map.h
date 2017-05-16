@@ -27,7 +27,7 @@ public:
     bool isObstacle(const Node &node) const;
     bool isObstacle(unsigned x, unsigned y) const;
     bool isAllowedFromTo(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const;
-    int readMap(const char *nameIn);
+    int readMap(std::string nameIn);
     bool lineOfSight(const Node &node1, const Node &node2) const;
     bool lineOfSight(unsigned ux, unsigned uy, unsigned vx, unsigned vy) const;
     void print() const;
