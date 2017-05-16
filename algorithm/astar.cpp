@@ -156,7 +156,7 @@ void AStar::computeCost(const Node *const pNodeParent, Node &nodeSon, const Map 
     const Node * pNodePretendent = pNodeParent;
     Node nodePretendent = *pNodePretendent;
 
-    TypeValue  gVal = nodePretendent.getGVal() + heuristic(nodePretendent, nodeSon);
+    TypeValue  gVal = nodePretendent.getGVal() + heuristic(nodePretendent, nodeSon) * LINE_COST_DEFAULT;
     nodeSon.setGVal(gVal);
     nodeSon.setFVal(gVal + heuristic(nodeSon, nodeFinish));
     nodeSon.setParent(pNodePretendent);

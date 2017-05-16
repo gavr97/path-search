@@ -20,7 +20,7 @@ TypeValue straight(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
 
 TypeValue euclid(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
 {
-    return sqrt(pow(((int)ux - (int)vx), 2) + pow(((int)uy - (int)vy), 2));
+    return sqrt(pow(((int)ux - (int)vx), 2) + pow(((int)uy - (int)vy), 2)) * LINE_COST_DEFAULT;
 }
 
 TypeValue manhattan(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
