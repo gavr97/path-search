@@ -63,6 +63,7 @@ protected:
 
 public:
     int init(const Task &task, const Map &map);
+    AStar(const Task &task, const Map &map);
     int solve(const Map &map, Output &output);
 };
 

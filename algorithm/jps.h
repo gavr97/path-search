@@ -5,6 +5,7 @@
 
 class Jps : public AStar{
 protected:
+    using AStar::AStar;
     void setLevelPath(Output &output);
     std::vector<Node> getSuccessors(const Node &node, const Map &map) const;
     bool isNatural(unsigned px, unsigned py, unsigned ux, unsigned uy, unsigned vx, unsigned vy, const Map &map) const;

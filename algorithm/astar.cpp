@@ -7,6 +7,12 @@ inline TypeValue AStar::heuristic(const Node &node1, const Node &node2) const
     return heuristicHide(node1.getX(), node1.getY(), node2.getX(), node2.getY());
 }
 
+AStar::AStar(const Task &task, const Map &map)
+{
+    if (this->init(task, map))
+        throw 1;
+}
+
 int AStar::init(const Task &task, const Map &map)
 {
     //_____define heuristic_____

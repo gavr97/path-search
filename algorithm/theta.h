@@ -5,6 +5,7 @@
 
 class Theta : public AStar {
 protected:
+    using AStar::AStar;
     void setLevelPath(Output &output);
     void computeCost(const Node *const pNodeParent, Node &nodeSon, const Map &map) const;
 };

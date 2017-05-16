@@ -155,9 +155,7 @@ int Task::myLoad(const char *nameIn)
         std::cout << "error: incorrect search type\n";
         return 1;
     }
-
-    // TODO
-    metricType = "euclid";
+    
     //grid, allowDiag,.., cutcorners are not read here. it is in map.read()
 }
 
