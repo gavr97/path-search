@@ -156,6 +156,8 @@ int Task::myLoad(const char *nameIn)
         return 1;
     }
 
+    // TODO
+    metricType = "euclid";
     //grid, allowDiag,.., cutcorners are not read here. it is in map.read()
 }
 
@@ -167,7 +169,5 @@ void Task::print() const
     // do not forget about transposing and shift
     printf("start and end: %u %u and %u %u\n", this->startY - 1, this->startX - 1, this->finishY - 1, this->finishX - 1);
     std::cout << "search type and metric type: " << this->searchType << " and " << this->metricType << std::endl;
-    std::cout << "about movements: " << "allow diagonal, allow squeeze, cut corners: "
-              << this->allowDiag << " " << this->allowSqueeze << ' ' << this->cutCorners << std::endl;
     std::cout << std::endl;
 }

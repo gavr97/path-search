@@ -35,7 +35,6 @@ int main(int argc, char *argv[]) {
                   << "out XML is not generated\n";
         return 1;
     }
-    task.print();
 
     //_______Init Map_____
     Map map;
@@ -45,11 +44,13 @@ int main(int argc, char *argv[]) {
                   << "out XML is not generated\n";
         return 1;
     }
+    task.print();
+    map.print();
 
     if (task.searchType == THETA) {
         std::cout << "THETA is working\n";
         Theta solver;
-        myeResult = solver.init(task);
+        myeResult = solver.init(task, map);
         if (myeResult) {
             std::cout << "error: failure during initializing solver\n"
                       << "out XML is not generated\n";
@@ -73,7 +74,7 @@ int main(int argc, char *argv[]) {
     } else if (task.searchType == JPS){
         std::cout << "JPS is working\n";
         Jps solver;
-        myeResult = solver.init(task);
+        myeResult = solver.init(task, map);
         if (myeResult) {
             std::cout << "error: failure during initializing solver\n"
                       << "out XML is not generated\n";
@@ -97,7 +98,7 @@ int main(int argc, char *argv[]) {
     } else if (task.searchType == ASTAR) {
         std::cout << "ASTAR is working\n";
         AStar solver;
-        myeResult = solver.init(task);
+        myeResult = solver.init(task, map);
         if (myeResult) {
             std::cout << "error: failure during initializing solver\n"
                       << "out XML is not generated\n";

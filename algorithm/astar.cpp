@@ -7,7 +7,7 @@ inline TypeValue AStar::heuristic(const Node &node1, const Node &node2) const
     return heuristicHide(node1.getX(), node1.getY(), node2.getX(), node2.getY());
 }
 
-int AStar::init(const Task &task)
+int AStar::init(const Task &task, const Map &map)
 {
     //_____define heuristic_____
     if (task.metricType == "chebyshev")
@@ -16,7 +16,7 @@ int AStar::init(const Task &task)
         heuristicHide = &euclid;
     else if (task.metricType == "manhattan") {
         heuristicHide = &manhattan;
-        if (task.allowDiag == 1) {
+        if (map.allowDiag == 1) {
             std::cout << "error: manhattan is inadmissible heiristic when allowdiag = 1\n";
             return 1;
         }
@@ -44,7 +44,7 @@ int AStar::init(const Task &task)
     finishY = task.finishY;
 
     //_____define dx and dy weights______
-    if (task.allowDiag == 1) {
+    if (map.allowDiag == 1) {
         dxVec = {0, 0, 1, -1, 1, -1, -1, 1};
         dyVec = {1, -1, 0, 0, 1, -1, 1, -1 };
         weightVec = {task.lineCost, task.lineCost, task.lineCost, task.lineCost,

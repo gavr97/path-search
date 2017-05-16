@@ -15,9 +15,6 @@ public:
     Grid grid;
     double lineCost;
     double diagCost;
-    unsigned int allowDiag;
-    unsigned int allowSqueeze;
-    unsigned int cutCorners;
 
     std::string searchType;
     unsigned int startX;

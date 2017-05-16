@@ -62,7 +62,7 @@ protected:
             ) const;
 
 public:
-    int init(const Task &task);
+    int init(const Task &task, const Map &map);
     int solve(const Map &map, Output &output);
 };
 
