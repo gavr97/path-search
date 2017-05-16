@@ -143,10 +143,6 @@ int Map::readMap(const char *nameIn)
     std::string searchType;
     if(readStr(pAlgorithm, TAG_SEARCHTYPE, searchType, SEARCH_TYPE_DEFAULT)) return 1;
 
-
-    // TODO while developing:
-    searchType = "jp_search";
-
     if (searchType == JPS) {
         allowSqueeze = 1;
         allowDiag = 1;

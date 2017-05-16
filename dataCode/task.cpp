@@ -160,9 +160,6 @@ int Task::myLoad(const char *nameIn)
     if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_CUTCORNERS, this->cutCorners, CUT_CORNERS_DEFAULT)) return 1;
 
-    // TODO while developing:
-    searchType = JPS;
-
     if (this->searchType == JPS) {
         std::cout << "warning: jps is  implemented only if allowDiag == 1 and e.t.c\n";
         std::cout << "thus allowDiag, allowSqueeze, cutCorners are assigned := 1\n";
