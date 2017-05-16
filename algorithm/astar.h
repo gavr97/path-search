@@ -34,6 +34,7 @@ protected:
     unsigned finishY;
     Node nodeStart;
     Node nodeFinish;
+    double hWeight;
 
     Close close; //std::unordered_map<unsigned, Node> close;  // node->g-value
     Open open;  // a set of pairs(f-value, Node)

@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     std::string nameOut;
     std:: cout << "name of input = " << nameIn << std::endl;
 
-    //________Init Task________  reads everything except GRID. It is for Map
+    //________Init Task________  reads everything except GRID and allowDiag,.., cutCorners. It is for Map
     int myeResult = 0;
     Task task;
     myeResult = task.myLoad(nameIn);  // char* ! not std::string;

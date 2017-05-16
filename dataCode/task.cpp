@@ -156,6 +156,7 @@ int Task::myLoad(std::string nameIn)
         return 1;
         // exit(1);
     }
+    if(readDouble(pAlgorithm, TAG_H_WEIGHT, hWeight, H_WEIGHT_DEFAULT)) return 1;
     if(readDouble(pAlgorithm, TAG_LINECOST, lineCost, LINE_COST_DEFAULT)) return 1;
     if(readDouble(pAlgorithm, TAG_DIAGONALCONST, this->diagCost, DIAG_COST_DEFAULT)) return 1;
     if(readStr(pAlgorithm, TAG_SEARCHTYPE, this->searchType, SEARCH_TYPE_DEFAULT)) return 1;

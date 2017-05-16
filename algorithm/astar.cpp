@@ -48,6 +48,7 @@ int AStar::init(const Task &task, const Map &map)
     startY = task.startY;
     finishX = task.finishX;
     finishY = task.finishY;
+    hWeight = task.hWeight;
 
     //_____define dx and dy weights______
     if (map.allowDiag == 1) {
@@ -158,7 +159,7 @@ void AStar::computeCost(const Node *const pNodeParent, Node &nodeSon, const Map 
 
     TypeValue  gVal = nodePretendent.getGVal() + heuristic(nodePretendent, nodeSon) * LINE_COST_DEFAULT;
     nodeSon.setGVal(gVal);
-    nodeSon.setFVal(gVal + heuristic(nodeSon, nodeFinish));
+    nodeSon.setFVal(gVal + hWeight * heuristic(nodeSon, nodeFinish));
     nodeSon.setParent(pNodePretendent);
 }
 
