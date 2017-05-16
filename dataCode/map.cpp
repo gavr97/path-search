@@ -135,19 +135,13 @@ int Map::readMap(const char *nameIn)
         return 1;
     }
 
+    std::string searchType;
+    if(readStr(pAlgorithm, TAG_SEARCHTYPE, searchType, SEARCH_TYPE_DEFAULT)) return 1;
+
     unsigned allowDiagTemp, allowSqueezeTemp, cutCornersTemp;
     if(readInt(pAlgorithm, TAG_ALLOWDIAGONAL, allowDiagTemp, ALLOW_DIAG_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, allowSqueezeTemp, ALLOW_SQUEEZE_DEFAULT)) return 1;
     if(readInt(pAlgorithm, TAG_CUTCORNERS, cutCornersTemp, CUT_CORNERS_DEFAULT)) return 1;
-
-    std::string searchType;
-    if(readStr(pAlgorithm, TAG_SEARCHTYPE, searchType, SEARCH_TYPE_DEFAULT)) return 1;
-
-    if (searchType == JPS) {
-        allowSqueeze = 1;
-        allowDiag = 1;
-        cutCorners = 1;
-    }
 
     if ((allowDiagTemp != 0 && allowDiagTemp != 1) || (allowSqueezeTemp != 0 && allowSqueezeTemp != 1) ||
         (cutCornersTemp != 0 && cutCornersTemp != 1)) {
@@ -161,6 +155,26 @@ int Map::readMap(const char *nameIn)
     if (allowSqueezeTemp == 1 && cutCornersTemp == 0) {
         std::cout << "error: allowsqueeze, cutcorners are not consistent\n";
         return 1;
+    }
+    allowDiag = allowDiagTemp;
+    allowSqueeze = allowSqueezeTemp;
+    cutCorners = cutCornersTemp;
+
+    if (searchType == THETA && this->allowDiag == 0) {
+        std::cout << "error: algorithm theta requires allowDiag == 1\n";
+        return 1;
+    }
+    if (searchType == JPS && this->allowDiag == 0) {
+        std::cout << "error: algorithm jps requires allowDiag == 1\n";
+        return 1;
+    }
+
+    if (searchType == JPS) {
+        std::cout << "warning: jps is  implemented only if allowDiag == 1 and e.t.c\n";
+        std::cout << "thus allowDiag, allowSqueeze, cutCorners are assigned := 1\n";
+        allowSqueeze = 1;
+        allowDiag = 1;
+        cutCorners = 1;
     }
 
     // _______read map___________

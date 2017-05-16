@@ -156,42 +156,7 @@ int Task::myLoad(const char *nameIn)
         return 1;
     }
 
-    if(readInt(pAlgorithm, TAG_ALLOWDIAGONAL, this->allowDiag, ALLOW_DIAG_DEFAULT)) return 1;
-    if(readInt(pAlgorithm, TAG_ALLOWSQUEEZE, this->allowSqueeze, ALLOW_SQUEEZE_DEFAULT)) return 1;
-    if(readInt(pAlgorithm, TAG_CUTCORNERS, this->cutCorners, CUT_CORNERS_DEFAULT)) return 1;
-
-    if (this->searchType == JPS) {
-        std::cout << "warning: jps is  implemented only if allowDiag == 1 and e.t.c\n";
-        std::cout << "thus allowDiag, allowSqueeze, cutCorners are assigned := 1\n";
-        allowSqueeze = 1;
-        allowDiag = 1;
-        cutCorners = 1;
-    }
-
-    if (this->searchType == THETA && this->allowDiag == 0) {
-        std::cout << "error: algorithm theta requires allowDiag == 1\n";
-        return 1;
-    }
-    if (this->searchType == JPS && this->allowDiag == 0) {
-        std::cout << "error: algorithm jps requires allowDiag == 1\n";
-        return 1;
-    }
-
-    if ((allowDiag != 0 && allowDiag != 1) || (allowSqueeze != 0 && allowSqueeze != 1) ||
-        (cutCorners != 0 && cutCorners != 1)) {
-        std::cout << "error: allowdiag, allowsqueeze, cutcorners are incorrect\n";
-        return 1;
-    }
-    if (allowDiag == 0 && (allowSqueeze == 1 || cutCorners == 1)) {
-        std::cout << "error: allowdiag, allowsqueeze, cutcorners are not consistent\n";
-        return 1;
-    }
-    if (allowSqueeze == 1 && cutCorners == 0) {
-        std::cout << "error: allowsqueeze, cutcorners are not consistent\n";
-        return 1;
-    }
-
-    //read grid is the only thing which is not done here. it is in map.read()
+    //grid, allowDiag,.., cutcorners are not read here. it is in map.read()
 }
 
 void Task::print() const
