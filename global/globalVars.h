@@ -12,17 +12,17 @@
 #define TAG_H_WEIGHT "hweight"
 #define TAG_LINECOST "linecost"
 #define TAG_DIAGONALCONST "diagonalcost"
+#define TAG_CELLSIZE "cellsize"
 #define TAG_SEARCHTYPE "searchtype"
 #define TAG_METRICTYPE "metrictype"
 #define TAG_ALLOWDIAGONAL "allowdiagonal"
 #define TAG_ALLOWSQUEEZE "allowsqueeze"
 #define TAG_CUTCORNERS "cutcorners"
-//#define TAG_CELLSIZE "cellsize"
 #define TAG_MAP "map"
 #define TAG_GRID "grid"
 #define TAG_ALGORITHM "algorithm"
 
-//#define CELLSIZE_DEFAULT 1
+#define CELLSIZE_DEFAULT 1
 #define H_WEIGHT_DEFAULT static_cast<double>(1)
 #define LINE_COST_DEFAULT 1
 #define DIAG_COST_DEFAULT 1.414

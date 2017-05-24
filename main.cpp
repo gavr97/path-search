@@ -29,7 +29,11 @@ int main(int argc, char *argv[]) {
                   << "out XML is not generated\n";
         return 1;
     }
-    nameOut = task.nameOut;
+    // TODO
+    if (argc >= 3)
+        nameOut = argv[2];
+    else
+        nameOut = "out.xml";
 
     //_______Init Map_____
     Map map;
@@ -64,7 +68,7 @@ int main(int argc, char *argv[]) {
     //pSolver->init(task, map);
 
     //_______Solve Task_________
-    Output output;
+    Output output(task.cellSize);
     myeResult = pSolver->solve(map, output);  // myeResult == 1 if no path found; else 0;
     if (myeResult) {
         std::cout << "no path found in task\n"
@@ -73,6 +77,7 @@ int main(int argc, char *argv[]) {
         return 1;
     } else {
         std::cout << "path is found\n";
+        std::cout << "len of path " << output.lengtnPath << '\n';
         //_____Save results and write_____
         Log log;
         myeResult = log.saveData(nameIn, output, map);

@@ -1,7 +1,7 @@
 #include <iostream>
 #include "output.h"
 
-Output::Output()
+Output::Output(double cellSize)
 {
     time = 0;
     numberOfNodesCreated = 0;
@@ -9,6 +9,7 @@ Output::Output()
     numberOfMovements = 0;
     lengtnPath = 0;
     isLowLevel = true;
+    this->cellSize = cellSize;
 }
 
 void Output::printPath(const std::vector<Node> &path)

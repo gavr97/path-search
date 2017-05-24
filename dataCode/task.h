@@ -16,6 +16,7 @@ public:
     double lineCost;
     double diagCost;
     double hWeight;
+    double cellSize;
 
     std::string searchType;
     unsigned int startX;
