@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
     //pSolver->init(task, map);
 
     //_______Solve Task_________
-    Output output(task.cellSize);
+    Output output(task.cellSize, task.lineCost);
     myeResult = pSolver->solve(map, output);  // myeResult == 1 if no path found; else 0;
     if (myeResult) {
         std::cout << "no path found in task\n"
@@ -78,6 +78,8 @@ int main(int argc, char *argv[]) {
     } else {
         std::cout << "path is found\n";
         std::cout << "len of path " << output.lengtnPath << '\n';
+        std::cout << "time " << output.time << '\n';
+        std::cout << "count nodes created " << output.numberOfNodesCreated  << '\n';
         //_____Save results and write_____
         Log log;
         myeResult = log.saveData(nameIn, output, map);

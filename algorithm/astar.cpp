@@ -140,14 +140,14 @@ bool AStar::constructPath(Output &output)
         Node nodeNext = *(nodeNow.getParent());
         TypeValue gValNext = nodeNext.getGVal();
         output.lengtnPath += gValNow - gValNext;
-        output.weightMovements.push_back((gValNow - gValNext) * output.cellSize);
+        output.weightMovements.push_back((gValNow - gValNext) * output.lineCost);
         ++output.numberOfMovements;
         output.path.push_back(nodeNow);
 
         nodeNow = nodeNext;
         gValNow = gValNext;
     }
-    output.lengtnPath *= output.cellSize;
+    output.lengtnPath *= output.lineCost;
     output.path.push_back(nodeNow);
     return true;
 }

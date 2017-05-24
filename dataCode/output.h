@@ -12,6 +12,7 @@ public:
     unsigned numberOfMovements;
     double lengtnPath;
     double cellSize;
+    double lineCost;
     std::vector<Node> nodesCreated;
     std::vector<Node> path;  // reversed;
     std::vector<Node> otherPath;  // reversed;
@@ -25,7 +26,7 @@ public:
 
     bool isLowLevel;
 
-    Output(double cellSize);
+    Output(double cellSize, double lineCost);
     void printPath(const std::vector<Node> &path);
 };
 

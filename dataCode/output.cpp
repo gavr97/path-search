@@ -1,7 +1,7 @@
 #include <iostream>
 #include "output.h"
 
-Output::Output(double cellSize)
+Output::Output(double cellSize, double lineCost)
 {
     time = 0;
     numberOfNodesCreated = 0;
@@ -9,8 +9,8 @@ Output::Output(double cellSize)
     numberOfMovements = 0;
     lengtnPath = 0;
     isLowLevel = true;
-    this->cellSize = 1;
-    std::cout << "warning: cellSize is assigned 0 despite custom specification\n";
+    this->cellSize = cellSize;
+    this->lineCost = lineCost;
 }
 
 void Output::printPath(const std::vector<Node> &path)
