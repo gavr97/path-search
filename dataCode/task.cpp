@@ -177,6 +177,7 @@ void Task::print() const
     std::cout << "size: " << this->cntRealRows << ' ' << this->cntRealCols << std::endl;
     std::cout << "costs of movements: " << this->lineCost << " and " << this->diagCost << std::endl;
     std::cout << "cell size: " << this->cellSize << std::endl;
+    std::cout << "hWeight: " << this->hWeight << std::endl;
     // do not forget about transposing and shift
     printf("start and end: %u %u and %u %u\n", this->startY - 1, this->startX - 1, this->finishY - 1, this->finishX - 1);
     std::cout << "search type and metric type: " << this->searchType << " and " << this->metricType << std::endl;

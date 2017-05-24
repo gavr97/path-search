@@ -16,8 +16,7 @@ void Theta::computeCost(const Node *const pNodeParent, Node &nodeSon, const Map 
         pNodePretendent = pNodeParent;
         nodePretendent = *pNodePretendent;
     }
-
-    TypeValue  gVal = nodePretendent.getGVal() + heuristic(nodePretendent, nodeSon);
+    TypeValue  gVal = nodePretendent.getGVal() + metric(nodePretendent, nodeSon);
     nodeSon.setGVal(gVal);
     nodeSon.setFVal(gVal + hWeight * heuristic(nodeSon, nodeFinish));
     nodeSon.setParent(pNodePretendent);

@@ -43,3 +43,11 @@ TypeValue diagonal(unsigned ux, unsigned uy, unsigned vx, unsigned vy)
     sideStraight -= sideDiagonal;
     return sideStraight + DIAG_COST_DEFAULT * sideDiagonal;
 }
+
+TypeValue metric(unsigned ux, unsigned uy, unsigned vx, unsigned vy) {
+    return euclid(ux, uy, vx, vy);
+}
+
+TypeValue metric(const Node &node1, const Node &node2) {
+    return euclid(node1.getX(), node1.getY(), node2.getX(), node2.getY());
+}
