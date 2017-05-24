@@ -29,11 +29,7 @@ int main(int argc, char *argv[]) {
                   << "out XML is not generated\n";
         return 1;
     }
-    // TODO
-    if (argc >= 3)
-        nameOut = argv[2];
-    else
-        nameOut = "out.xml";
+    nameOut = task.nameOut;
 
     //_______Init Map_____
     Map map;
