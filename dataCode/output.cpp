@@ -9,7 +9,8 @@ Output::Output(double cellSize)
     numberOfMovements = 0;
     lengtnPath = 0;
     isLowLevel = true;
-    this->cellSize = cellSize;
+    this->cellSize = 1;
+    std::cout << "warning: cellSize is assigned 0 despite custom specification\n";
 }
 
 void Output::printPath(const std::vector<Node> &path)
