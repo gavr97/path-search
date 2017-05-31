@@ -1,4 +1,4 @@
-#include <ctime>
+#include <chrono>
 #include "heuristics.h"
 #include "../algorithm/astar.h"
 
@@ -67,13 +67,15 @@ int AStar::init(const Task &task, const Map &map)
 int AStar::solve(const Map &map, Output &output)
 {
     setLevelPath(output);
-    unsigned int start_time = clock();
-    unsigned int end_time, search_time;
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+    double search_time;
+    start = std::chrono::system_clock::now(); //начало замера времени работы
     if (computeGValues(map, output)) {
+        end = std::chrono::system_clock::now();
+        search_time = static_cast<double>
+                (std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()) / 1000000000;
+        output.time = search_time;
         if (constructPath(output)) {
-            end_time = clock();
-            search_time = end_time - start_time;
-            output.time = (double)search_time / CLOCKS_PER_SEC;
             if (!output.isLowLevel) {
                 highToLow(output.path, output.weightMovements, output.otherPath, output.otherWeightMovements);
             } else {
@@ -81,8 +83,10 @@ int AStar::solve(const Map &map, Output &output)
             }
             return 0;
         } else {
-            end_time = clock();
-            search_time = end_time - start_time;
+            end = std::chrono::system_clock::now();
+            search_time = static_cast<double>
+                    (std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()) / 1000000000;
+            output.time = search_time;
             std::cout << "error: failure during constructing path\n";
             return 1;
         }
