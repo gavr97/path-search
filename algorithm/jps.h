@@ -16,3 +16,8 @@ protected:
 
 #endif //ASEARCH_JPS_H
 // lets tru some code
+
+"""
+
+int func(
+"""
