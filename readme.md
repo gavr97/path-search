@@ -1,58 +1,56 @@
-# Tема проекта: Автоматическое планирование траектории
-## Выполняет: Гавриков Алексей Владимирович, группа 152
+# Automatic Path Search
 
+## Relevance of the problem
 
-## Актуальность решаемой задачи
-
-Планирование - одна из основополагающих способностей любого интеллектуального агента. Они встречаются повсеместно и в разных формах. Например, робот, который должен самостоятельно обходить препятствия, персонаж компьютерной игры, беспилотник или даже просто механическая рука, задача которой схватить какой-либо предмет. Очевидно, люди не могут управлять всеми ими от пульта. Людей и времени не хватит. Поэтому создание эффективных алгоритмов планирования очень важно в век современных технологий.
-Автоматическое планирование – широкое понятие, которое включает в себя множество частных задач. Одна из них, рассматриваемая в этом проекте, - планирование траектории.  В этом случае задача интеллектуального агента, находясь в начальном состоянии, - достичь целевое состояние, обходя препятствия, располагая информацией о среде, в которой он находится. И согласно этой информации агент должен спланировать оптимальную траекторию. Часто алгоритмически можно точно найти наилучшее решение, но ценой этому может стать долгий поиск  и объем затрачиваемых ресурсов.  Естественно, хочется, чтобы интеллектуальный агент действовал оптимально, быстро, используя как можно меньший объем ресурсов.  Таким образом, задача современных исследователей в этой области состоит в разработке и усовершенствовании алгоритмов, которые сочетают в себе три свойства: оптимальность, эффективность по времени, а также эффективность по памяти.
+Planning is one of the fundamental abilities of any intelligent agent. They are found everywhere and in different forms. For example, a robot that must independently circumvent obstacles, a computer game character, a drone, or even just a mechanical arm, whose task is to grab an object. Obviously, people cannot control all of them from the console. People and time is not enough. Therefore, the creation of effective scheduling algorithms is very important in the age of modern technology.
+Automatic planning is a broad concept that includes many particular tasks. One of these, considered in this project, is trajectory planning. In this case, the task of the intelligent agent, being in the initial state, is to reach the target state, bypassing the obstacles, having information about the environment in which it is located. And according to this information, the agent must plan the optimal trajectory. Often, it is algorithmically possible to accurately find the best solution, but at the cost of this can be a long search and the amount of resources spent. Naturally, I want the intelligent agent to act optimally, quickly, using as few resources as possible. Thus, the task of modern researchers in this area is to develop and improve algorithms that combine three properties: optimality, time efficiency, and memory efficiency.
 
 
 
-## Обзор существующих решений
+## Review of existing solutions
 
-Часто используемое представлениее экземпляра задачи, отражающее особенности среды, в которой действует агент, -  метрический топологический граф. Неформально, это матрица из 0 и 1, являющаяся картой, где 0 и 1 означает, что ячейка проходима и нет соответсвенно.
-Такое представлнение среды, используется в этом проекте. На таких графах есть разные алгоритмы планирования траектории. Одним из прародителем очень важнго класса ялвяется такой базовый алгоритм как A\*.
-Главная его парадигма – искать путь по наиболее перспективным направлениям. Понятие перспективности вершины графа определяется эвристикой, которую закладывает программист. Суть алгоритма А\*: последовательно рассматриваются вершины графа по определенному порядку, где в приоритете те вершины, до которых расстояние от вершины-старта(пути найденного до настоящего момента) в сумме с предположительным расстоянием от этой вершины до финиша наименьшее.
+A frequently used representation of an instance of a problem, reflecting the peculiarities of the environment in which the agent operates, is a metric topological graph. Informally, this is a matrix of 0 and 1, which is a map, where 0 and 1 means that the cell is passable and not correspondingly.
+This kind of environment is used in this project. There are different trajectory planning algorithms on such graphs. One of the progenitors of a very important class is such a basic algorithm as A \ *.
+His main paradigm is to look for a way along the most promising directions. The concept of perspectivity of a vertex of a graph is defined by heuristics, which the programmer is laying. The essence of the algorithm A \ *: the vertices of the graph are sequentially considered in a certain order, where in priority are those vertices to which the distance from the vertex-start (the path found up to the present moment) in total with the estimated distance from this vertex to the finish is the smallest.
 
-Есть немало усовершенствований A\*. В этом проекте будут рассматриваться, например, JPS и Theta. Особенность JPS по сравнению с классическим A\* в том, что при поиске делаются не единичные шаги, а “прыжжки” до видимых вершин по определенному правилу.
+There are quite a few improvements A \ *. In this project, for example, JPS and Theta will be considered. The peculiarity of JPS in comparison with the classical A \ * is that when searching, not single steps are taken, but “jumps” to visible vertices according to a certain rule.
 
 
-## Используемые технологические решения
-1)Язык программирования С++, т.к. он эффективен и удобен для ООП.
+## Technological solutions used
+1) C ++ programming language, since It is effective and convenient for OOP.
 
-2)Среда разработки Qt creator, т.к. в ней удобно программировать на C++, а также   она свободно распространяется.
+2) Qt creator development environment, since it is convenient to program in C ++, and also it is freely distributed.
 
-3)Формат входных данных XML, т.к. он хорошо подходит для хранения карт, к тому же разумно иметь определенный стандарт входных данных.
+3) The input format is XML, because it is well suited for storing maps, and it is also reasonable to have a certain standard of input data.
 
-4)Библиотека TinyXML для обработки XML-файлов.
+4) TinyXML library for processing XML files.
 
-## План работы
+## Work Plan
 
-1)20 января: Корректное считывание корректных входных файлов. При не корректных - сообщение пользователю об ошибке с типом ошибки. Реализация генерации выходного файла.
+1) January 20: Correct reading of correct input files. If not correct - a message to the user about the error with the type of error. The implementation of the generation of the output file.
 
-2)20 февраля: Должна быть написана общая архитектура программы: с нужными классами и модульным разбиением всего исходного кода программы на логические единицы.
+2) February 20: A general program architecture should be written: with the necessary classes and a modular partition of the entire program source code into logical units.
 
-3)20 марта: Должен быть реализован алгоритм A\* с различными эвристиками и модификациями.
+3) March 20: The algorithm A \ * must be implemented with various heuristics and modifications.
 
-4)Конец мая: Реализация усовершенствованных алгоритмов поиска класса A\*. Инструкция для пользователя, как использовать программу: как скомпилировать, как запустить, а также описание требований к входным данным.
+4) End of May: The implementation of improved search algorithms for the class A \ *. Instructions for the user how to use the program: how to compile, how to run, as well as a description of the requirements for input data.
 
-## Описание программы
-Консольная программа.  
-Программа ищет оптимальный путь между двумя точками на карте, указанными во входном файле. Алгоритм гарантированно его находит, если путь существует, а иначе сообщает на стандартный поток вывода, что путь не найден. Если входной файл некорректен(смотреть описание входного файла), то программа сообщает об этом и выходной файл не генерирует.
+## Program description
+Console program.
+The program searches for the optimal path between two points on the map indicated in the input file. The algorithm is guaranteed to find it if the path exists, otherwise it reports to the standard output stream that the path was not found. If the input file is incorrect (see the description of the input file), then the program reports this and the output file does not generate.
 
-## Реализованная функциональность
-Программа ищет оптимальный путь между двумя точками на карте, гарантированно находит его, если он есть. Если нету, то на стандрартный поток вывода пишется соответствующее сообщение.
+## Implemented functionality
+The program looks for the best path between two points on the map, is guaranteed to find it, if it exists. If not, a corresponding message is written to the standard output stream.
 
-Для достижения этой цели было реализовано:
-- чтение входных данных специального вида(смотреть описание входного файла)
-- эвристический алгоритм поиска оптимального пути AStar
-- вывод данных в выходной файл
+To achieve this goal was implemented:
+- reading the input data of a special type (see the description of the input file)
+- heuristic algorithm for finding the best path AStar
+- data output to the output file
 
-### Структура входного XML файла
-**obligatory** - обязательный тег  
-**default** - необязательный тег. Если не указан, то будет значение по умолчанию
-Обратите внимание, что важна структура XML файла, а не только наличие тегов.
+### Structure of input XML file
+** obligatory ** - mandatory tag
+** default ** is an optional tag. If not specified, the default value will be
+Note that the structure of the XML file is important, not just the presence of tags.
 
 * ``<root>``  - obligatory
   * ``<map>``    - obligatory
@@ -75,12 +73,12 @@
     * ``<allowsqueeze>``  - default: "0"
     * ``<cutcorners>``    - default: "0"
 
-*Пример входного XML смотрите в папке input в репозитории.*
+*For an example of input XML, see the input folder in the repository.*
 
-## Компиляция  
-Проект поддерживает сборку при помощи инструментов cmake и make.
+## Compilation
+The project supports building with the cmake and make tools.
 
-## Запуск
-В терминале запустить скомпилированную программу с одним аргументом - именем входного XML-файла.
-Выходной XML-файл генерируется по пути, в котором находится входной. К имени файла добавляется "_log.xml".
-Если в имени входного файла не специфизировано расширение .xml, то к имени выходного добавляется _log.
+## running
+In the terminal, run the compiled program with one argument - the name of the input XML-file.
+The output XML file is generated by the path in which the input is located. "_Log.xml" is added to the file name.
+If the .xml extension is not specified in the name of the input file, then _log is added to the output name.
